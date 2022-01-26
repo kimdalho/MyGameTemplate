@@ -41,9 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Tile
+    uniqueID: 3799576711
+    locked: 0
   - name: Entity
     uniqueID: 370673463
     locked: 0
   - name: Card
     uniqueID: 2862906559
+    locked: 0
+  - name: Hex
+    uniqueID: 2631334273
     locked: 0
