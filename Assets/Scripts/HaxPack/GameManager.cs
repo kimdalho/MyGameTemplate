@@ -9,8 +9,9 @@ namespace Hex_Package
         // Start is called before the first frame update
         void Start()
         {
-            TileManager.Instance.Setup();
-            UnitManager.Instance.CreatePlayer(TileManager.Instance.cells[0].transform.position);
+            var tiles =  TileManager.Instance.Setup();
+            UnitManager.Instance.CreatePlayer(tiles[0,0].transform.position);
+            PathFindingManager.Instance.SetNodes(tiles);
             StartGame();
         }
 

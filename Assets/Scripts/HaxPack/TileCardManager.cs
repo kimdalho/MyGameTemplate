@@ -16,21 +16,22 @@ namespace Hex_Package
 
         //보상카드의 순환을 위한 가상의 카드 임시저장공간 itemBuffer로 지정
         [SerializeField] List<TileCardItem> resultCardbuffer;
-
-
-
-
         [SerializeField] List<TileCard> myCards = new List<TileCard>();
         [SerializeField] Transform cardspawnPoint;
 
         [SerializeField] Transform myCardLeft;
         [SerializeField] Transform myCardRight;
-
+        [SerializeField] Transform myTileCards;
 
         [SerializeField] ECardState eCardState;
 
+        int showValue = 0;
+        int hideValue = -26;
+
         bool isMyCardDrag;
         bool onMyCardArea;
+
+        bool onMyCardShowArea;
         enum ECardState
         {
             Nothing = 0,
@@ -39,6 +40,7 @@ namespace Hex_Package
         }
 
         int myPutCount;
+        
 
         private void Start()
         {
@@ -48,10 +50,41 @@ namespace Hex_Package
             //TileTurnManager.OnTurnStarted += OnTurnStarted;
         }
 
+        private void Update()
+        {
+            DetectShowCardArea();
+
+            if (TileTurnManager.Instance.isLoading == true)
+                return;
+                
+            if (onMyCardShowArea)
+                ShowMyCardShowArea();
+            else
+                HideMyTileCards();
+        }
+
+
         private void OnDestroy()
         {
             TileTurnManager.OnAddCard -= AddCard;
             //TileTurnManager.OnTurnStarted -= OnTurnStarted;
+        }
+        
+
+        private void DetectShowCardArea()
+        {
+            RaycastHit2D[] hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.forward);
+            int layer = LayerMask.NameToLayer("ShowMyCardArea");
+            //hits를 x라는 컨테이너 매치
+            onMyCardShowArea = Array.Exists(hits, x => x.collider.gameObject.layer == layer);
+
+            Util.Log(string.Format("onMyCardShowArea is {0}", onMyCardShowArea));
+        }
+
+        private void ShowMyCardShowArea()
+        {
+            myTileCards.transform.DOMoveY(showValue, 0.5f);
+
         }
 
         private void SetupCardSpawnPoint()
@@ -62,6 +95,7 @@ namespace Hex_Package
         {
             var cardObject = Instantiate(cardPrefab, cardspawnPoint.position, Util.QI);
             TileCard card = cardObject.GetComponent<TileCard>();
+            card.transform.parent = myTileCards;
             card.Setup();
             //이재 CardSetup의 isMine은 필요가없다
             card.CardSetup(PopItem());
@@ -152,6 +186,12 @@ namespace Hex_Package
             {
                 myCardbuffer.Add(itemso.items[i]);
             }
+        }
+
+        public void HideMyTileCards()
+        {
+            myTileCards.transform.DOMoveY(hideValue,0.5f);
+
         }
     }
 }

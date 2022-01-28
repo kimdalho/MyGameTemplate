@@ -3,6 +3,15 @@ using System.Collections.Generic;
 /*
  그리드입니다. 공개 너비, 높이 및 셀 프리팹 변수를 사용하여 간단한 구성 요소를 만듭니다. 그런 다음 이 구성 요소가 있는 게임 개체를 장면에 추가합니다.
  */
+
+/// <summary>
+/// TileManager의 역할
+/// 오로지 맵을 그려주는 역할이다
+/// 0.그리드 맵의 행과 열의 사이즈 정의
+/// 1.육각타일의 규칙으로 타일 배치
+/// 2.랜덤한 속성의 타일 배치 및 셋업
+/// 3.y축 기준의 타일 orderlayer의 셋업
+/// </summary>
 namespace Hex_Package
 {
     public class TileManager : Singleton<TileManager>
@@ -10,24 +19,23 @@ namespace Hex_Package
         [Header("Grid")]
         public int width = 6;
         public int height = 6;
-
+        
 
         [Header("Tile")]
         [SerializeField] TileItemSO itemso;
         public Tile tilePrefab;
 
-        public Tile[] cells;
         private Dictionary<TileItem.eType, TileItem> itembuffer;
 
-        public void Setup()
+        public Tile[,] Setup()
         {
-            cells = new Tile[height * width];
+            Tile[,] result = new Tile[width,height];
 
-            for (int y = 0, i = 0; y < height; y++)
+            for (int y = 0, i = 0; y < result.GetLength(1); y++)
             {
-                for (int x = 0; x < width; x++)
+                for (int x = 0; x < result.GetLength(0); x++)
                 {
-                    cells[height + width] = CreateCell(x, y, i++);
+                    result[x,y] = CreateCell(x, y, i++);
                 }
             }
 
@@ -35,10 +43,12 @@ namespace Hex_Package
 
             List<Tile> tileList = new List<Tile>();
 
-            for (int i = 0; i < cells.Length; i++)
+            for (int y = 0; y < result.GetLength(1); y++)
             {
-                tileList.Add(cells[i]);
-                cells[i].GetComponent<Order>().SetOrder(-i);
+                for (int x = 0; x < result.GetLength(0); x++)
+                {
+                    tileList.Add(result[x,y]);
+                }
             }
                 
 
@@ -68,7 +78,7 @@ namespace Hex_Package
                 SetTileData(tileList,i, TileItem.eType.Forest);
             }
 
-
+            return result;
         }
 
         private void SetTileData(List<Tile> tileList, int index, TileItem.eType type)
@@ -95,7 +105,6 @@ namespace Hex_Package
 			position.y = y * 2.7f;
 			position.z = 0f;*/
 
-
             position.x = x * (HexMetrics.innerRadius * 2f);
             position.y = y * (HexMetrics.outerRadius * 1.5f); ;
             position.z = 0f;
@@ -103,12 +112,11 @@ namespace Hex_Package
             position.x = (x + y * 0.5f) * (HexMetrics.innerRadius * 2f);
             position.x = (x + y * 0.5f - y / 2) * (HexMetrics.innerRadius * 2f);
 
-
-
-            Tile cell = cells[i] = Instantiate<Tile>(tilePrefab);
+            Tile cell  = Instantiate<Tile>(tilePrefab);
             cell.transform.SetParent(transform, false);
             cell.transform.localPosition = position;
-            cell.tmp.text = string.Format("{0} , {1} ", x, y);
+            cell.name = string.Format("{0} , {1} ", x, y);
+            cell.tmp.text = cell.name;
             return cell;
         }
     }
