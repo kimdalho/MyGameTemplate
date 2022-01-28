@@ -4,78 +4,84 @@ using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
 
-public class TileTurnManager : Singleton<TileTurnManager>
+namespace Hex_Package
 {
-    [Header("Develop")]
-    [SerializeField] [Tooltip("시작 턴 모드를 정합니다")] ETurnMode eTrunMode;
-    [SerializeField] [Tooltip("시작 배분이 매우 빨라집니다")] bool fastMode;
-    [SerializeField] [Tooltip("시작 카드 개수를 정합니다")] int startCardCount;
-
-    [Header("Properties")]
-    public bool isLoading; // 게임이 끝나면 isLoading을 true로 하면 카드와 엔티티 클릭방지
-    public bool myTurn;
-
-    public static Action OnAddCard;
-    public static event Action<bool> OnTurnStarted;
-
-    enum ETurnMode { My, Other }
-    //매 코루틴 호출에서 동적으로 생성하는것은 막는다
-    WaitForSeconds delay05 = new WaitForSeconds(0.5f);
-    WaitForSeconds delay07 = new WaitForSeconds(0.7f);
-
-    void GameSetup()
+    public class TileTurnManager : Singleton<TileTurnManager>
     {
-        if (fastMode)
-            delay05 = new WaitForSeconds(0.05f);
+        [Header("Develop")]
+        [SerializeField] [Tooltip("시작 턴 모드를 정합니다")] ETurnMode eTrunMode;
+        [SerializeField] [Tooltip("시작 배분이 매우 빨라집니다")] bool fastMode;
+        [SerializeField] [Tooltip("시작 카드 개수를 정합니다")] int startCardCount;
 
-        switch (eTrunMode)
+        [Header("Properties")]
+        public bool isLoading; // 게임이 끝나면 isLoading을 true로 하면 카드와 엔티티 클릭방지
+        public bool myTurn;
+
+        public static Action OnAddCard;
+        //public static event Action<bool> OnTurnStarted;
+
+        enum ETurnMode { My, Other }
+        //매 코루틴 호출에서 동적으로 생성하는것은 막는다
+        WaitForSeconds delay05 = new WaitForSeconds(0.5f);
+        WaitForSeconds delay07 = new WaitForSeconds(0.7f);
+
+        void GameSetup()
         {
-            case ETurnMode.My:
-                myTurn = true;
-                break;
-            case ETurnMode.Other:
-                myTurn = false;
-                break;
-        }
-    }
+            if (fastMode)
+                delay05 = new WaitForSeconds(0.05f);
 
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public IEnumerator StartGameCo()
-    {
-        GameSetup();
-        isLoading = true;
-
-        for (int i = 0; i < startCardCount; i++)
-        {
-            yield return delay05;
-            OnAddCard?.Invoke();
+            switch (eTrunMode)
+            {
+                case ETurnMode.My:
+                    myTurn = true;
+                    break;
+                case ETurnMode.Other:
+                    myTurn = false;
+                    break;
+            }
         }
 
-       // StartCoroutine(StartTurnCo());
+        void Start()
+        {
+
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
+
+        public IEnumerator StartGameCo()
+        {
+            GameSetup();
+            isLoading = true;
+
+            for (int i = 0; i < startCardCount; i++)
+            {
+                yield return delay05;
+                OnAddCard?.Invoke();
+            }
+            yield return new WaitForSeconds(1);
+            TileCardManager.Instance.HideMyTileCards();
+
+            isLoading = false;
+            // StartCoroutine(StartTurnCo());
     }
 
-/*    IEnumerator StartTurnCo()
-    {
-        isLoading = true;
-        if (myTurn)
-            UiManager.Instance.Notification("나의 턴");
-        else
-            UiManager.Instance.Notification("적의 턴");
-        yield return delay07;
-        OnAddCard?.Invoke(myTurn);
-        yield return delay07;
-        isLoading = false;
-        OnTurnStarted?.Invoke(myTurn);
+        /*    IEnumerator StartTurnCo()
+            {
+                isLoading = true;
+                if (myTurn)
+                    UiManager.Instance.Notification("나의 턴");
+                else
+                    UiManager.Instance.Notification("적의 턴");
+                yield return delay07;
+                OnAddCard?.Invoke(myTurn);
+                yield return delay07;
+                isLoading = false;
+                OnTurnStarted?.Invoke(myTurn);
 
-    }*/
+            }*/
+    }
 }
