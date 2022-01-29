@@ -80,5 +80,27 @@ namespace Hex_Package
             }
         }
 
+
+        private void OnMouseOver()
+        {
+            TileCardManager.Instance.CardMouseOver(this);
+        }
+
+
+        private void OnMouseExit()
+        {
+            TileCardManager.Instance.CardMosueExit(this);
+        }
+
+        private void OnMouseDown()
+        {
+            TileCardManager.Instance.CardMouseDown();
+        }
+
+        private void OnMouseUp()
+        {
+            TileCardManager.Instance.CardMouseUp();
+        }
+
     }
 }

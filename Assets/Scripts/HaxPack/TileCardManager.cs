@@ -24,14 +24,12 @@ namespace Hex_Package
         [SerializeField] Transform myTileCards;
 
         [SerializeField] ECardState eCardState;
+        public static Action OnEndLoading;
 
-        int showValue = 0;
-        int hideValue = -26;
+
+        TileCard selectCard;
 
         bool isMyCardDrag;
-        bool onMyCardArea;
-
-        bool onMyCardShowArea;
         enum ECardState
         {
             Nothing = 0,
@@ -46,21 +44,16 @@ namespace Hex_Package
         {
             SetupItemBuffer();
             SetupCardSpawnPoint();
+         
             TileTurnManager.OnAddCard += AddCard;
             //TileTurnManager.OnTurnStarted += OnTurnStarted;
+
         }
 
         private void Update()
         {
-            DetectShowCardArea();
-
-            if (TileTurnManager.Instance.isLoading == true)
-                return;
-                
-            if (onMyCardShowArea)
-                ShowMyCardShowArea();
-            else
-                HideMyTileCards();
+            if (isMyCardDrag)
+                CardDrag();
         }
 
 
@@ -71,19 +64,8 @@ namespace Hex_Package
         }
         
 
-        private void DetectShowCardArea()
+        private void CardDrag()
         {
-            RaycastHit2D[] hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.forward);
-            int layer = LayerMask.NameToLayer("ShowMyCardArea");
-            //hits를 x라는 컨테이너 매치
-            onMyCardShowArea = Array.Exists(hits, x => x.collider.gameObject.layer == layer);
-
-            Util.Log(string.Format("onMyCardShowArea is {0}", onMyCardShowArea));
-        }
-
-        private void ShowMyCardShowArea()
-        {
-            myTileCards.transform.DOMoveY(showValue, 0.5f);
 
         }
 
@@ -103,6 +85,15 @@ namespace Hex_Package
             myCards.Add(card);
             SetOriginOrder();
             CardAlignment();
+        }
+
+        public void CardMouseOver(TileCard tileCard)
+        {
+            if (eCardState == ECardState.Nothing)
+                return;
+
+            selectCard = tileCard;
+            EnlargeCard(true, tileCard);
         }
 
         void OnTurnStarted(bool isMyTurn)
@@ -188,10 +179,50 @@ namespace Hex_Package
             }
         }
 
-        public void HideMyTileCards()
-        {
-            myTileCards.transform.DOMoveY(hideValue,0.5f);
 
+        #region MouseEvent
+
+        public void CardMosueExit(TileCard tileCard)
+        {
+            EnlargeCard(false, tileCard);
         }
+
+        public void CardMouseDown()
+        {
+            if (eCardState != ECardState.CanMosueDrag)
+                return;
+            isMyCardDrag = true;
+        }
+
+        public void CardMouseUp()
+        {
+            isMyCardDrag = false;
+
+            if (eCardState != ECardState.CanMosueDrag)
+                return;
+
+/*            if (onMyCardArea)
+                EntityManager.Instance.RemoveMyEmptyEntity();
+            //Area밖에 존재
+            else
+                TryPutCard(true);*/
+        }
+
+        private void EnlargeCard(bool isEnalarge, TileCard tileCard)
+        {
+            if(isEnalarge)
+            {
+                Vector3 enlargePos = new Vector3(tileCard.originPRS.pos.x, -4.8f, 0);
+                tileCard.MoveTransform(new PRS(enlargePos, Util.QI, Vector3.one * 7.5f), false);
+            }
+            else
+            tileCard.MoveTransform(tileCard.originPRS, false);
+
+            tileCard.GetComponent<Order>().SetMostFrontOrder(isEnalarge);
+        }
+
+
+        #endregion
     }
+
 }
