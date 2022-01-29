@@ -63,7 +63,7 @@ namespace Hex_Package
                 OnAddCard?.Invoke();
             }
             yield return new WaitForSeconds(1);
-            TileCardManager.Instance.HideMyTileCards();
+            TileCardManager.OnEndLoading?.Invoke();
 
             isLoading = false;
             // StartCoroutine(StartTurnCo());

@@ -50,10 +50,15 @@ namespace Hex_Package
                     tileList.Add(result[x,y]);
                 }
             }
-                
 
+            tileList.Reverse();
 
-            
+            for (int i = 0; i < tileList.Count; i++)
+            {
+                tileList[i].GetComponent<Order>().SetOrder(i);
+            }
+
+            tileList.Reverse();
 
             SetTileData(tileList, 0, TileItem.eType.Base);
             SetTileData(tileList, tileList.Count - 1, TileItem.eType.Volcano);

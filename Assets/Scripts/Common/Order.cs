@@ -14,8 +14,10 @@ public class Order : MonoBehaviour
     //renderer의 LayerName은 sortingLayerName으로 모두 통일된다
     //몸체의 밑으로 간 모든 Sprite는 mulOrder(카드)보다 Layer가 상위로 올라간다
 
+    /// <param name="isMostFron"></param>
     public void SetMostFrontOrder(bool isMostFron)
     {
+        Util.Log("Check");
         SetOrder(isMostFron ? 100 : originOrder);
     }
 
