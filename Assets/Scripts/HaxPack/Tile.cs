@@ -5,6 +5,7 @@ namespace Hex_Package
     public class Tile : Node
     {
         [SerializeField] SpriteRenderer render;
+        [SerializeField] TileItem item;
         public TMP_Text tmp;
 
         private void Awake()
@@ -14,7 +15,9 @@ namespace Hex_Package
 
         public void TileSetup(TileItem item)
         {
-            render.sprite =  item.sprite;
+            this.item = item;
+
+            render.sprite = this.item.sprite;
         }
 
         private void OnMouseExit()

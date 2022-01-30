@@ -46,8 +46,6 @@ namespace Hex_Package
             SetupCardSpawnPoint();
          
             TileTurnManager.OnAddCard += AddCard;
-            //TileTurnManager.OnTurnStarted += OnTurnStarted;
-
         }
 
         private void Update()
@@ -60,7 +58,6 @@ namespace Hex_Package
         private void OnDestroy()
         {
             TileTurnManager.OnAddCard -= AddCard;
-            //TileTurnManager.OnTurnStarted -= OnTurnStarted;
         }
         
 
