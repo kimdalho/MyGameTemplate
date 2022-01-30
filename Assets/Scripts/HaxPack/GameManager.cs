@@ -10,6 +10,7 @@ namespace Hex_Package
         void Start()
         {
             var tiles =  TileManager.Instance.Setup();
+            
             UnitManager.Instance.CreatePlayer(tiles[0,0].transform.position);
             PathFindingManager.Instance.SetNodes(tiles);
             StartGame();

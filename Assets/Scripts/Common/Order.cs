@@ -23,7 +23,6 @@ public class Order : MonoBehaviour
 
     public void SetOriginOrder(int originOrder)
     {
-        Util.Log("Check");
         this.originOrder = originOrder;
         SetOrder(originOrder);
     }

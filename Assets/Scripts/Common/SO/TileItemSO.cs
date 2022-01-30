@@ -10,15 +10,18 @@ public class TileItem
     {
         None = 0,
         Base = 1,
-        PlainsCastle = 2,
-        Forest = 3,
+        Volcano = 2,
+        Plains = 3,
         Mountain = 4,
-        Volcano = 5,
+        PlainsCastle = 5,
+        Forest = 6,
+
     }
 
     public string name;
     public eType type;
     public Sprite sprite;
+    public int moveCost;
 }
 
 [CreateAssetMenu(fileName = "HexItemSO", menuName = "Scriptable Object/Hex/ItemSO")]

@@ -73,7 +73,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -495390585
   m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: d8e85e6c9f928394193f3c3839cfd465, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -103,6 +103,10 @@ MonoBehaviour:
   Neighbors: []
   H: 0
   render: {fileID: 2149083520097030587}
+  item:
+    name: 
+    type: 0
+    sprite: {fileID: 0}
   tmp: {fileID: 2414949654769549720}
 --- !u!114 &4701725889143544629
 MonoBehaviour:
@@ -116,11 +120,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e509a1ed1cfff4c4abbba27d0ade8d43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backRenderers: []
-  middleRenderers:
+  backRenderers:
   - {fileID: 2149083520097030587}
+  middleRenderers:
   - {fileID: 2850654869581709141}
   sortingLayerName: Tile
+  originOrder: 1
 --- !u!60 &7536097490614946160
 PolygonCollider2D:
   m_ObjectHideFlags: 0
