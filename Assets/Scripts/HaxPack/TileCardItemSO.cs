@@ -27,6 +27,7 @@ public class TileCardItem
     public Sprite sprite;
     public string skill_description;
     public Skill skill;
+    public eType type;
 
 }
 

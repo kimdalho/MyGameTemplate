@@ -29,6 +29,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
     public Agent player;
 
 
+
     public void SetNodes(Tile[,] tiles)
     {
         matrixNodes = tiles;

@@ -8,6 +8,18 @@ namespace Hex_Package
 {
     public class TileCardManager : Singleton<TileCardManager>
     {
+        [Header("EnalargeVlaues")]
+        //선택된 카드의 Enalage시 올라가는 offY축 크기이다
+        public  float ENALARGE_OffsetY = 10f;
+        //선택된 카드의 Enalage시 증가하는 사이즈값이다
+        public  float ENALARGE_SCALE = 2.5f;
+
+
+        public float AlignmentPosY; // 3f
+        public float AlignmentScale; // 1.9f
+
+
+
         [SerializeField] TileCardItemSO itemso;
         [SerializeField] GameObject cardPrefab;
 
@@ -29,7 +41,8 @@ namespace Hex_Package
 
         TileCard selectCard;
 
-        bool isMyCardDrag;
+        public bool isMyCardDrag;
+        bool onMyCardArea;
         enum ECardState
         {
             Nothing = 0,
@@ -63,7 +76,10 @@ namespace Hex_Package
 
         private void CardDrag()
         {
-
+            if(!onMyCardArea)
+            {
+                selectCard.MoveTransform(new PRS(Util.MousePos, Util.QI, selectCard.originPRS.scale), false);
+            }
         }
 
         private void SetupCardSpawnPoint()
@@ -99,9 +115,12 @@ namespace Hex_Package
         }
         private void CardAlignment()
         {
+            //매 AddCard를하며 호출된다
+            //카드의 리스트의 정렬이 카드의 추가에 따라 라운드가 달라지기 때문
             List<PRS> originCardPRSs = new List<PRS>();
-
-                originCardPRSs = RoundAligenment(myCardLeft, myCardRight, myCards.Count, 0.5f, Vector3.one * 1.9f);
+            //카드의 위치를 초기화하는 값을 생성하기위해 originCardPRS를 사용한다
+            
+            originCardPRSs = RoundAligenment(myCardLeft, myCardRight, myCards.Count, AlignmentPosY, Vector3.one * AlignmentScale);
            
             for (int i = 0; i < myCards.Count; i++)
             {
@@ -109,33 +128,46 @@ namespace Hex_Package
 
                 targetCard.originPRS = originCardPRSs[i];
                 targetCard.MoveTransform(targetCard.originPRS, true, 0.7f);
-
             }
         }
 
         List<PRS> RoundAligenment(Transform leftTr, Transform rightTr, int objectCount, float height, Vector3 scale)
         {
+            //height는 반지름을 의미
+            //실수 배열 objLerps를 카드의 갯수만큼 확보한다
             float[] objLerps = new float[objectCount];
+            //반환 결과물을 좌표 각도,크기를 담고있는 PRS 클래스로 정의한다
             List<PRS> result = new List<PRS>();
+            //3장 까지는 그대로 정렬되며 
+            //4장부터 원형으로 카드가 정렬된다
             switch (objectCount)
             {
                 case 1: objLerps = new float[] { 0.5f }; break;
                 case 2: objLerps = new float[] { 0.27f, 0.73f }; break;
                 case 3: objLerps = new float[] { 0.1f, 0.5f, 0.9f }; break;
                 default:
+                    //시간적 간격
                     float interval = 1f / (objectCount - 1);
                     for (int i = 0; i < objectCount; i++)
+                    {
                         objLerps[i] = interval * i;
+                    }
+                        
                     break;
             }
-
             for (int i = 0; i < objectCount; i++)
             {
+                //목적좌표는 = 선형보관으로 다음 카드의 targetPosX를 지정한다
                 var targetPos = Vector3.Lerp(leftTr.position, rightTr.position, objLerps[i]);
                 var targetRot = Util.QI;
                 if (objectCount >= 4)
                 {
+                    //y 
                     float curve = Mathf.Sqrt(Mathf.Pow(height, 2) - Mathf.Pow(objLerps[i] - 0.5f, 2));
+
+                    Util.Log(string.Format("{0} = Mathf.Sqrt(Mathf.Pow({1}, 2) - Mathf.Pow({2} - 0.5f, 2))",
+                        curve,height,objLerps[i]));
+
                     curve = height >= 0 ? curve : -curve;
                     targetPos.y += curve;
                     targetRot = Quaternion.Slerp(leftTr.rotation, rightTr.rotation, objLerps[i]);
@@ -198,19 +230,49 @@ namespace Hex_Package
             if (eCardState != ECardState.CanMosueDrag)
                 return;
 
-/*            if (onMyCardArea)
-                EntityManager.Instance.RemoveMyEmptyEntity();
+
+
+            if (onMyCardArea)
+            {
+                //EntityManager.Instance.RemoveMyEmptyEntity();
+            }
             //Area밖에 존재
             else
-                TryPutCard(true);*/
+            {
+                TryPutCard();
+            }
+                
         }
+
+        private void TryPutCard()
+        {
+            //임시
+
+            myCards.Remove(selectCard);
+            DestroyImmediate(selectCard.gameObject);
+            //selectCard.item.skill.Use();
+            GameManager.Instance.CheatGetMoveScore();
+            selectCard = null;
+            CardAlignment();
+
+
+/*            switch (selectCard.item.type)
+            {
+                case TileCardItem.eType.DecType:
+                    break;
+
+                case TileCardItem.eType.ResultType:
+                    break;
+            }*/
+        }
+
 
         private void EnlargeCard(bool isEnalarge, TileCard tileCard)
         {
             if(isEnalarge)
             {
-                Vector3 enlargePos = new Vector3(tileCard.originPRS.pos.x, -4.8f, 0);
-                tileCard.MoveTransform(new PRS(enlargePos, Util.QI, Vector3.one * 7.5f), false);
+                Vector3 enlargePos = new Vector3(tileCard.originPRS.pos.x, ENALARGE_OffsetY, -100);
+                tileCard.MoveTransform(new PRS(enlargePos, Util.QI, Vector3.one * ENALARGE_SCALE), false);
             }
             else
             tileCard.MoveTransform(tileCard.originPRS, false);

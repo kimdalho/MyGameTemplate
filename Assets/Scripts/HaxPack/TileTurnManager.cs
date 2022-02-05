@@ -43,7 +43,8 @@ namespace Hex_Package
 
         void Start()
         {
-
+            //카드 OnMouseOver에 방해된다
+            
         }
 
         // Update is called once per frame
@@ -83,5 +84,7 @@ namespace Hex_Package
                 OnTurnStarted?.Invoke(myTurn);
 
             }*/
+
+        
     }
 }

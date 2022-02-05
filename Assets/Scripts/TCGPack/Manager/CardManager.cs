@@ -228,6 +228,7 @@ namespace Card_GamePackage
                     curve = height >= 0 ? curve : -curve;
                     targetPos.y += curve;
                     targetRot = Quaternion.Slerp(leftTr.rotation, rightTr.rotation, objLerps[i]);
+                    Debug.Log(targetRot);
 
                 }
                 result.Add(new PRS(targetPos, targetRot, scale));
