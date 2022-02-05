@@ -83,22 +83,26 @@ namespace Hex_Package
 
         private void OnMouseOver()
         {
+            Util.Log(string.Format("OnMouseOver"));
             TileCardManager.Instance.CardMouseOver(this);
         }
 
 
         private void OnMouseExit()
         {
+            Util.Log(string.Format("OnMouseExit"));
             TileCardManager.Instance.CardMosueExit(this);
         }
 
         private void OnMouseDown()
         {
+            Util.Log(string.Format("OnMouseDown"));
             TileCardManager.Instance.CardMouseDown();
         }
 
         private void OnMouseUp()
         {
+            Util.Log(string.Format("OnMouseUp"));
             TileCardManager.Instance.CardMouseUp();
         }
 

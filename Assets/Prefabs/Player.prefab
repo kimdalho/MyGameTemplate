@@ -163,6 +163,7 @@ GameObject:
   - component: {fileID: 7421848072730700776}
   - component: {fileID: 7421848072730700778}
   - component: {fileID: 7457750709692359620}
+  - component: {fileID: 2160173184476458944}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -296,6 +297,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29d979bde9d510f46bca4123afece64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  originPRS:
+    pos: {x: 0, y: 0, z: 0}
+    rot: {x: 0, y: 0, z: 0, w: 0}
+    scale: {x: 0, y: 0, z: 0}
+  nowNode: {fileID: 0}
+  onMouseOver: 0
+  onDrag: 0
+--- !u!58 &2160173184476458944
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7421848072730700791}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.7750001
 --- !u!1 &7421848073211401452
 GameObject:
   m_ObjectHideFlags: 0

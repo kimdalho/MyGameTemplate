@@ -459,7 +459,7 @@ GameObject:
   - component: {fileID: 1353077560686984104}
   - component: {fileID: 6763060610331629245}
   - component: {fileID: 1353077560686984105}
-  - component: {fileID: 679345181}
+  - component: {fileID: 4516277204207312059}
   m_Layer: 0
   m_Name: TileCard
   m_TagString: Untagged
@@ -533,7 +533,7 @@ MonoBehaviour:
   - {fileID: 1603550969}
   - {fileID: 8465673503474568398}
   sortingLayerName: Card
---- !u!60 &679345181
+--- !u!60 &4516277204207312059
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -543,29 +543,28 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 12.5, y: 17.8125}
-    newSize: {x: 0.47, y: 0.62}
-    adaptiveTilingThreshold: 0.5
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -1.46875, y: 1.9375}
-      - {x: -1.46875, y: -1.9375}
-      - {x: -0.8576127, y: -2.0643032}
-      - {x: -0.42835343, y: -2.5472772}
-      - {x: 0.14662631, y: -2.5584252}
-      - {x: 0.5852834, y: -2.087902}
-      - {x: 1.46875, y: -1.9375}
-      - {x: 1.46875, y: 1.9375}
+    - - {x: -5.070689, y: 8.17622}
+      - {x: -5.5727015, y: -1.3017033}
+      - {x: -5.5729294, y: -8.654783}
+      - {x: 0.094788164, y: -13.305515}
+      - {x: 6.1696944, y: -8.644867}
+      - {x: 5.770688, y: -5.7368994}
+      - {x: 6.2932353, y: 8.25165}
 --- !u!1 &1353077560966469690
 GameObject:
   m_ObjectHideFlags: 0

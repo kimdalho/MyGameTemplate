@@ -27,6 +27,8 @@ namespace Hex_Package
         [SerializeField] TileItemSO itemso;
         public Tile tilePrefab;
 
+        public Tile[,] tileArray;
+
 
 
         public void Builder(Tile[,] tileArray)
@@ -61,30 +63,28 @@ namespace Hex_Package
             }
         }
 
-        public Tile[,] Setup()
+        public void Setup()
         {
-            Tile[,] result = new Tile[width,height];
+            tileArray = new Tile[width,height];
 
-            for (int y = 0, i = 0; y < result.GetLength(1); y++)
+            for (int y = 0, i = 0; y < tileArray.GetLength(1); y++)
             {
-                for (int x = 0; x < result.GetLength(0); x++)
+                for (int x = 0; x < tileArray.GetLength(0); x++)
                 {
-                    result[x,y] = CreateCell(x, y, i++);
+                    tileArray[x,y] = CreateCell(x, y, i++);
                 }
             }
 
             List<Tile> tileList = new List<Tile>();
 
-            for (int y = 0; y < result.GetLength(1); y++)
+            for (int y = 0; y < tileArray.GetLength(1); y++)
             {
-                for (int x = 0; x < result.GetLength(0); x++)
+                for (int x = 0; x < tileArray.GetLength(0); x++)
                 {
-                    tileList.Add(result[x,y]);
+                    tileList.Add(tileArray[x,y]);
                 }
             }
-            Builder(result);
-
-            return result;
+            
         }
 
         Tile CreateCell(int x, int y, int i)
@@ -132,5 +132,19 @@ namespace Hex_Package
                 list.RemoveAt(targetIndex);
             }
         }
+
+
+        public void BlockCollider()
+        {
+            for (int y = 0, i = 0; y < tileArray.GetLength(1); y++)
+            {
+                for (int x = 0; x < tileArray.GetLength(0); x++)
+                {
+                    tileArray[x, y].GetComponent<PolygonCollider2D>().enabled = false;
+                }
+            }
+        }
+
+
     }
 }

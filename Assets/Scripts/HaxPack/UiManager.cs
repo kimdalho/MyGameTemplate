@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 namespace Hex_Package
@@ -6,10 +7,13 @@ namespace Hex_Package
     public class UiManager : Singleton<UiManager>
     {
         PathFinderButton pathFinderBtn;
-
+        MoveScoreTMP moveScore;
         private void Start()
         {
             PathFinderButtonSetup();
+            moveScore = GameObject.Find("MoveScoreTMP").GetComponent<MoveScoreTMP>();
+            moveScore.Setup();
+
         }
 
         public void PathFinderButtonSetup()
@@ -22,6 +26,11 @@ namespace Hex_Package
         {
 
             StartCoroutine(PathFindingManager.Instance.Movement());
+        }
+
+        public void RefreshMoveScoreText()
+        {
+            moveScore.GetTMP().text = GameManager.Instance.MoveScore.ToString();
         }
     }
 

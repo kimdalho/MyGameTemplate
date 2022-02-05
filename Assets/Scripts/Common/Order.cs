@@ -17,7 +17,6 @@ public class Order : MonoBehaviour
     /// <param name="isMostFron"></param>
     public void SetMostFrontOrder(bool isMostFron)
     {
-        Util.Log("Check");
         SetOrder(isMostFron ? 100 : originOrder);
     }
 
