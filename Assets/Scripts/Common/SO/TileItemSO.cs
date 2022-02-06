@@ -24,7 +24,7 @@ public class TileItem
     public int moveCost;
 }
 
-[CreateAssetMenu(fileName = "HexItemSO", menuName = "Scriptable Object/Hex/ItemSO")]
+[CreateAssetMenu(fileName = "HexItemSO", menuName = "Scriptable Object/Hex/TileItemSO")]
 public class TileItemSO : ScriptableObject
 {
     public TileItem[] items;

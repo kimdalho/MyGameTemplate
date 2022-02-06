@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 
 
-/*#################################
-1.Position 
-2.Rotation 
-3.LocalScale
-###################################*/
 
+
+/// <summary>
+///1.Position 
+///2.Rotation 
+///3.LocalScale
+/// </summary>
 [System.Serializable]
 public class PRS
 {
