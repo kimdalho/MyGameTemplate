@@ -14,23 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   items:
   - name: "\uAD81\uC218"
-    attack: 1
-    health: 3
+    attack: 0
+    health: 0
     sprite: {fileID: 21300000, guid: a529dd4963bb6a24dadf5f58cbe93a20, type: 3}
-    skill_description: "\uC6A9\uB9F9\uD55C \uC804\uC0AC\uC774\uB2E4"
+    skill_description: 
+    type: 0
   - name: "\uD589\uAD70"
     attack: 0
     health: 0
     sprite: {fileID: 21300000, guid: f99fc74aabe51564092b58e5e01a5e63, type: 3}
     skill_description: "\uC774\uB3D9 +2"
+    type: 0
   - name: "\uB9E5\uC8FC"
-    attack: 3
-    health: 3
+    attack: 0
+    health: 0
     sprite: {fileID: 21300000, guid: 3ed5907479d97e24b9661e2d875ca51b, type: 3}
     skill_description: "\uC804\uC0AC\uB4E4\uC758 \uC0AC\uAE30\uAC00 \uC99D\uAC00\uD55C\uB2E4
       \uC774\uB3D9 +2"
+    type: 0
   - name: "\uD574\uACE8"
-    attack: 1
-    health: 1
+    attack: 0
+    health: 0
     sprite: {fileID: 21300000, guid: 7d6d8fc34682e2046b4a72a1aa645f2f, type: 3}
     skill_description: "\uC2A4\uD0AC\uC124\uBA85"
+    type: 0

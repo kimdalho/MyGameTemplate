@@ -11,7 +11,6 @@ public class PathFinderButton : UiBase
     }
     public override void Setup()
     {
-
     }
 
     public Button GetButton()

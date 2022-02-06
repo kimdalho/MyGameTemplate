@@ -35,6 +35,11 @@ namespace Hex_Package
             
         }
 
+        public TileItem.eType GeteType()
+        {
+            return item.type;
+        }
+
     }
 
 

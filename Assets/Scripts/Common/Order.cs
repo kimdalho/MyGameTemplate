@@ -35,11 +35,13 @@ public class Order : MonoBehaviour
             render.sortingLayerName = sortingLayerName;
             render.sortingOrder = mulOrder;
         }
-
+        int cnt = 0;
         foreach (var render in middleRenderers)
         {
+            cnt++;
             render.sortingLayerName = sortingLayerName;
-            render.sortingOrder = mulOrder  + 1;
+            render.sortingOrder = mulOrder  + 1 + cnt;
+            render.gameObject.name = string.Format("Card {0}", render.sortingOrder); 
         }
 
     }

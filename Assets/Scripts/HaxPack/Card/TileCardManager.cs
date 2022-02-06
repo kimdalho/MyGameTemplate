@@ -28,7 +28,7 @@ namespace Hex_Package
 
         //보상카드의 순환을 위한 가상의 카드 임시저장공간 itemBuffer로 지정
         [SerializeField] List<TileCardItem> resultCardbuffer;
-        [SerializeField] List<TileCard> myCards = new List<TileCard>();
+        [SerializeField] List<SkillCard> myCards = new List<SkillCard>();
         [SerializeField] Transform cardspawnPoint;
 
         [SerializeField] Transform myCardLeft;
@@ -39,7 +39,7 @@ namespace Hex_Package
         public static Action OnEndLoading;
 
 
-        TileCard selectCard;
+        SkillCard selectCard;
 
         public bool isMyCardDrag;
         bool onMyCardArea;
@@ -89,7 +89,7 @@ namespace Hex_Package
         void AddCard()
         {
             var cardObject = Instantiate(cardPrefab, cardspawnPoint.position, Util.QI);
-            TileCard card = cardObject.GetComponent<TileCard>();
+            SkillCard card = cardObject.GetComponent<SkillCard>();
             card.transform.parent = myTileCards;
             card.Setup();
             //이재 CardSetup의 isMine은 필요가없다
@@ -100,7 +100,7 @@ namespace Hex_Package
             CardAlignment();
         }
 
-        public void CardMouseOver(TileCard tileCard)
+        public void CardMouseOver(SkillCard tileCard)
         {
             if (eCardState == ECardState.Nothing)
                 return;
@@ -211,7 +211,7 @@ namespace Hex_Package
 
         #region MouseEvent
 
-        public void CardMosueExit(TileCard tileCard)
+        public void CardMosueExit(SkillCard tileCard)
         {
             EnlargeCard(false, tileCard);
         }
@@ -267,7 +267,7 @@ namespace Hex_Package
         }
 
 
-        private void EnlargeCard(bool isEnalarge, TileCard tileCard)
+        private void EnlargeCard(bool isEnalarge, SkillCard tileCard)
         {
             if(isEnalarge)
             {

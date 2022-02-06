@@ -133,17 +133,28 @@ namespace Hex_Package
             }
         }
 
-
-        public void BlockCollider()
+        //###############Gettter##############################
+        /// <summary>
+        /// <paramref name="type"/>에 해당하는 모든 타일을 배열타입으로 가져온다
+        /// </summary>
+        public List<Tile> GetTiles(TileItem.eType type)
         {
-            for (int y = 0, i = 0; y < tileArray.GetLength(1); y++)
+            List<Tile> result = new List<Tile>();
+
+            for (int y = 0; y < tileArray.GetLength(1); y++)
             {
                 for (int x = 0; x < tileArray.GetLength(0); x++)
                 {
-                    tileArray[x, y].GetComponent<PolygonCollider2D>().enabled = false;
+                    if (tileArray[x, y].GeteType() == type)
+                        result.Add(tileArray[x, y]);
                 }
             }
+            return result;
         }
+
+
+
+        //###############Gettter##############################
 
 
     }
