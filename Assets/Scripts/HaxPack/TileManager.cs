@@ -31,7 +31,7 @@ namespace Hex_Package
 
 
 
-        public void Builder(Tile[,] tileArray)
+        public void Builder()
         {
             List<Tile> buffer = new List<Tile>();
 

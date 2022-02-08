@@ -27,11 +27,6 @@ namespace Card_GamePackage
             ResultButtonTMP = 1,
         }
 
-
-
-
-
-
         public override void Setup()
         {
             Bind<Image>(typeof(eImages));
@@ -41,11 +36,6 @@ namespace Card_GamePackage
             GetReStartButton().onClick.AddListener(ReStart);
             ScaleZero();
             Hide();
-        }
-
-        public override void SetRenderSprite()
-        {
-            GetReStartButton().GetComponent<Image>().sprite = SpriteManager.Instance.GetButtonSprite();
         }
 
         public void Show(string message)

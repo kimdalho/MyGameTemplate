@@ -6,31 +6,25 @@ namespace Hex_Package
 {
     public class UiManager : Singleton<UiManager>
     {
-        PathFinderButton pathFinderBtn;
         MoveScoreTMP moveScore;
+        public EventPopup eventPopup;
         private void Start()
         {
-            PathFinderButtonSetup();
             moveScore = GameObject.Find("MoveScoreTMP").GetComponent<MoveScoreTMP>();
             moveScore.Setup();
-
-        }
-
-        public void PathFinderButtonSetup()
-        {
-            pathFinderBtn = GameObject.Find("PathFinderButton").GetComponent<PathFinderButton>();
-            pathFinderBtn.GetButton().onClick.AddListener(OnClickedPathFinderButton);
-        }
-
-        public void OnClickedPathFinderButton()
-        {
-
-            StartCoroutine(PathFindingManager.Instance.Movement());
+            eventPopup.Setup();
+            eventPopup.gameObject.SetActive(false);
         }
 
         public void RefreshMoveScoreText()
         {
             moveScore.GetTMP().text = GameManager.Instance.MoveScore.ToString();
+        }
+
+        public void ShowEventPopup()
+        {
+            eventPopup.SetEventData();
+            eventPopup.gameObject.SetActive(true);
         }
     }
 

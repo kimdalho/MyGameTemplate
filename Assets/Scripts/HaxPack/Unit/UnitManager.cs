@@ -9,19 +9,27 @@ using Random = UnityEngine.Random;
 /// </summary>
 public class UnitManager : Singleton<UnitManager>
 {
-    [SerializeField] UnititemSO unitItemSO;
     [SerializeField] GameObject playerPrefab;
     [SerializeField] GameObject unitPrefab;
 
-    [SerializeField] UnititemSO savagesUnitBuffer;
-    [SerializeField] UnititemSO hidingUnitBuffer;
+    [SerializeField] UnititemSO bossUnitSO;
+    [SerializeField] UnititemSO savagesUnitSO;
+    [SerializeField] UnititemSO hidingUnitSO;
+    [SerializeField] UnititemSO towerUnitSO;
+
+    public Sprite hideSprite;
 
     public static float Offset =  8.5f;
 
-    public void CreatePlayer(Vector3 pos)
+    public void CreatePlayer()
     {
+        var baseNode = TileManager.Instance.tileArray[0, 0];
+        Vector2 pos = baseNode.transform.position;
         Vector3 vec = new Vector3(pos.x, pos.y + Offset, 0f);
         var go = Instantiate(playerPrefab, vec, Util.QI);
+        Agent agent = go.GetComponent<Agent>();
+        agent.nowNode = baseNode;
+        PathFindingManager.Instance.AgentNode = agent;
     }
 
     /// <summary>
@@ -40,13 +48,14 @@ public class UnitManager : Singleton<UnitManager>
                 //해당 타입은 모두 반드시 유닛이 있어야한다.
                 case TileItem.eType.Mountain:
                 case TileItem.eType.Volcano:
-                case TileItem.eType.Plains:
                 case TileItem.eType.PlainsCastle:
+                case TileItem.eType.Plains:
                     Unitcomport(enumItem);
                     break;
-
             }
         }
+
+
     }
     /// <summary>
     /// 가져온 타일의 타입에 맞게 처신하여 유닛새성을 돕는다
@@ -61,16 +70,18 @@ public class UnitManager : Singleton<UnitManager>
         {
             switch (tile.GeteType())
             {
-                //사나움
                 case TileItem.eType.Mountain:
-                case TileItem.eType.Volcano:
-                    CreateSavagesUnit(tile);
+                    UnitCreator<Creature>(tile, savagesUnitSO , true);
                     break;
-                //숨겨진
+                case TileItem.eType.Volcano:
+                    UnitCreator<Creature>(tile, bossUnitSO, true);
+                    break;
                 case TileItem.eType.Forest:
-                case TileItem.eType.Plains:
                 case TileItem.eType.PlainsCastle:
-                    CreateHidingUnit(tile);
+                    UnitCreator<Creature>(tile, hidingUnitSO, false);
+                    break;
+                case TileItem.eType.Plains:
+                    UnitCreator<Tower>(tile, towerUnitSO , true);
                     break;
 
             }
@@ -81,18 +92,16 @@ public class UnitManager : Singleton<UnitManager>
     /// 포악한 타입의 유닛을 생성한다
     /// 유닛의 좌표는 parent가 된다
     /// </summary>
-    private void CreateSavagesUnit(Tile parent)
+
+    private void UnitCreator<T>(Tile parent , UnititemSO so ,bool isFront) where T : Unit
     {
-        Unit unit = Instantiate(unitPrefab).GetComponent<Unit>();
-        int rnd = Random.Range(0, savagesUnitBuffer.items.Length);
-        unit.Setup(savagesUnitBuffer.items[rnd],true, parent);
-    }
-    
-    private void CreateHidingUnit(Tile parent)
-    {
-        Unit unit = Instantiate(unitPrefab).GetComponent<Unit>();
-        int rnd =   Random.Range(0, hidingUnitBuffer.items.Length);
-        unit.Setup(hidingUnitBuffer.items[rnd],false, parent);
+        var go = Instantiate(unitPrefab);
+        go.AddComponent<T>();
+        Unit unit = go.GetComponent<Unit>();
+
+        int rnd = Random.Range(0, so.items.Length);
+        unit.SetData(so.items[rnd], isFront, parent);
+        
     }
 }
 

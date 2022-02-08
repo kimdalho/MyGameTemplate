@@ -14,7 +14,7 @@ using DG.Tweening;
 public class PathFindingManager : Singleton<PathFindingManager>
 {
     Node[,] matrixNodes;
-
+    List<Node> Neighbors = new List<Node>();
     public int width => matrixNodes.GetLength(0);
     public int height => matrixNodes.GetLength(1);
 
@@ -22,17 +22,31 @@ public class PathFindingManager : Singleton<PathFindingManager>
     [SerializeField] List<Node> ClosedList;
     [SerializeField] List<Node> FinalList;
 
-    public Node AgentNode;
+    public Agent AgentNode;
 
     public Node targetNode;
 
-    public Agent player;
+    public GameObject Pick;
 
 
-
-    public void SetNodes(Tile[,] tiles)
+    public void AgentDrag()
     {
-        matrixNodes = tiles;
+        //플러그 필요
+        foreach (var hit in Physics2D.RaycastAll(Util.MousePos, Vector3.forward))
+        {
+            Node node = hit.collider?.GetComponent<Node>();
+            if (node == null)
+                continue;
+
+            Pick.transform.localPosition = node.transform.localPosition;
+            Pick.transform.localPosition += Vector3.up * 20;
+            targetNode = node;
+        }
+    }
+
+    public void CreateNodeList()
+    {
+        matrixNodes = TileManager.Instance.tileArray;
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
@@ -40,44 +54,20 @@ public class PathFindingManager : Singleton<PathFindingManager>
                 matrixNodes[x, y].SetMatixData(x, y);
             }
         }
-        SearchArea();
-
         //임시 테스트용으로 SetNodes에서 받지만 실질 사용은 OnClickEvent에서 target을 지정받으면 사용한다
-
-        AgentNode = matrixNodes[0, 0];
-        targetNode = matrixNodes[7, 5];
-
-        StartingSearch();
+        ClosedList = new List<Node>();
+        FinalList = new List<Node>();
+        OpenList = new List<Node>();
     }
 
-    //1. 탑색 영역 둘러보기
-    private void SearchArea()
-    {
-        //메트릭의 존재하는 노드의 '이웃' 초기화한다
-        /*######################
-             6 1
-            5 x 2        
-             4 3
-         #########################*/
-
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                var node = matrixNodes[x, y];
-
-            }
-        }
-    }
-
-    public void StartingSearch()
+    public bool StartingSearch()
     {
         Node CurNode = null;
         //Start지점을 Add한다
-        OpenList = new List<Node>() { AgentNode };
-        ClosedList = new List<Node>();
-        FinalList = new List<Node>();
-
+        OpenList.Clear();
+        OpenList.Add(AgentNode.nowNode);
+        ClosedList.Clear();
+        FinalList.Clear();
         while (OpenList.Count > 0)
         {
             CurNode = OpenList[0];
@@ -87,13 +77,10 @@ public class PathFindingManager : Singleton<PathFindingManager>
 
             if (CurNode == targetNode)
             {
-                FinalList.Add(CurNode);
-                //버그 발생 parent의 정의가 잘못되었다
-                // 1,3 노드와 1,2가 서로 링크드 되어있기에 로직을 빠져나올수없다
-                //대처방법
-                //1. SetParent 코드 수정
-                //2. FinalList Exist 요소값 존재 여부 체크뒤 존재하면 로그를 남겨두로 로직 강제 아웃
-                while (CurNode != AgentNode)
+                if (targetNode.isWall == false)
+                    FinalList.Add(CurNode);
+
+                while (CurNode != AgentNode.nowNode)
                 {
                     CurNode = CurNode.parent;
 
@@ -102,56 +89,159 @@ public class PathFindingManager : Singleton<PathFindingManager>
                         Util.LogError("Final리스트에 이미 존재하는 요소를 추가하려는 시도가 확인되었습니다 로직을 종료합니다");
                     }
                     FinalList.Add(CurNode);
-                    
+
                 }
                 FinalList.Reverse();
                 FinalList.RemoveAt(0);
                 OpenList.Clear();
 
-                return;
+                for (int i = 0; i < FinalList.Count; i++)
+                {
+                    Util.Log(string.Format("FinalList {0}", FinalList[0]));
+                }
+
+                return true;
             }
 
-            //현제 노드의 이웃을 탐색한다
-            //현제 노드가 목적지라면 더이상 이웃을 탐색할 이유가 없다 위 상단에 목적지와 현제노드가 같은지 확인한다
 
-            CurNode.SetMyNeighbors(matrixNodes);
+            //AddOpenList로 통합한다
+            //1. SetMyNeightobrs
+            //2. PathScoring
+            //3. CheckBestNeighbor
+            Neighbors.Clear();
+            var BestNeighbor = GetBestNeighbor(CurNode.matrixX, CurNode.matrixY);
 
-            //현제 노드의 이웃의 스코어를 모두 정의한다
-            for (int i = 0; i < CurNode.Neighbors.Count; i++)
-            {
-                CurNode.Neighbors[i].PathScoring(targetNode);
-            }
+            //경로를 만들 이웃을 찾지못한다면 목적지까지 이동가능한 경로가 없는것으로 확인 거짓반환
+            if (BestNeighbor == null)
+                return false;
 
-            //현제 노드의 이웃중 최적의 스코어를 OpenList에 Add한다
-            var BestNeighbor = CurNode.Neighbors[0];
-            for (int i = 1; i < CurNode.Neighbors.Count; i++)
-            {
-                if (BestNeighbor.H > CurNode.Neighbors[i].H)
-                    BestNeighbor = CurNode.Neighbors[i];
-                BestNeighbor.parent = CurNode;
-            }
+
+            BestNeighbor.parent = CurNode;
+
             if (OpenList.Contains(BestNeighbor) == false &&
                 ClosedList.Contains(BestNeighbor) == false)
             {
                 OpenList.Add(BestNeighbor);
             }
+
+        }
+        return false;
+    }
+
+    public void Move(bool Path)
+    {
+        if(Path == false)
+        {
+            if(targetNode.unit != null)
+            {
+                //모든 매니저가 물려있다 callback으로 처리해볼지 고민중
+                targetNode.unit.Evnet();
+
+                //만든다면??
+                // Evnet라는 Mono를 상속받지않는 클래스 등장
+                // Event()이런식으로 실행
+                // 내부는? 
+                // 타겟 유저의 존재여부 확인 및 접근
+                // UiManager EventView 리셋 및 접근
+
+            }
+            Util.Log(string.Format("Path를 종료"));
+            return;
+            
+        }
+
+        if(FinalList.Count == 0)
+        {
+            targetNode.unit.Evnet();
+            //이웃한 노드를 선택했을시 FinalList는 존재하지않기때문에 문제가 발생한다
+            //이경우 바로 이벤트가 이러나게끔한다
+            return;
+        }
+        
+
+        AgentNode.transform.DOMove(FinalList[0].offsetPos, 0.3f, true)
+            .SetEase(Ease.OutCubic)
+            .OnComplete(() =>
+        {
+            AgentNode.nowNode = FinalList[0];
+            FinalList.RemoveAt(0);
+            bool recive = FinalList.Count > 0 ? true : false;
+            Move(recive);
+        });
+    }
+
+    public Node GetMatrixNode(int x, int y)
+    {
+        return matrixNodes[x, y];
+    }
+
+    public void SetNeighbor(int x, int y)
+    {
+        if (width > x &&
+            height > y &&
+            0 <= y &&
+            0 <= x)
+        {
+            Node CurNode = GetMatrixNode(x, y);
+
+            if ((CurNode.isWall == true && 
+                CurNode != targetNode )||
+                ClosedList.Contains(CurNode) == true)
+                return;
+
+                Neighbors.Add(CurNode);
+
         }
     }
 
-    public IEnumerator Movement()
+    public Node GetBestNeighbor(int matrixX, int matrixY)
     {
-        while (FinalList.Count > 0)
+        //메트릭의 존재하는 노드의 '이웃' 초기화한다
+        /*######################
+             6 1
+            5 x 2        
+             4 3
+         #########################*/
+
+        //Y의 좌표가 홀수인가
+        if (matrixY % 2 == 0)
         {
-            yield return new WaitForSeconds(1f);
-            if(player == null)
-            {
-                player = GameObject.Find("Player(Clone)").GetComponent<Agent>();
-            }
-            player.transform.position = FinalList[0].offsetPos;
-            Util.Log(string.Format("Moved Player Pos -> {0}", FinalList[0].name));
-            FinalList.RemoveAt(0);
+            SetNeighbor(matrixX, matrixY + 1);
+            SetNeighbor(matrixX + 1, matrixY);
+            SetNeighbor(matrixX, matrixY - 1);
+            SetNeighbor(matrixX - 1, matrixY - 1);
+            SetNeighbor(matrixX - 1, matrixY);
+            SetNeighbor(matrixX - 1, matrixY + 1);
         }
-            
+        else
+        {
+            SetNeighbor(matrixX + 1, matrixY + 1);
+            SetNeighbor(matrixX + 1, matrixY);
+            SetNeighbor(matrixX + 1, matrixY - 1);
+            SetNeighbor(matrixX, matrixY - 1);
+            SetNeighbor(matrixX - 1, matrixY);
+            SetNeighbor(matrixX, matrixY + 1);
+        }
+
+        for (int i = 0; i < Neighbors.Count; i++)
+        {
+            Neighbors[i].PathScoring();
+        }
+
+        Node BestNeighbor = null;
+        //현제 노드의 이웃중 최적의 스코어를 OpenList에 Add한다
+        //Open에 넣을수있는 이웃이 하나도 존재하지않는다면 Neighbors는 비어있을수있다.
+        if (Neighbors.Count > 0)
+        {
+             BestNeighbor = Neighbors[0];
+
+            for (int i = 1; i < Neighbors.Count; i++)
+            {
+                if (BestNeighbor.H > Neighbors[i].H)
+                    BestNeighbor = Neighbors[i];
+            }
+        }
+        return BestNeighbor;
     }
 }
 
@@ -162,10 +252,14 @@ public class Node : MonoBehaviour
     public int matrixX;
     public int matrixY;
     public Node parent;
-    public List<Node> Neighbors;
+    public Unit unit;
+    /// <summary>
+    /// 유닛이 배치된 타일은 isWall로 표시된다
+    /// 단 배치된 유닛이 파괴되면 Wall은 거짓으로 전환된다
+    /// </summary>
+    public bool isWall = false;
+    public Vector3 offsetPos => transform.position + new Vector3(0, 8, 0);
 
-    public Vector3 offsetPos => transform.position + new Vector3(0,8,0);
-        
 
     //시작점 부터 현재 경로 비용
     //G의 사용의 이유는 사각형 그리드에서 생기는
@@ -180,88 +274,18 @@ public class Node : MonoBehaviour
         this.matrixY = y;
     }
 
-    public void SetMyNeighbors(Node[,] list)
+
+    //코드 불필요
+    //1. 이웃의 존재는 최종FinalList를 만들어내기위한 수단에 불가하다.
+    //2. 지속적으로 가지고있어야할 이유가 없다.
+    //3. SetNeighbors 보다 AddOpenList라는 함수가 코드 정리 및 알고리즘의 효율을 높힐수있을듯하다.
+
+    public void PathScoring()
     {
-        Neighbors = new List<Node>();
-
-        //메트릭의 존재하는 노드의 '이웃' 초기화한다
-        /*######################
-             6 1
-            5 x 2        
-             4 3
-         #########################*/
-
-        if (matrixY % 2 == 0)
-        {
-            if (PathFindingManager.Instance.height > matrixY + 1)
-            {
-                Neighbors.Add(list[matrixX, matrixY + 1]);
-            }
-
-            if (PathFindingManager.Instance.width > matrixX + 1)
-            {
-                Neighbors.Add(list[matrixX + 1, matrixY]);
-            }
-
-            if (0 <= matrixY - 1)
-            {
-                Neighbors.Add(list[matrixX, matrixY - 1]);
-            }
-
-
-            if (0 <= matrixX - 1 &&
-                0 <= matrixY - 1)
-            {
-                Neighbors.Add(list[matrixX - 1, matrixY - 1]);
-            }
-
-
-            if (0 <= matrixX - 1)
-            {
-                Neighbors.Add(list[matrixX - 1, matrixY]);
-            }
-
-            if (0 <= matrixX - 1 &&
-                PathFindingManager.Instance.height > matrixY + 1)
-            {
-                Neighbors.Add(list[matrixX - 1, matrixY + 1]);
-            }
-
-        }
-        else
-        {
-            // 조건  list[matrixX + 1]는 indexOutRange 체크
-            if (PathFindingManager.Instance.width > matrixX + 1 &&
-               PathFindingManager.Instance.height > matrixY + 1)
-                Neighbors.Add((list[matrixX + 1, matrixY + 1]));
-
-            if (PathFindingManager.Instance.width > matrixX + 1 &&
-               PathFindingManager.Instance.height > matrixY)
-                Neighbors.Add((list[matrixX + 1, matrixY]));
-
-            if (PathFindingManager.Instance.width > matrixX + 1 &&
-               0 <= matrixY - 1)
-                Neighbors.Add((list[matrixX + 1, matrixY - 1]));
-
-            if (0 <= matrixY - 1)
-                Neighbors.Add((list[matrixX, matrixY - 1]));
-
-            if (0 <= matrixX - 1)
-                Neighbors.Add((list[matrixX - 1, matrixY]));
-
-            if (PathFindingManager.Instance.height > matrixY + 1)
-                Neighbors.Add(list[matrixX, matrixY + 1]);
-        }
-        /*
-                foreach (var neighbor in Neighbors) neighbor.parent = this;*/
-    }
-
-
-    public void PathScoring(Node targetTile)
-    {
+        var targetTile = PathFindingManager.Instance.targetNode;
         if (PathFindingManager.Instance.AgentNode == null)
             return;
-
-        H = (targetTile.matrixX - matrixX) + (targetTile.matrixY - matrixY);
+        //목표지점 X - 
+        H = Mathf.Abs((targetTile.matrixX - matrixX)) + Mathf.Abs((targetTile.matrixY - matrixY));
     }
 }

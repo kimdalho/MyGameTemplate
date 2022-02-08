@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 179b657b5f68e3d4b9eb2d63ab6a2713, type: 3}
+  m_Name: 4.TowerUnitSO
+  m_EditorClassIdentifier: 
+  items:
+  - name: "\uB9C9\uC0AC"
+    render: {fileID: 21300000, guid: 769871e02ca960f409ef4161220ce850, type: 3}
+    hp: 5
+    atk: 2
+    envet:
+      title_str: "\uC774\uC6C3\uB9C8\uC744\uC744 \uC9C0\uD0A4\uB294 \uC804\uC0AC\uB4E4\uC758
+        \uB9C9\uC0AC\uC785\uB2C8\uB2E4 \uC5B4\uB5BB\uAC8C \uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
+      choice1_str: "\uC6A9\uAC10\uD558\uAC8C \uC2F8\uC6B4\uB2E4."
+      choice2_str: "\uAC15\uD574\uBCF4\uC778\uB2E4 \uB3C4\uB9DD\uCE5C\uB2E4."
+      choic1_reward_win:
+        rewardTitle: "\uAC00\uC7A5 \uC6A9\uAC10\uD558\uAC8C \uC2F8\uC6B4 \uC804\uC0AC\uAC00
+          \uD569\uB958\uD558\uC600\uB2E4."
+        eType: 2
+        result: 0
+      choic1_reward_lose:
+        rewardTitle: "\uD654\uB09C \uC804\uC0AC\uB4E4\uC774 \uB3C8\uC744 \uBE7C\uC558\uC5B4\uAC14\uB2E4."
+        eType: 0
+        result: -30
+      choic2_reward:
+        rewardTitle: "\uB3C4\uB9DD\uCE58\uB294 \uBAA8\uC2B5\uC740 \uAD70\uC0AC\uB4E4\uC774
+          \uBCF4\uACE0 \uBE44\uC6C3\uB294\uB2E4."
+        eType: 1
+        result: -1
+  - name: "\uBC84\uC12F\uB9C8\uC744"
+    render: {fileID: 21300000, guid: 30a6bd94c7c09794ebd0681f497d5bf4, type: 3}
+    hp: 2
+    atk: 4
+    envet:
+      title_str: "\uC601\uC591\uAC00\uAC00 \uD48D\uBD80\uD574\uBCF4\uC774\uB294 \uBC84\uC12F\uC774
+        \uC794\uB729\uC788\uC2B5\uB2C8\uB2E4 \uC5B4\uB5BB\uAC8C \uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
+      choice1_str: "\uB9C8\uC744\uC744 \uC57D\uD0C8\uD55C\uB2E4"
+      choice2_str: "\uB9C8\uC744\uC5D0\uC11C \uC270\uB2E4"
+      choic1_reward_win:
+        rewardTitle: "\uC794\uC778\uBB34\uB3C4 \uD588\uC9C0\uB9CC \uB9CE\uC740 \uACE8\uB4DC\uB97C
+          \uC5BB\uC5C8\uC2B5\uB2C8\uB2E4."
+        eType: 0
+        result: 400
+      choic1_reward_lose:
+        rewardTitle: "\uC57D\uD0C8\uC5D0 \uC2E4\uD328\uD558\uACE0 \uB0B4\uCAD2\uACBC\uC2B5\uB2C8\uB2E4."
+        eType: 1
+        result: -1
+      choic2_reward:
+        rewardTitle: "\uC0C1\uB2F9\uD55C \uD68C\uBCF5\uC744 \uBCF4\uC600\uC2B5\uB2C8\uB2E4."
+        eType: 0
+        result: 0
+  - name: "\uB9C8\uC744"
+    render: {fileID: 21300000, guid: 1ab7b1cdc722d3845820ff2f2c35d06b, type: 3}
+    hp: 0
+    atk: 0
+    envet:
+      title_str: 
+      choice1_str: 
+      choice2_str: 
+      choic1_reward_win:
+        rewardTitle: 
+        eType: 0
+        result: 0
+      choic1_reward_lose:
+        rewardTitle: 
+        eType: 0
+        result: 0
+      choic2_reward:
+        rewardTitle: 
+        eType: 0
+        result: 0
+  - name: "\uC2DC\uACC4"
+    render: {fileID: 21300000, guid: 44e863f1967156441b7049d53d7344c9, type: 3}
+    hp: 0
+    atk: 0
+    envet:
+      title_str: 
+      choice1_str: 
+      choice2_str: 
+      choic1_reward_win:
+        rewardTitle: 
+        eType: 0
+        result: 0
+      choic1_reward_lose:
+        rewardTitle: 
+        eType: 0
+        result: 0
+      choic2_reward:
+        rewardTitle: 
+        eType: 0
+        result: 0
+  - name: "\uC678\uB534\uC12C"
+    render: {fileID: 21300000, guid: 8bb18c7a72bcb5e479adf780f4ca6502, type: 3}
+    hp: 0
+    atk: 0
+    envet:
+      title_str: 
+      choice1_str: 
+      choice2_str: 
+      choic1_reward_win:
+        rewardTitle: 
+        eType: 0
+        result: 0
+      choic1_reward_lose:
+        rewardTitle: 
+        eType: 0
+        result: 0
+      choic2_reward:
+        rewardTitle: 
+        eType: 0
+        result: 0
