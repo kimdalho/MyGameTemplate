@@ -26,28 +26,20 @@ public class Agent : MonoBehaviour
         onMouseOver = true;
     }
 
-    private void AgentDrag()
-    {
-        //플러그 필요
-        foreach (var hit in Physics2D.RaycastAll(Util.MousePos, Vector3.forward))
-        {
-            Node node = hit.collider?.GetComponent<Node>();
-            if (node == null)
-                continue;
-            Util.Log(string.Format("{0}", node.gameObject.name));
-
-            GameManager.Instance.Pick.transform.localPosition = node.transform.localPosition;
-            GameManager.Instance.Pick.transform.localPosition += Vector3.up * 20;
-        }
-    }
-
     private void OnMouseDrag()
     {
-        AgentDrag();
+       onDrag = true;
+       PathFindingManager.Instance.AgentDrag();
     }
 
     private void OnMouseUp()
     {
+        if(onDrag == true)
+        {
+            bool onFindPath =  PathFindingManager.Instance.StartingSearch();
+            
+            PathFindingManager.Instance.Move(onFindPath);
+        }
         /*
          1. SelectTile이 존재하면
          PathFindingManager에서 Movement를 호출

@@ -6,18 +6,17 @@ namespace Hex_Package
 {
     public class GameManager : Singleton<GameManager>
     {
-        public GameObject Pick;
         public int MoveScore;
 
         // Start is called before the first frame update
         void Start()
         {
             TileManager.Instance.Setup();
-            var tiles = TileManager.Instance.tileArray;
-            TileManager.Instance.Builder(tiles);
+            TileManager.Instance.Builder(); 
+            UnitManager.Instance.UnitGenerator();
+            UnitManager.Instance.CreatePlayer();
+            PathFindingManager.Instance.CreateNodeList();
 
-            UnitManager.Instance.CreatePlayer(tiles[0,0].transform.position);
-            PathFindingManager.Instance.SetNodes(tiles);
             StartGame();
             //TileManager.Instance.BlockCollider();
         }

@@ -38,9 +38,5 @@ public abstract class UiBase : MonoBehaviour
         Util.Log(string.Format("Succes {0}", gameObject.name));
     }
 
-    public virtual void SetRenderSprite()
-    {
-
-    }
 
 }

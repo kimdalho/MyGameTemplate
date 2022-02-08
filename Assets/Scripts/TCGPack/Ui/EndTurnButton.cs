@@ -28,10 +28,6 @@ namespace Card_GamePackage
         {
             TurnManager.OnTurnStarted -= SetButtonInteractable;
         }
-        public override void SetRenderSprite()
-        {
-            GetEndTurnButton().GetComponent<Image>().sprite = SpriteManager.Instance.GetButtonSprite();
-        }
         public void SetButtonInteractable(bool isActive)
         {
             GetComponent<Image>().sprite = isActive ? activeSprite : inactiveSprite;

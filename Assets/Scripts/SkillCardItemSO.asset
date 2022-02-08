@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d48e7ce630d0a3e47afe99e67af7ab33, type: 3}
-  m_Name: TileCardItemSO
+  m_Name: SkillCardItemSO
   m_EditorClassIdentifier: 
   items:
-  - name: "\uAD81\uC218"
+  - name: "\uAC00\uBCBC\uC6B4 \uBC1C\uAC78\uC74C"
     attack: 0
     health: 0
-    sprite: {fileID: 21300000, guid: a529dd4963bb6a24dadf5f58cbe93a20, type: 3}
-    skill_description: 
+    sprite: {fileID: 21300000, guid: b10328b6bcf8c3a40b5215d9c782dcac, type: 3}
+    skill_description: "\uC774\uB3D9 + 1"
     type: 0
   - name: "\uD589\uAD70"
     attack: 0
