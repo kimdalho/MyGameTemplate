@@ -978,6 +978,7 @@ GameObject:
   - component: {fileID: 613965538}
   - component: {fileID: 613965537}
   - component: {fileID: 613965539}
+  - component: {fileID: 613965540}
   m_Layer: 5
   m_Name: EventPopup
   m_TagString: Untagged
@@ -1057,6 +1058,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9776fef2d24c7b143b296e97bc90534c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &613965540
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613965535}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &624488385
 GameObject:
   m_ObjectHideFlags: 0
@@ -1688,6 +1701,7 @@ MonoBehaviour:
   FinalList: []
   AgentNode: {fileID: 0}
   targetNode: {fileID: 0}
+  CurNode: {fileID: 0}
   Pick: {fileID: 6171956871129029453}
 --- !u!1 &1263259238
 GameObject:
