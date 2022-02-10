@@ -17,4 +17,5 @@ public class UnitItem
     public int hp;
     public int atk;
     public Event envet;
+    public int id;
 }
