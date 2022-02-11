@@ -36,9 +36,9 @@ public class EventPopup : UiBase
     {
         var item = PathFindingManager.Instance.targetNode.unit.item;
         Get<Image>(0).sprite = item.render;
-        Get<TextMeshProUGUI>(0).text = item.envet.title_str;
+/*        Get<TextMeshProUGUI>(0).text = item.envet.title_str;
         Get<TextMeshProUGUI>(1).text = item.envet.choice1_str;
-        Get<TextMeshProUGUI>(2).text = item.envet.choice2_str;
+        Get<TextMeshProUGUI>(2).text = item.envet.choice2_str;*/
         Get<Button>(0).onClick.AddListener(ClosePopup);
         Get<Button>(1).onClick.AddListener(ClosePopup);
     }

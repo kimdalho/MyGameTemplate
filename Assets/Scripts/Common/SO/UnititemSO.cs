@@ -16,6 +16,6 @@ public class UnitItem
     public Sprite render;
     public int hp;
     public int atk;
-    public Event envet;
+    public string quest;
     public int id;
 }
