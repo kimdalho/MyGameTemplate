@@ -11,10 +11,10 @@ namespace Hex_Package
         // Start is called before the first frame update
         void Start()
         {
-            TileManager.Instance.Setup();
-            TileManager.Instance.Builder(); 
+            GridManager.Instance.Setup();
             UnitManager.Instance.UnitGenerator();
             UnitManager.Instance.CreatePlayer();
+
             PathFindingManager.Instance.CreateNodeList();
 
             StartGame();

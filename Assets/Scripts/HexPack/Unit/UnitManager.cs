@@ -23,7 +23,7 @@ public class UnitManager : Singleton<UnitManager>
 
     public void CreatePlayer()
     {
-        var baseNode = TileManager.Instance.tileArray[0, 0];
+        var baseNode = GridManager.Instance.GetHaxgonTile(0,0);
         Vector2 pos = baseNode.transform.position;
         Vector3 vec = new Vector3(pos.x, pos.y + Offset, 0f);
         var go = Instantiate(playerPrefab, vec, Util.QI);
@@ -34,7 +34,7 @@ public class UnitManager : Singleton<UnitManager>
 
     /// <summary>
     /// 유닛 제너레이터이다
-    /// 반드시 배치해야하는곳
+    /// 반드시 배치해야하는곳 ab
     /// 필드내 모든 화산 ,산 ,성
     /// 랜덤으로 배치해야하는곳
     /// 숲, 초원
@@ -63,7 +63,7 @@ public class UnitManager : Singleton<UnitManager>
     /// <param name="type"></param>는 유닛의 부모이다
     private void Unitcomport(TileItem.eType type)
     {
-        var tiles = TileManager.Instance.GetTiles(type);
+        var tiles = GridManager.Instance.GetHexagonTiles(type);
 
         
         foreach(Tile tile in tiles)

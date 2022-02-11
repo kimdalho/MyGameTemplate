@@ -44,7 +44,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
 
     public void CreateNodeList()
     {
-        matrixNodes = TileManager.Instance.tileArray;
+        matrixNodes = GridManager.Instance.GetHexagonArray();
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
