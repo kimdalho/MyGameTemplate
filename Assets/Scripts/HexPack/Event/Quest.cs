@@ -1,12 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public abstract class Quest
+﻿using Hex_Package;
+using System;
+public class Quest
 {
-    /// <summary>
-    /// 무슨 퀘스트인가 문장형식으로 나타낸다.
-    /// </summary>
     public string title;
   
     public const int RWARD_NONE = 0;
@@ -14,34 +9,39 @@ public abstract class Quest
     public const int REWARD_FEME = 2;
     public const int RWARD_UNIT = 3;
 
-    /// <summary>
-    /// 1. 버튼을 선택했을시 일어날일
-    /// 2. 버튼에 적히게될 문장
-    /// </summary>
     public Select select1;
     public Select select2;
 
     public virtual void WriteQuset()
     {
-        select1 = new Select();
-        select2 = new Select();
-
-        title = "전투민족의 막사가 보입니다 어떻게 하시겠습니까?";
-
-        string select1_Text = "싸운다";
-        Reward select1_win = new Reward(RWARD_UNIT, "가장강했던 전사가 동료가되었다.", 0);
-        Reward select1_lose = new Reward(REWARD_FEME, "도망가는모습에 모두에게 비웃음을 샀다.", -1);
-      
-        select1.WriteBattleEvent(select1_Text, select1_win, select1_lose);
-
-
-        string select2_Text = "도망친다";
-        Reward select2_fixed = new Reward(RWARD_NONE, "무사히 막사를 빠져나왔다.", 0);
-        select2.WriteFixedEvent(select2_Text, select2_fixed);
+        Test();
     }
 
-}
 
+    public virtual void Test()
+    {
+        Util.Log("기본을 출력합니다");
+    }
+
+    public virtual void WinCallback()
+    {
+        //승리;
+    }
+
+    public virtual void LoseCallback()
+    {
+
+    }
+
+    public virtual void FixedCallback()
+    {
+
+    }
+}
+/// <summary>
+/// 퀘스트가 가지고있는 선택지의 1. 텍스트 데이터, 2.이벤트 3.이벤트의 결과에 맞는 보상의 정보를 가지고있다.
+/// 이벤트는 전투 퍼센트
+/// </summary>
 public class Select
 {
     //타겟 선택지가 무슨일을 일으킬지 타입으로 나타낸다.
@@ -52,13 +52,17 @@ public class Select
         Percent = 2,
         FixedResult = 3,
     }
-    public eSelectType selectType;
     //무슨선택을 했는지 문장으로 나타낸다
+    public eSelectType selectType;
+
     public string title;
+
+    //? CurReward
     public Reward winReward;
     public Reward loseReward;
     public Reward fiexedReward;
 
+    public int percent;
 
     public void WriteBattleEvent(string title, Reward win ,Reward lose)
     {
@@ -68,8 +72,10 @@ public class Select
         loseReward = lose;
     }
 
-    public void WritePercentEvent(int percent , Reward win, Reward lose)
+    public void WritePercentEvent(string title, int percent , Reward win, Reward lose)
     {
+        this.title = title;
+        this.percent = percent;
         selectType = eSelectType.Percent;
         winReward = win;
         loseReward = lose;
@@ -82,6 +88,25 @@ public class Select
         fiexedReward = fiexed;
     }
 
+    public void OnClickedButton()
+    {
+        switch(selectType)
+        {
+            case eSelectType.Battle:
+                BattleManager.Instance.RequsetBattle();
+                break;
+            case eSelectType.Percent:
+                int rnd = UnityEngine.Random.Range(0, 100);
+                var curReward = percent < rnd ? winReward : loseReward;
+                QuestManager.Instance.cur_Reward = curReward;
+                curReward.Use();
+                break;
+            case eSelectType.FixedResult:
+                QuestManager.Instance.cur_Reward = fiexedReward;
+                fiexedReward.Use();
+                break;
+        }
+    }
 
 }
 
@@ -90,26 +115,26 @@ public class Select
 public class Reward
 {
     public string rewardTitle;
-
-
-    public enum eRewardType
-    {
-        GOLD,
-        FEME,
-        UNIT,
-    }
-    public eRewardType eType;
     /// <summary>
     /// eType이 유닛일 경우 result는 Id로 명시된다
     /// </summary>
     public int result;
+    public Action callback;
 
-    public Reward(int rewardType, string title , int resultValue)
+    public Reward( string title , Action callback)
     {
         rewardTitle = title;
-        eType = (eRewardType)rewardType;
-        result = resultValue;
+        callback.Invoke();
     }
 
+    public void Use()
+    {
+        UiManager.Instance.ShowRewardPopup();
+    }
+
+    public void SetRewardPopupData()
+    {
+       
+    }
 
 }

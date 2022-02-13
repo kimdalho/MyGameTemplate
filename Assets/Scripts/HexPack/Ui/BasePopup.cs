@@ -5,6 +5,11 @@ using UnityEngine.UI;
 
 public class BasePopup : UiBase , iEscape
 {
+
+    protected enum eImages
+    {
+        Frame = 0,
+    }
     public enum ePopupTMPs
     {
         TitleTMP = 0,
@@ -28,5 +33,10 @@ public class BasePopup : UiBase , iEscape
     public void OnEscape()
     {
         gameObject.SetActive(false);
+    }
+
+    public virtual void SetPopupData()
+    {
+
     }
 }

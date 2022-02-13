@@ -6,9 +6,9 @@ namespace Hex_Package
 {
     public class BattleManager : Singleton<BattleManager>
     {
-        public void RequsetBattle(Unit targetMonster)
+        public void RequsetBattle()
         {
-            Util.Log(string.Format("{0}와 전투를 진행한다", targetMonster));
+            Util.Log(string.Format("전투를 진행한다"));
         }
     }
 }

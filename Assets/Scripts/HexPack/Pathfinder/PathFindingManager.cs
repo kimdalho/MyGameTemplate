@@ -134,8 +134,9 @@ public class PathFindingManager : Singleton<PathFindingManager>
         {
             if(targetNode.unit != null)
             {
+                UnitManager.Instance.targetUnit = targetNode.unit;
+                UnitManager.Instance.UseEvent();
                 //모든 매니저가 물려있다 callback으로 처리해볼지 고민중
-                targetNode.unit.Evnet();
 
                 //만든다면??
                 // Evnet라는 Mono를 상속받지않는 클래스 등장
@@ -152,7 +153,8 @@ public class PathFindingManager : Singleton<PathFindingManager>
 
         if(FinalList.Count == 0)
         {
-            targetNode.unit.Evnet();
+            UnitManager.Instance.targetUnit = targetNode.unit;
+            UnitManager.Instance.UseEvent();
             //이웃한 노드를 선택했을시 FinalList는 존재하지않기때문에 문제가 발생한다
             //이경우 바로 이벤트가 이러나게끔한다
             return;

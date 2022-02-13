@@ -62,9 +62,5 @@ public class Unit : UiBase
         this.parent.isWall = true;
     }
 
-    public virtual void Evnet()
-    {
-        BattleManager.Instance.RequsetBattle(this);
-    }
 
 }
