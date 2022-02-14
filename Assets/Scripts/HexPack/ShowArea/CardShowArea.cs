@@ -13,12 +13,12 @@ public class CardShowArea : BaseShowArea
 
     private void Start()
     {
-        TileCardManager.OnEndLoading += Hide;
+        SkillCardManager.OnEndLoading += Hide;
     }
 
     private void OnDestroy()
     {
-        TileCardManager.OnEndLoading -= Hide;
+        SkillCardManager.OnEndLoading -= Hide;
     }
     protected override void DetectShowArea()
     {

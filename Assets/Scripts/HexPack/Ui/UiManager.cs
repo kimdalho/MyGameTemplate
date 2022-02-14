@@ -10,11 +10,18 @@ namespace Hex_Package
         public Queue<BasePopup> escQueue = new Queue<BasePopup>();
 
 
-        MoveScoreTMP moveScore;
+        public MoveScoreTMP moveScore;
         public InvenButton invenButton;
 
+        [Header("Popup")]
         public InvenPopup invenPopup;
-        public EventPopup eventPopup;
+        public QuestPopup questPopup;
+        public RewardPopup rewardPopup;
+
+
+
+        public static event Action showPopup;
+
 
         public void OnClickInvenButton()
         {
@@ -25,12 +32,11 @@ namespace Hex_Package
 
         private void Start()
         {
-            moveScore = GameObject.Find("MoveScoreTMP").GetComponent<MoveScoreTMP>();
             moveScore.Setup();
-            eventPopup.Setup();
+            questPopup.Setup();
+            rewardPopup.Setup();
             invenButton.Setup();
             invenPopup.Setup();
-            eventPopup.gameObject.SetActive(false);
         }
 
         public void RefreshMoveScoreText()
@@ -40,9 +46,36 @@ namespace Hex_Package
 
         public void ShowEventPopup()
         {
-            eventPopup.SetEventData();
-            eventPopup.gameObject.SetActive(true);
+            showPopup += questPopup.SetPopupData;
+            showPopup?.Invoke();
+            questPopup.gameObject.SetActive(true);
         }
+
+        public void ShowRewardPopup()
+        {
+            showPopup += HideEventPopup;
+            showPopup += rewardPopup.SetPopupData;
+            showPopup?.Invoke();
+            rewardPopup.gameObject.SetActive(true);
+        }
+        public void HideEventPopup()
+        {
+            showPopup = null;
+            questPopup.gameObject.SetActive(false);
+        }
+
+        public void HideRewardPopup()
+        {
+            showPopup = null;
+            rewardPopup.gameObject.SetActive(false);
+        }
+
+        private void OnDestroy()
+        {
+            showPopup -= questPopup.SetPopupData;
+            showPopup -= rewardPopup.SetPopupData;
+        }
+
 
         public void OnClickBackButton()
         {

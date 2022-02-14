@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 namespace Hex_Package
 {
-    public class TileCardManager : Singleton<TileCardManager>
+    public class SkillCardManager : Singleton<SkillCardManager>
     {
         [Header("EnalargeVlaues")]
         //선택된 카드의 Enalage시 올라가는 offY축 크기이다
@@ -92,9 +92,7 @@ namespace Hex_Package
             SkillCard card = cardObject.GetComponent<SkillCard>();
             card.transform.parent = myTileCards;
             card.Setup();
-            //이재 CardSetup의 isMine은 필요가없다
             card.CardSetup(PopItem());
-            //3항식의 반환이 List<Card> 형태로 전환된다
             myCards.Add(card);
             SetOriginOrder();
             CardAlignment();
@@ -115,8 +113,6 @@ namespace Hex_Package
         }
         private void CardAlignment()
         {
-            //매 AddCard를하며 호출된다
-            //카드의 리스트의 정렬이 카드의 추가에 따라 라운드가 달라지기 때문
             List<PRS> originCardPRSs = new List<PRS>();
             //카드의 위치를 초기화하는 값을 생성하기위해 originCardPRS를 사용한다
             
@@ -164,9 +160,6 @@ namespace Hex_Package
                 {
                     //y 
                     float curve = Mathf.Sqrt(Mathf.Pow(height, 2) - Mathf.Pow(objLerps[i] - 0.5f, 2));
-
-                    Util.Log(string.Format("{0} = Mathf.Sqrt(Mathf.Pow({1}, 2) - Mathf.Pow({2} - 0.5f, 2))",
-                        curve,height,objLerps[i]));
 
                     curve = height >= 0 ? curve : -curve;
                     targetPos.y += curve;

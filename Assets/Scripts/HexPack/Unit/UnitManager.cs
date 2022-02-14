@@ -17,6 +17,8 @@ public class UnitManager : Singleton<UnitManager>
     [SerializeField] UnititemSO hidingUnitSO;
     [SerializeField] UnititemSO towerUnitSO;
 
+    public Unit targetUnit;
+
     public Sprite hideSprite;
 
     public static float Offset =  8.5f;
@@ -102,6 +104,14 @@ public class UnitManager : Singleton<UnitManager>
         int rnd = Random.Range(0, so.items.Length);
         unit.SetData(so.items[rnd], isFront, parent);
         
+    }
+
+    public void UseEvent()
+    {
+        QuestManager.Instance.SetCurQuest(targetUnit.item.questType);
+        
+        //BattleManager.Instance.RequsetBattle(targetUnit);
+        //UiManager.Instance.ShowEventPopup();
     }
 }
 

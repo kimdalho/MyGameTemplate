@@ -16,6 +16,6 @@ public class UnitItem
     public Sprite render;
     public int hp;
     public int atk;
-    public string quest;
+    public QuestManager.EQusetType questType;
     public int id;
 }
