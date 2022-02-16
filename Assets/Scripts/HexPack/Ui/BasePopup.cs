@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BasePopup : UiBase , iEscape
+public abstract class BasePopup : UiBase, iEscape
 {
 
     protected enum eImages
@@ -35,8 +35,4 @@ public class BasePopup : UiBase , iEscape
         gameObject.SetActive(false);
     }
 
-    public virtual void SetPopupData()
-    {
-
-    }
 }

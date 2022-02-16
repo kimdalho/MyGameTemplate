@@ -47,7 +47,7 @@ public class Node : MonoBehaviour
         var curNode = PathFindingManager.Instance.GetMatrixNode(curX, curY);
         var targetNode = PathFindingManager.Instance.targetNode;
 
-        if (PathFindingManager.Instance.AgentNode == null)
+        if (PathFindingManager.Instance.Agent == null)
             return;
         G = curNode.G + 10;
         H = Mathf.Abs((targetNode.matrixX - matrixX)) + Mathf.Abs((targetNode.matrixY - matrixY));

@@ -1,6 +1,6 @@
 ﻿public class Quest_Lodge : Quest
 {
-    public override void WriteQuset()
+    public override void CreateInstanceData()
     {
         select1 = new Select();
         select2 = new Select();

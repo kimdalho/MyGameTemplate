@@ -12,7 +12,7 @@ public class Quest
     public Select select1;
     public Select select2;
 
-    public virtual void WriteQuset()
+    public virtual void CreateInstanceData()
     {
         Test();
     }
@@ -35,7 +35,9 @@ public class Quest
 
     public virtual void FixedCallback()
     {
-
+        Util.Log("Show");
+        UserData.Instance.gold += 2;
+        UiManager.Instance.RefreshTopUi();
     }
 }
 /// <summary>
@@ -99,13 +101,15 @@ public class Select
                 int rnd = UnityEngine.Random.Range(0, 100);
                 var curReward = percent < rnd ? winReward : loseReward;
                 QuestManager.Instance.cur_Reward = curReward;
-                curReward.Use();
+                curReward.GetReward();
                 break;
             case eSelectType.FixedResult:
                 QuestManager.Instance.cur_Reward = fiexedReward;
-                fiexedReward.Use();
+                fiexedReward.GetReward();
                 break;
         }
+        UiManager.Instance.questPopup.EventRemove();
+
     }
 
 }
@@ -124,17 +128,13 @@ public class Reward
     public Reward( string title , Action callback)
     {
         rewardTitle = title;
-        callback.Invoke();
+        this.callback = callback;
     }
 
-    public void Use()
+    public void GetReward()
     {
+        UiManager.Instance.HideQuestPopup();
         UiManager.Instance.ShowRewardPopup();
-    }
 
-    public void SetRewardPopupData()
-    {
-       
     }
-
 }

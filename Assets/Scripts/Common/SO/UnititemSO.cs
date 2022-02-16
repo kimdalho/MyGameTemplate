@@ -19,3 +19,10 @@ public class UnitItem
     public QuestManager.EQusetType questType;
     public int id;
 }
+
+
+public class TowerUnitSO : ScriptableObject
+{
+    //아직 이름 안정했다.
+    public Tower nameless;
+}

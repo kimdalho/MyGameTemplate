@@ -1,13 +1,15 @@
 ﻿using UnityEngine.UI;
 using TMPro;
+using System.Collections;
+using UnityEngine;
 /// <summary>
 /// 1. 타워 유닛한정에서 등장한다.
 /// 2. 퀘스트는 특정 이벤트를 통해서 플레이어에게 보상을 지급 또는 패널티를 부여한다.
 /// </summary>
-public class QuestPopup : BasePopup
+public class QuestPopup : EventPopup
 {
 
-     enum eButtons
+    enum eButtons
     {
         Select1_Button = 0,
         Select2_Button = 1,
@@ -27,22 +29,65 @@ public class QuestPopup : BasePopup
         Bind<TextMeshProUGUI>(typeof(eTMPs));
     }
 
-    public override void SetPopupData()
+    public Image GetRenderImage()
     {
-        var item = UnitManager.Instance.targetUnit.item;
-        var quest = QuestManager.Instance.cur_quest;
-        Get<Image>(0).sprite = item.render;
-        
-        Get<TextMeshProUGUI>(0).text = quest.title;
-        Get<TextMeshProUGUI>(1).text = quest.select1.title;
-        Get<TextMeshProUGUI>(2).text = quest.select2.title;
-
-        Get<Button>(0).onClick.AddListener(quest.select1.OnClickedButton);
-        Get<Button>(1).onClick.AddListener(quest.select2.OnClickedButton);
+        return Get<Image>(0);
     }
 
-    private void ClosePopup()
+    public TextMeshProUGUI GetTitleTMP()
     {
-        gameObject.SetActive(false);
+        return Get<TextMeshProUGUI>(0);
     }
+
+    public TextMeshProUGUI GetTMP1()
+    {
+        return Get<TextMeshProUGUI>((int)eTMPs.Select1_TMP);
+    }
+
+    public TextMeshProUGUI GetTMP2()
+    {
+        return Get<TextMeshProUGUI>((int)eTMPs.Select2_TMP);
+    }
+
+    public Button GetButton(int number)
+    {
+        if (number < 0 || number > 1)
+            return null;
+
+        return Get<Button>(number);
+    }
+
+    protected override IEnumerator CoAppearTitle(string title)
+    {
+        var titleText = GetTitleTMP();
+        char[] charList = title.ToCharArray();
+        for (int i = 0; i < charList.Length; i++)
+        {
+            titleText.text += charList[i];
+            yield return new WaitForSeconds(0.1f);
+        }
+        titleText.text = title;
+        GetButton(0).enabled = true;
+        GetButton(1).enabled = true;
+    }
+
+    public void StartAppearTitle(string title)
+    {
+        ShowQuestPopup();
+        StartCoroutine(CoAppearTitle(title));
+    }
+    public void ShowQuestPopup()
+    {
+        GetTitleTMP().text = "";
+        GetButton(0).enabled = false;
+        GetButton(1).enabled = false;
+        gameObject.SetActive(true);
+    }
+
+    public void EventRemove()
+    {
+        GetButton(0).onClick.RemoveAllListeners();
+        GetButton(1).onClick.RemoveAllListeners();
+    }
+
 }

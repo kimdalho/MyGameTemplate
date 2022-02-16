@@ -26,6 +26,7 @@ public class Unit : UiBase
     /// </summary>
     public UnitItem item;
 
+    public bool onLive;
 
     enum eSprites
     {
@@ -34,6 +35,7 @@ public class Unit : UiBase
         CircleLine = 2,
         CircleAtk = 3,
         CircleHealth = 4,
+        MarkRender= 5,
     }
 
     enum eTMPs
@@ -51,6 +53,7 @@ public class Unit : UiBase
     public void SetData(UnitItem item, bool isFront, Node parent)
     {
         Setup();
+        onLive = true;
         //깊은 커플링
         this.item = item;
         this.parent = parent;
@@ -60,6 +63,16 @@ public class Unit : UiBase
         transform.position += Vector3.up * UnitManager.Offset;
         Get<SpriteRenderer>(0).sprite = isFront ? unitSprtie : UnitManager.Instance.hideSprite;
         this.parent.isWall = true;
+        Get<SpriteRenderer>(5).gameObject.SetActive(false);
+    }
+
+    public void End()
+    {
+        Get<SpriteRenderer>((int)eSprites.CircleLine).enabled = false;
+        Get<SpriteRenderer>((int)eSprites.CircleAtk).gameObject.SetActive(false);
+        Get<SpriteRenderer>((int)eSprites.CircleHealth).gameObject.SetActive(false);
+
+        Get<SpriteRenderer>((int)eSprites.MarkRender).gameObject.SetActive(true);
     }
 
 

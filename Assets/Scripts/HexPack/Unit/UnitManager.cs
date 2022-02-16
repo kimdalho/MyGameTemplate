@@ -31,7 +31,7 @@ public class UnitManager : Singleton<UnitManager>
         var go = Instantiate(playerPrefab, vec, Util.QI);
         Agent agent = go.GetComponent<Agent>();
         agent.nowNode = baseNode;
-        PathFindingManager.Instance.AgentNode = agent;
+        PathFindingManager.Instance.Agent = agent;
     }
 
     /// <summary>
@@ -106,12 +106,25 @@ public class UnitManager : Singleton<UnitManager>
         
     }
 
-    public void UseEvent()
+    public void SetTargetUnit(Unit unit)
     {
-        QuestManager.Instance.SetCurQuest(targetUnit.item.questType);
-        
-        //BattleManager.Instance.RequsetBattle(targetUnit);
-        //UiManager.Instance.ShowEventPopup();
+        targetUnit = unit;
+
+        QuestManager.Instance.CreateQuest(targetUnit.item.questType);
+    }
+
+    public void TargetUnitRelese()
+    {
+        if(targetUnit == null)
+        {
+            Util.Log("잘못된 접근 시도");
+            return;
+        }
+
+        targetUnit.parent.isWall = false;
+        targetUnit.End();
+        targetUnit = null;
+
     }
 }
 

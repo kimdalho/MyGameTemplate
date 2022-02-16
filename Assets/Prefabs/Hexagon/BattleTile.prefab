@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2149083520097030587}
   - component: {fileID: 2149083520097030585}
   - component: {fileID: 4701725889143544629}
-  - component: {fileID: 7536097490614946160}
+  - component: {fileID: 9076276571614256380}
   m_Layer: 11
   m_Name: BattleTile
   m_TagString: Untagged
@@ -129,8 +129,8 @@ MonoBehaviour:
   middleRenderers:
   - {fileID: 2850654869581709141}
   sortingLayerName: Tile
---- !u!60 &7536097490614946160
-PolygonCollider2D:
+--- !u!61 &9076276571614256380
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -139,28 +139,22 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 8.384741}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
-    oldSize: {x: 2.56, y: 3.84}
+    oldSize: {x: 16, y: 24}
     newSize: {x: 2.56, y: 3.84}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -8, y: 12.296515}
-      - {x: -8, y: 3.8125}
-      - {x: -0.9375, y: 0}
-      - {x: 0.375, y: 0}
-      - {x: 8, y: 3.5625}
-      - {x: 8, y: 12.287132}
-      - {x: -0.3282795, y: 16.008986}
+  serializedVersion: 2
+  m_Size: {x: 16, y: 16.769482}
+  m_EdgeRadius: 0
 --- !u!1 &7331455033264651665
 GameObject:
   m_ObjectHideFlags: 0

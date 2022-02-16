@@ -18,17 +18,15 @@ public class QuestManager : Singleton<QuestManager>
         Quest_Lodge = 5,
     }
 
-    public Quest cur_quest;
     public Reward cur_Reward;
 
     private void Start()
     {
-        ShowQuest();
-
+        BuildDictionary(out mTypes);
     }
 
 
-    public void ShowQuest()
+    public void PrintQuests()
     {
         //내 어셈블리를 가져온다.
         var assembly = Assembly.GetExecutingAssembly();
@@ -39,7 +37,7 @@ public class QuestManager : Singleton<QuestManager>
             if (type.Name.Contains("Quest_"))
             {
                 //출력한다.
-                Util.Log(type.Name); 
+               Util.Log(type.Name); 
             }
         }
         BuildDictionary(out mTypes);
@@ -92,24 +90,19 @@ public class QuestManager : Singleton<QuestManager>
         return type;
     }
 
-    public void SetCurQuest(EQusetType questType)
+    public void CreateQuest(EQusetType questType)
     {
         if (questType == EQusetType.None)
             return;
 
         Type type = mTypes[questType];
-        cur_quest = (Quest)Activator.CreateInstance(type);
-        UiManager.showPopup += cur_quest.WriteQuset;
-        UiManager.Instance.ShowEventPopup();
-    }
+        Quest NewQuest = (Quest)Activator.CreateInstance(type);
+        if (NewQuest == null)
+            return;
 
-    private void OnDestroy()
-    {
-       // UiManager.showPopup -= cur_quest.WriteQuset;
-    }
+        SkillCardManager.Instance.OnOtherEventState();
 
-    public void ShowRewardPopup()
-    {
- 
+        NewQuest.CreateInstanceData();
+        UiManager.Instance.ShowQuestPopup(NewQuest);
     }
 }
