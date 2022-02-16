@@ -6,8 +6,6 @@ namespace Hex_Package
 {
     public class GameManager : Singleton<GameManager>
     {
-        public int MoveScore;
-
         // Start is called before the first frame update
         void Start()
         {
@@ -37,8 +35,8 @@ namespace Hex_Package
 
         public void CheatGetMoveScore()
         {
-            MoveScore += 2;
-            UiManager.Instance.RefreshMoveScoreText();
+            UserData.Instance.move += 2;
+            UiManager.Instance.RefreshTopUi();
         }
 
     }

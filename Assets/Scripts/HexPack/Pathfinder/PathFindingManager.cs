@@ -21,7 +21,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
     [SerializeField] List<Node> ClosedList;
     [SerializeField] List<Node> FinalList;
 
-    public Agent AgentNode;
+    public Agent Agent;
 
     public Node targetNode;
     public Node CurNode;
@@ -58,8 +58,11 @@ public class PathFindingManager : Singleton<PathFindingManager>
         OpenList = new List<Node>();
     }
 
-    public bool StartingSearch()
+    public bool PathFinding()
     {
+        if (targetNode == Agent.nowNode)
+            return false;
+
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
@@ -72,7 +75,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
         OpenList.Clear();
         ClosedList.Clear();
         FinalList.Clear();
-        OpenList.Add(AgentNode.nowNode);
+        OpenList.Add(Agent.nowNode);
         while (OpenList.Count > 0)
         {
             CurNode = OpenList[0];
@@ -94,7 +97,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
                 if (targetNode.isWall == false)
                     FinalList.Add(CurNode);
 
-                while (CurNode != AgentNode.nowNode)
+                while (CurNode != Agent.nowNode)
                 {
                     CurNode = CurNode.parent;
 
@@ -132,40 +135,28 @@ public class PathFindingManager : Singleton<PathFindingManager>
     {
         if(Path == false)
         {
-            if(targetNode.unit != null)
+            if(targetNode.unit != null  && targetNode.unit.onLive)
             {
-                UnitManager.Instance.targetUnit = targetNode.unit;
-                UnitManager.Instance.UseEvent();
-                //모든 매니저가 물려있다 callback으로 처리해볼지 고민중
-
-                //만든다면??
-                // Evnet라는 Mono를 상속받지않는 클래스 등장
-                // Event()이런식으로 실행
-                // 내부는? 
-                // 타겟 유저의 존재여부 확인 및 접근
-                // UiManager EventView 리셋 및 접근
-
+                UnitManager.Instance.SetTargetUnit(targetNode.unit);
             }
-            Util.Log(string.Format("Path를 종료"));
             return;
             
         }
 
         if(FinalList.Count == 0)
         {
-            UnitManager.Instance.targetUnit = targetNode.unit;
-            UnitManager.Instance.UseEvent();
+            UnitManager.Instance.SetTargetUnit(targetNode.unit);
             //이웃한 노드를 선택했을시 FinalList는 존재하지않기때문에 문제가 발생한다
             //이경우 바로 이벤트가 이러나게끔한다
             return;
         }
         
 
-        AgentNode.transform.DOMove(FinalList[0].offsetPos, 0.3f, true)
+        Agent.transform.DOMove(FinalList[0].offsetPos, 0.3f, true)
             .SetEase(Ease.OutCubic)
             .OnComplete(() =>
         {
-            AgentNode.nowNode = FinalList[0];
+            Agent.nowNode = FinalList[0];
             FinalList.RemoveAt(0);
             bool recive = FinalList.Count > 0 ? true : false;
             Move(recive);

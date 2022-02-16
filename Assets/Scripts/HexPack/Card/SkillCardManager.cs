@@ -48,6 +48,7 @@ namespace Hex_Package
             Nothing = 0,
             CanMouseOver = 1,
             CanMosueDrag = 2,
+            OtherEvent = 3,
         }
 
         int myPutCount;
@@ -98,9 +99,15 @@ namespace Hex_Package
             CardAlignment();
         }
 
+        public void OnOtherEventState()
+        {
+            eCardState = ECardState.OtherEvent;
+        }
+
         public void CardMouseOver(SkillCard tileCard)
         {
-            if (eCardState == ECardState.Nothing)
+            if (eCardState == ECardState.Nothing ||
+                eCardState == ECardState.OtherEvent)
                 return;
 
             selectCard = tileCard;

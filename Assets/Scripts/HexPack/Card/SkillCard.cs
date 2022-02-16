@@ -82,20 +82,17 @@ namespace Hex_Package
 
         private void OnMouseOver()
         {
-            Util.Log(string.Format("OnMouseOver"));
             SkillCardManager.Instance.CardMouseOver(this);
         }
 
 
         private void OnMouseExit()
         {
-            Util.Log(string.Format("OnMouseExit"));
             SkillCardManager.Instance.CardMosueExit(this);
         }
 
         private void OnMouseDown()
         {
-            Util.Log(string.Format("OnMouseDown"));
             SkillCardManager.Instance.CardMouseDown();
         }
 

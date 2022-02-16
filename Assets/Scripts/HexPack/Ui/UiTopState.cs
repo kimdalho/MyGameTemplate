@@ -1,16 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-public class MoveScoreTMP : UiBase
+﻿using TMPro;
+public class UiTopState : UiBase
 {
-
     enum eTMPs
     {
         TMP = 0,
     }
-
-
     public override void Setup()
     {
         Bind<TextMeshProUGUI>(typeof(eTMPs));

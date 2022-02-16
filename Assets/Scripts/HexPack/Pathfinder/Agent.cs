@@ -36,7 +36,7 @@ public class Agent : MonoBehaviour
     {
         if(onDrag == true)
         {
-            bool onFindPath =  PathFindingManager.Instance.StartingSearch();
+            bool onFindPath =  PathFindingManager.Instance.PathFinding();
             
             PathFindingManager.Instance.Move(onFindPath);
         }

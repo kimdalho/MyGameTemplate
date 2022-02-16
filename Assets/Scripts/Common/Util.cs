@@ -36,6 +36,14 @@ public class Util
 {
     public static Quaternion QI = Quaternion.identity;
 
+    public enum eTopUiType
+    {
+        None = 0,
+        Move = 1,
+        Gold = 2,
+        Fame = 3,
+    }
+
     public static Vector3 MousePos
     {
         get
