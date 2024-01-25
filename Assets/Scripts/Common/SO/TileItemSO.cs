@@ -6,7 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class TileItem
 {
-    public enum eType
+    public enum eCampType
     {
         None = 0,
         Base = 1,
@@ -19,7 +19,7 @@ public class TileItem
     }
 
     public string name;
-    public eType type;
+    public eCampType type;
     public Sprite sprite;
     public int moveCost;
 }

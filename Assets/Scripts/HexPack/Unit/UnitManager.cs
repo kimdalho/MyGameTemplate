@@ -26,7 +26,12 @@ public class UnitManager : Singleton<UnitManager>
 
     public void CreatePlayer()
     {
-        var baseNode = GridManager.Instance.GetHaxgonTile(0,0);
+
+        var hexagonGrid = GridManager.Instance.hexagonGrid;
+        int playerPosX = hexagonGrid.width  /2;
+        int playerPosY = hexagonGrid.hegiht /2;
+
+        var baseNode = GridManager.Instance.GetHaxgonTile(playerPosX,playerPosY);
         Vector2 pos = baseNode.transform.position;
         Vector3 vec = new Vector3(pos.x, pos.y + Offset, 0f);
         var go = Instantiate(playerPrefab, vec, Util.QI);
@@ -44,15 +49,15 @@ public class UnitManager : Singleton<UnitManager>
     /// </summary>
     public void UnitGenerator()
     {
-        foreach(TileItem.eType enumItem in  Enum.GetValues(typeof(TileItem.eType)))
+        foreach(TileItem.eCampType enumItem in  Enum.GetValues(typeof(TileItem.eCampType)))
         {
             switch(enumItem)
             {
                 //해당 타입은 모두 반드시 유닛이 있어야한다.
-                case TileItem.eType.Mountain:
-                case TileItem.eType.Volcano:
-                case TileItem.eType.PlainsCastle:
-                case TileItem.eType.Plains:
+                case TileItem.eCampType.Mountain:
+                case TileItem.eCampType.Volcano:
+                //case TileItem.eCampType.PlainsCastle:
+                case TileItem.eCampType.Plains:
                     Unitcomport(enumItem);
                     break;
             }
@@ -60,11 +65,13 @@ public class UnitManager : Singleton<UnitManager>
 
 
     }
+
+
     /// <summary>
     /// 가져온 타일의 타입에 맞게 처신하여 유닛새성을 돕는다
     /// </summary>
     /// <param name="type"></param>는 유닛의 부모이다
-    private void Unitcomport(TileItem.eType type)
+    private void Unitcomport(TileItem.eCampType type)
     {
         var tiles = GridManager.Instance.GetHexagonTiles(type);
 
@@ -73,17 +80,17 @@ public class UnitManager : Singleton<UnitManager>
         {
             switch (tile.GeteType())
             {
-                case TileItem.eType.Mountain:
+                case TileItem.eCampType.Mountain:
                     UnitCreator<Creature>(tile, savagesUnitSO , true);
                     break;
-                case TileItem.eType.Volcano:
+                case TileItem.eCampType.Volcano:
                     UnitCreator<Creature>(tile, bossUnitSO, true);
                     break;
-                case TileItem.eType.Forest:
-                case TileItem.eType.PlainsCastle:
+                case TileItem.eCampType.Forest:
+                case TileItem.eCampType.PlainsCastle:
                     UnitCreator<Creature>(tile, hidingUnitSO, false);
                     break;
-                case TileItem.eType.Plains:
+                case TileItem.eCampType.Plains:
                     UnitCreator<Tower>(tile, towerUnitSO , true);
                     break;
 
@@ -107,11 +114,13 @@ public class UnitManager : Singleton<UnitManager>
         
     }
 
-    public void SetTargetUnit(Unit unit)
+    public void ActiveUnit(Unit unit)
     {
         targetUnit = unit;
+        Debug.Log($"Action {unit}");
 
-        QuestManager.Instance.CreateQuest(targetUnit.item.questType);
+        //퀘스트 매니저 필요없을수도 있
+        //QuestManager.Instance.CreateQuest(targetUnit.item.questType);
     }
 
     public void TargetUnitRelese()

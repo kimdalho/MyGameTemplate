@@ -136,7 +136,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
         {
             if(targetNode.unit != null  && targetNode.unit.onLive)
             {
-                UnitManager.Instance.SetTargetUnit(targetNode.unit);
+                UnitManager.Instance.ActiveUnit(targetNode.unit);
             }
             return;
             
@@ -144,7 +144,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
 
         if(FinalList.Count == 0)
         {
-            UnitManager.Instance.SetTargetUnit(targetNode.unit);
+            UnitManager.Instance.ActiveUnit(targetNode.unit);
             //이웃한 노드를 선택했을시 FinalList는 존재하지않기때문에 문제가 발생한다
             //이경우 바로 이벤트가 이러나게끔한다
             return;
