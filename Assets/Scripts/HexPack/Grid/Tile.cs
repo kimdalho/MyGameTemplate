@@ -5,8 +5,9 @@ using TMPro;
     {
         [SerializeField] SpriteRenderer render;
         [SerializeField] TileItem item;
+        public bool playerCamp;
         public TMP_Text tmp;
-
+        
         private void Awake()
         {
             tmp = GetComponentInChildren<TMP_Text>();
@@ -34,7 +35,7 @@ using TMPro;
             
         }
 
-        public TileItem.eType GeteType()
+        public TileItem.eCampType GeteType()
         {
             return item.type;
         }

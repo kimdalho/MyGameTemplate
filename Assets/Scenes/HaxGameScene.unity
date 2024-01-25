@@ -7013,7 +7013,7 @@ MonoBehaviour:
     tilePrefab: {fileID: 2149083520097030585, guid: aed7254c2ac20564084f42982358dded,
       type: 3}
     parent: {fileID: 1139358907}
-    width: 8
+    width: 9
     hegiht: 6
   battleGrid:
     tilePrefab: {fileID: 2149083520097030585, guid: 9be100eb0ecb9024994b53134d1af74f,
