@@ -4,8 +4,6 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 
-namespace Hex_Package
-{
     public class SkillCard : UiBase
     {
         //인스펙터에서 초기화 진행 춫후 자동으로 초기화 코드 제작 필요
@@ -103,4 +101,3 @@ namespace Hex_Package
         }
 
     }
-}

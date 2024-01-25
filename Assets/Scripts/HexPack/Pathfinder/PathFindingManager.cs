@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Hex_Package;
 using DG.Tweening;
 
 /// <summary>

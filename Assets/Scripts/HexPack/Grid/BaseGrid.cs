@@ -24,9 +24,25 @@ public abstract class BaseGrid
         }
     }
 
+    // 육각형
     public virtual Tile CreateTileCell(int x, int y)
     {
-        return null;
+        Vector3 position;
+
+        position.x = x * (HexMetrics.innerRadius * 2f);
+        position.y = y * (HexMetrics.outerRadius * 1.5f); ;
+        position.z = 0f;
+
+        position.x = (x + y * 0.5f) * (HexMetrics.innerRadius * 2f);
+        position.x = (x + y * 0.5f - y / 2) * (HexMetrics.innerRadius * 2f);
+
+        Tile cell = GridManager.Instance.CreateCell(tilePrefab);
+
+        cell.transform.SetParent(parent, false);
+        cell.transform.localPosition = position;
+        cell.name = string.Format("{0} , {1} ", x, y);
+        cell.tmp.text = cell.name;
+        return cell;
     }
 }
 [System.Serializable]

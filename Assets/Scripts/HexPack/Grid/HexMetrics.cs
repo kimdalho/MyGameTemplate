@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Hex_Package
-{
     /*
      중심에서 각 모서리까지의 거리인 내부 반경도 있습니다. 이 메트릭은 각 이웃의 중심까지의 거리가 이 값의 두 배와 같기 때문에 중요합니다. 내부 반경은 다음과 같습니다.
     √
@@ -36,7 +34,6 @@ namespace Hex_Package
         new Vector3(0f, 0f, -outerRadius),
         new Vector3(-innerRadius, 0f, -0.5f * outerRadius),
         new Vector3(-innerRadius, 0f, 0.5f * outerRadius)
-    };
+        };
 
     }
-}

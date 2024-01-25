@@ -4,8 +4,7 @@ using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
 
-namespace Hex_Package
-{
+
     public class TileTurnManager : Singleton<TileTurnManager>
     {
         [Header("Develop")]
@@ -56,4 +55,3 @@ namespace Hex_Package
             isLoading = false;
         }
     }
-}

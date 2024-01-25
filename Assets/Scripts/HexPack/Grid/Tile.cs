@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
-namespace Hex_Package
-{
+
     public class Tile : Node
     {
         [SerializeField] SpriteRenderer render;
@@ -41,7 +40,3 @@ namespace Hex_Package
         }
 
     }
-
-
-
-}

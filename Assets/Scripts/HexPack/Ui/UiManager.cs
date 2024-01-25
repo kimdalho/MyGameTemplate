@@ -2,8 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-namespace Hex_Package
-{
+
     public class UiManager : Singleton<UiManager>
     {
 
@@ -92,7 +91,6 @@ namespace Hex_Package
             questPopup.StartAppearTitle(newQuest.title);
         }
     }
-}
 
 interface iEscape
 {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using Hex_Package;
 /// <summary>
 /// a*를 적용할 대상에게 addComponet한다
 /// </summary>

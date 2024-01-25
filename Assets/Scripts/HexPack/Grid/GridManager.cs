@@ -14,8 +14,7 @@ using Random = UnityEngine.Random;
 /// 2.랜덤한 속성의 타일 배치 및 셋업
 /// 3.y축 기준의 타일 orderlayer의 셋업
 /// </summary>
-namespace Hex_Package
-{
+
     public class GridManager : Singleton<GridManager>
     {
       
@@ -30,9 +29,13 @@ namespace Hex_Package
 
         public void Setup()
         {
+            Debug.Log("call");
             hexagonGrid.CreateGird();
             hexagonGrid.SetTileAttribute();
-            battleGrid.CreateGird();
+
+            //battleGrid는 인게임 로컬맵 구현에 사용계획
+            //2024년 1월 24일 임시 주
+            //battleGrid.CreateGird();
         }
 
 
@@ -86,5 +89,3 @@ namespace Hex_Package
 
     }
 
-
-}

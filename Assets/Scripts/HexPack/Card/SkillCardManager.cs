@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Hex_Package
-{
+
     public class SkillCardManager : Singleton<SkillCardManager>
     {
         [Header("EnalargeVlaues")]
@@ -38,11 +37,11 @@ namespace Hex_Package
         [SerializeField] ECardState eCardState;
         public static Action OnEndLoading;
 
-
         SkillCard selectCard;
 
         public bool isMyCardDrag;
         bool onMyCardArea;
+        bool onUseSkillCards = false;
         enum ECardState
         {
             Nothing = 0,
@@ -52,15 +51,28 @@ namespace Hex_Package
         }
 
         int myPutCount;
-        
 
-        private void Start()
+        // 최초 부트
+        private void SetupMyFirstHandCard()
         {
             SetupItemBuffer();
             SetupCardSpawnPoint();
-         
             TileTurnManager.OnAddCard += AddCard;
+            onUseSkillCards = true;
         }
+
+
+
+        private void Start()
+        {
+        if (onUseSkillCards == false)
+        {
+            Debug.Log("Not use SkillCard System yet");
+            return;
+        }
+
+        //SetupMyFirstHandCard();
+    }
 
         private void Update()
         {
@@ -251,6 +263,7 @@ namespace Hex_Package
             myCards.Remove(selectCard);
             DestroyImmediate(selectCard.gameObject);
             //selectCard.item.skill.Use();
+            
             GameManager.Instance.CheatGetMoveScore();
             selectCard = null;
             CardAlignment();
@@ -284,4 +297,3 @@ namespace Hex_Package
         #endregion
     }
 
-}

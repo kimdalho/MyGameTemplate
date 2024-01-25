@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4701725889143544629}
   - component: {fileID: 7536097490614946160}
   m_Layer: 11
-  m_Name: Tile
+  m_Name: HexagonTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,13 +27,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2149083520097030586}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.186759, y: -0.898404, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4962431439789151302}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2149083520097030587
 SpriteRenderer:
@@ -46,10 +47,12 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -100,8 +103,11 @@ MonoBehaviour:
   matrixX: 0
   matrixY: 0
   parent: {fileID: 0}
-  Neighbors: []
+  unit: {fileID: 0}
+  isWall: 0
+  G: 0
   H: 0
+  F: 0
   render: {fileID: 2149083520097030587}
   item:
     name: 
@@ -136,6 +142,25 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -158,6 +183,7 @@ PolygonCollider2D:
       - {x: 8, y: 3.5625}
       - {x: 8, y: 12.287132}
       - {x: -0.3282795, y: 16.008986}
+  m_UseDelaunayMesh: 0
 --- !u!1 &7331455033264651665
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,7 +194,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4962431439789151302}
   - component: {fileID: 2850654869581709141}
-  - component: {fileID: 3027935530373082288}
   - component: {fileID: 2414949654769549720}
   m_Layer: 11
   m_Name: Text (TMP)
@@ -187,9 +212,9 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2149083520097030584}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -207,10 +232,12 @@ MeshRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -235,14 +262,7 @@ MeshRenderer:
   m_SortingLayerID: -495390585
   m_SortingLayer: 1
   m_SortingOrder: 1
---- !u!222 &3027935530373082288
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7331455033264651665}
-  m_CullTransparentMesh: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &2414949654769549720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,6 +278,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -329,8 +350,9 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
+  _SortingLayer: 0
+  _SortingLayerID: -495390585
+  _SortingOrder: 1
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 2850654869581709141}
   m_maskType: 0
-  _SortingLayerID: -495390585
-  _SortingOrder: 1

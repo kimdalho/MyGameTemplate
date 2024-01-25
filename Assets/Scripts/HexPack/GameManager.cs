@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Hex_Package
-{
     public class GameManager : Singleton<GameManager>
     {
         // Start is called before the first frame update
@@ -41,4 +39,3 @@ namespace Hex_Package
 
     }
 
-}
