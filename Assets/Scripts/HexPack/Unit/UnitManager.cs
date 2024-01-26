@@ -8,34 +8,39 @@ using Random = UnityEngine.Random;
 /// <summary>
 /// 유닛을 관리하는 클래스이다.
 /// </summary>
+///
+
+//SO 타입은 UnitDataBase 클래스로 분리
+
+
 public class UnitManager : Singleton<UnitManager>
 {
     [SerializeField] GameObject playerPrefab;
     [SerializeField] GameObject unitPrefab;
-
     [SerializeField] UnititemSO bossUnitSO;
     [SerializeField] UnititemSO savagesUnitSO;
     [SerializeField] UnititemSO hidingUnitSO;
     [SerializeField] UnititemSO towerUnitSO;
+    [SerializeField] Transform unitHolder;
 
     public Unit targetUnit;
-
     public Sprite hideSprite;
+    public const float Offset =  8.5f;
+    public const float playerPosZ = -30f;
 
-    public static float Offset =  8.5f;
-
-    public void CreatePlayer()
+    public void CreatePlayer(Transform parent)
     {
-
         var hexagonGrid = GridManager.Instance.hexagonGrid;
         int playerPosX = hexagonGrid.width  /2;
         int playerPosY = hexagonGrid.hegiht /2;
 
         var baseNode = GridManager.Instance.GetHaxgonTile(playerPosX,playerPosY);
         Vector2 pos = baseNode.transform.position;
-        Vector3 vec = new Vector3(pos.x, pos.y + Offset, 0f);
+        Vector3 vec = new Vector3(pos.x, pos.y + Offset, playerPosZ);
         var go = Instantiate(playerPrefab, vec, Util.QI);
         Agent agent = go.GetComponent<Agent>();
+        go.transform.SetParent(parent);
+    
         agent.nowNode = baseNode;
         PathFindingManager.Instance.Agent = agent;
     }
@@ -49,7 +54,7 @@ public class UnitManager : Singleton<UnitManager>
     /// </summary>
     public void UnitGenerator()
     {
-        foreach(TileItem.eCampType enumItem in  Enum.GetValues(typeof(TileItem.eCampType)))
+        foreach (TileItem.eCampType enumItem in  Enum.GetValues(typeof(TileItem.eCampType)))
         {
             switch(enumItem)
             {
@@ -62,8 +67,6 @@ public class UnitManager : Singleton<UnitManager>
                     break;
             }
         }
-
-
     }
 
 
@@ -73,27 +76,30 @@ public class UnitManager : Singleton<UnitManager>
     /// <param name="type"></param>는 유닛의 부모이다
     private void Unitcomport(TileItem.eCampType type)
     {
-        var tiles = GridManager.Instance.GetHexagonTiles(type);
+        var tiles = GridManager.Instance.GetTilesToType(type);
+        var typeHolder =  new GameObject();
+        typeHolder.name = $"{type}Holder";
+        typeHolder.transform.SetParent(this.unitHolder);
 
-        
-        foreach(Tile tile in tiles)
+
+        foreach (Tile tile in tiles)
         {
             switch (tile.GeteType())
             {
                 case TileItem.eCampType.Mountain:
-                    UnitCreator<Creature>(tile, savagesUnitSO , true);
+                    CreateCamp<Creature>(typeHolder.transform,tile, savagesUnitSO , true);
                     break;
                 case TileItem.eCampType.Volcano:
-                    UnitCreator<Creature>(tile, bossUnitSO, true);
+                    Debug.Log("x");
+                    CreateCamp<Creature>(typeHolder.transform, tile, bossUnitSO, true);
                     break;
                 case TileItem.eCampType.Forest:
                 case TileItem.eCampType.PlainsCastle:
-                    UnitCreator<Creature>(tile, hidingUnitSO, false);
+                    CreateCamp<Creature>(typeHolder.transform, tile, hidingUnitSO, false);
                     break;
                 case TileItem.eCampType.Plains:
-                    UnitCreator<Tower>(tile, towerUnitSO , true);
+                    CreateCamp<Tower>(typeHolder.transform, tile, towerUnitSO , true);
                     break;
-
             }
         }
         
@@ -103,15 +109,14 @@ public class UnitManager : Singleton<UnitManager>
     /// 유닛의 좌표는 parent가 된다
     /// </summary>
 
-    private void UnitCreator<T>(Tile parent , UnititemSO so ,bool isFront) where T : Unit
+    private void CreateCamp<T>(Transform parent, Tile _tile , UnititemSO so ,bool isFront) where T : Unit
     {
         var go = Instantiate(unitPrefab);
         go.AddComponent<T>();
         Unit unit = go.GetComponent<Unit>();
-
         int rnd = Random.Range(0, so.items.Length);
-        unit.SetData(so.items[rnd], isFront, parent);
-        
+        unit.SetData(so.items[rnd], isFront, _tile);
+        unit.transform.SetParent(parent);
     }
 
     public void ActiveUnit(Unit unit)

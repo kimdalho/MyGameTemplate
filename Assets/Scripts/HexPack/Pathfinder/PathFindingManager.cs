@@ -115,7 +115,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
                 {
                     Util.Log(string.Format("FinalList {0}", FinalList[0]));
                 }
-
+                Agent.onDrag = false;
                 return true;
             }
 

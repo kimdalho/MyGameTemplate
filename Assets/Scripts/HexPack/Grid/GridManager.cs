@@ -52,7 +52,7 @@ using Random = UnityEngine.Random;
         /// <summary>
         /// <paramref name="type"/>에 해당하는 모든 타일을 배열타입으로 가져온다
         /// </summary>
-        public List<Tile> GetHexagonTiles(TileItem.eCampType type)
+        public List<Tile> GetTilesToType(TileItem.eCampType type)
         {
             List<Tile> result = new List<Tile>();
 

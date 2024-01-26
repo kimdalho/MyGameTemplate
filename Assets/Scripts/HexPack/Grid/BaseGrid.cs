@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Hex_Package;
+using System;
+using Random = UnityEngine.Random;
 
 public abstract class BaseGrid
-{
+{ 
     public Tile tilePrefab;
     public Transform parent;
     public Tile[,] array;
@@ -79,6 +81,9 @@ public class HexagonGrid : BaseGrid
                 if (x == (array.GetLength(0) / 2) && y == (array.GetLength(1) / 2))
                 {
                     array[x, y].playerCamp = true;
+                    int PlainsCastleItem = (int)TileItem.eCampType.PlainsCastle;
+                    array[x, y].TileSetup(GridManager.Instance.GetTileItemSO().items[PlainsCastleItem]);
+                    continue;
                 }
 
                 tilebuffer.Add(array[x, y]);
@@ -111,50 +116,41 @@ public class HexagonGrid : BaseGrid
 
     private void DrawTile(List<Tile> tileBuffer, Queue<KeyValuePair<TileItem.eCampType, int>> cameTypeBuffer)
     {
-        while(cameTypeBuffer.Count > 0)
+        var gridMgr = GridManager.Instance.GetTileItemSO();
+
+        while (cameTypeBuffer.Count > 0)
         {
             int targetIndex = 0;
             var pair =  cameTypeBuffer.Dequeue();
-            int item = (int)pair.Key - 1; //인덱스 시작값이 다르다
+            int item = (int)pair.Key;
 
             
             for(int i= 0; i < pair.Value; i ++)
             {
                 switch (pair.Key)
                 {
-                    case TileItem.eCampType.Base:
-                        break;
                     case TileItem.eCampType.Volcano:
-                        targetIndex = tileBuffer.Count - 1;
+                        targetIndex = tileBuffer.Count-1;
                         break;
                     case TileItem.eCampType.Mountain:
                     case TileItem.eCampType.Plains:
                         targetIndex = Random.Range(0, tileBuffer.Count);
                         break;
+                    default:
+                        Debug.Log($"DrawTile Not Found {pair.Key}");
+                        break;
                 }
 
-                //Debug.Log($"리스트 버퍼 인덱스 {targetIndex} ")
-
-                tileBuffer[targetIndex].TileSetup(GridManager.Instance.GetTileItemSO().items[item]);
+                tileBuffer[targetIndex].TileSetup(gridMgr.items[item]);
                 tileBuffer.RemoveAt(targetIndex);
+
             }
         }
 
         while (tileBuffer.Count > 0)
         {
-            Tile currentile = tileBuffer[0];
-            if (currentile.playerCamp == true)
-            {
-                Debug.Log($"{currentile.matrixX} ,  {currentile.matrixY}");
-                int PlainsCastleItem = (int)TileItem.eCampType.PlainsCastle - 1;
-                tileBuffer[0].TileSetup(GridManager.Instance.GetTileItemSO().items[PlainsCastleItem]);
-            }
-            else
-            {
-                int forestItem = (int)TileItem.eCampType.Forest - 1;
-                tileBuffer[0].TileSetup(GridManager.Instance.GetTileItemSO().items[forestItem]);
-            }
-
+            int forestItem = (int)TileItem.eCampType.Forest;
+            tileBuffer[0].TileSetup(GridManager.Instance.GetTileItemSO().items[forestItem]);
             tileBuffer.RemoveAt(0);
         }
 

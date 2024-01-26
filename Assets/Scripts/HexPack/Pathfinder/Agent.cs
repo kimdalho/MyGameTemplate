@@ -10,20 +10,7 @@ public class Agent : MonoBehaviour
     //위치
     public PRS originPRS;
     public Node nowNode;
-
-    public bool onMouseOver;
-
-    public bool onDrag;
-
-    public void MoveTranform(PRS prs, bool useDotween, float dotweenTime = 0)
-    {
-
-    }
-
-    private void OnMouseOver()
-    {
-        onMouseOver = true;
-    }
+    public static bool onDrag;
 
     private void OnMouseDrag()
     {
@@ -39,10 +26,6 @@ public class Agent : MonoBehaviour
             
             PathFindingManager.Instance.Move(onFindPath);
         }
-        /*
-         1. SelectTile이 존재하면
-         PathFindingManager에서 Movement를 호출
-         */
     }
 
 }

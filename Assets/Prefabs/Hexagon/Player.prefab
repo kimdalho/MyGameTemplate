@@ -256,8 +256,6 @@ MonoBehaviour:
     rot: {x: 0, y: 0, z: 0, w: 0}
     scale: {x: 0, y: 0, z: 0}
   nowNode: {fileID: 0}
-  onMouseOver: 0
-  onDrag: 0
 --- !u!1 &7421848073211401452
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,17 +4,18 @@ using UnityEngine;
 
     public class GameManager : Singleton<GameManager>
     {
+        [SerializeField] Transform playerparent;
+
         // Start is called before the first frame update
         void Start()
         {
             GridManager.Instance.Setup();
             UnitManager.Instance.UnitGenerator();
-            UnitManager.Instance.CreatePlayer();
+            UnitManager.Instance.CreatePlayer(playerparent);
 
             PathFindingManager.Instance.CreateNodeList();
 
             StartGame();
-            //TileManager.Instance.BlockCollider();
         }
 
 
