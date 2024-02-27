@@ -2,7 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Hex_Package;
-public class Tower : Unit
+public class Tower : Unit,ITurnSystem
 {
-    public List<Unit> unitGroup;
+    public List<Node> spawnzones;
+    public Node location;
+
+
+    public void EndPlayerMove()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void StartPlayerTurn()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void TurnAwake()
+    {
+        throw new System.NotImplementedException();
+    }
 }

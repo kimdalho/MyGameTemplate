@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using Random = UnityEngine.Random;
 /*
- 그리드입니다. 공개 너비, 높이 및 셀 프리팹 변수를 사용하여 간단한 구성 요소를 만듭니다. 그런 다음 이 구성 요소가 있는 게임 개체를 장면에 추가합니다.
+ 그리드입니다. 공개 너비, 높이 및 셀 프리팹 변수를 사용하여 간단한 구성 요소를 만듭니다. 다음 이 구성 요소가 있는 게임 개체를 장면에 추가합니다.
  */
 
 /// <summary>
@@ -32,10 +32,6 @@ using Random = UnityEngine.Random;
             Debug.Log("call");
             hexagonGrid.CreateGird();
             hexagonGrid.SetTileAttribute();
-
-            //battleGrid는 인게임 로컬맵 구현에 사용계획
-            //2024년 1월 24일 임시 주
-            //battleGrid.CreateGird();
         }
 
 
@@ -49,10 +45,7 @@ using Random = UnityEngine.Random;
 
 
         //###############Gettter##############################
-        /// <summary>
-        /// <paramref name="type"/>에 해당하는 모든 타일을 배열타입으로 가져온다
-        /// </summary>
-        public List<Tile> GetTilesToType(TileItem.eCampType type)
+        public List<Tile> GetTilesByType(TileItem.eCampType type)
         {
             List<Tile> result = new List<Tile>();
 
