@@ -114,6 +114,7 @@ MonoBehaviour:
     type: 0
     sprite: {fileID: 0}
     moveCost: 0
+  playerCamp: 0
   tmp: {fileID: 2414949654769549720}
 --- !u!114 &4701725889143544629
 MonoBehaviour:
@@ -293,8 +294,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 16777215
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

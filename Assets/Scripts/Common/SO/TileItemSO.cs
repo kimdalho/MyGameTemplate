@@ -9,12 +9,11 @@ public class TileItem
     public enum eCampType
     {
         None = 0,
-        Base = 1,
-        Volcano = 2,
-        Plains = 3,
-        Mountain = 4,
-        PlainsCastle = 5,
-        Forest = 6,
+        Volcano = 1,
+        Plains = 2,
+        Mountain = 3,
+        PlainsCastle = 4,
+        Forest = 5,
 
     }
 

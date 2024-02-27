@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 [CreateAssetMenu(fileName = "HexItemSO",menuName = "Scriptable Object/Hex/UnitItemSO")]
 public class UnititemSO : ScriptableObject
 {
@@ -14,9 +16,9 @@ public class UnitItem
 {
     public string name;
     public Sprite render;
+    public int grad;
     public int hp;
     public int atk;
-    public QuestManager.EQusetType questType;
     public int id;
 }
 

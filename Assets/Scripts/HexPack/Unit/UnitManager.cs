@@ -8,36 +8,61 @@ using Random = UnityEngine.Random;
 /// <summary>
 /// 유닛을 관리하는 클래스이다.
 /// </summary>
-public class UnitManager : Singleton<UnitManager>
+///
+
+//SO 타입은 UnitDataBase 클래스로 분리
+
+//크리쳐랑 타워는 턴인터페이스의 관리가 존재한다 
+
+
+public class UnitManager : Singleton<UnitManager>, ITurnSystem
 {
+    public List<Node> CretrueSpawnList;
+
     [SerializeField] GameObject playerPrefab;
     [SerializeField] GameObject unitPrefab;
-
     [SerializeField] UnititemSO bossUnitSO;
     [SerializeField] UnititemSO savagesUnitSO;
     [SerializeField] UnititemSO hidingUnitSO;
     [SerializeField] UnititemSO towerUnitSO;
+    [SerializeField] Transform unitHolder;
+
+    [Header("Resource")]
+    [SerializeField] private GameObject pick;
 
     public Unit targetUnit;
-
     public Sprite hideSprite;
+    public const float Offset =  8.5f;
+    public const float playerPosZ = -30f;
 
-    public static float Offset =  8.5f;
+    public List<Unit> units;
 
-    public void CreatePlayer()
+    public void Setup()
     {
+        units = new List<Unit>();
+        CretrueSpawnList = new List<Node>();
+        GameManager.Instance.PlayerMoveEnd += CretureGenerator;
+        CampGenerator();
+        UnitManager.Instance.CreatePlayer(unitHolder);
 
+    }
+
+
+    public void CreatePlayer(Transform parent)
+    {
         var hexagonGrid = GridManager.Instance.hexagonGrid;
         int playerPosX = hexagonGrid.width  /2;
         int playerPosY = hexagonGrid.hegiht /2;
 
         var baseNode = GridManager.Instance.GetHaxgonTile(playerPosX,playerPosY);
         Vector2 pos = baseNode.transform.position;
-        Vector3 vec = new Vector3(pos.x, pos.y + Offset, 0f);
+        Vector3 vec = new Vector3(pos.x, pos.y + Offset, playerPosZ);
         var go = Instantiate(playerPrefab, vec, Util.QI);
         Agent agent = go.GetComponent<Agent>();
+        go.transform.SetParent(parent);
+        agent.Setup(pick);
         agent.nowNode = baseNode;
-        PathFindingManager.Instance.Agent = agent;
+        PathFindingManager.Instance.agent = agent;
     }
 
     /// <summary>
@@ -47,24 +72,38 @@ public class UnitManager : Singleton<UnitManager>
     /// 랜덤으로 배치해야하는곳
     /// 숲, 초원
     /// </summary>
-    public void UnitGenerator()
+    private void CampGenerator()
     {
-        foreach(TileItem.eCampType enumItem in  Enum.GetValues(typeof(TileItem.eCampType)))
+        foreach (TileItem.eCampType enumItem in  Enum.GetValues(typeof(TileItem.eCampType)))
         {
             switch(enumItem)
             {
-                //해당 타입은 모두 반드시 유닛이 있어야한다.
                 case TileItem.eCampType.Mountain:
                 case TileItem.eCampType.Volcano:
-                //case TileItem.eCampType.PlainsCastle:
                 case TileItem.eCampType.Plains:
                     Unitcomport(enumItem);
                     break;
             }
         }
 
+        foreach(var unit in units)
+        {
+            if(true == unit.GetComponent<Tower>())
+            {
+                CretrueSpawnList.Add(unit.parent);
+            }
+
+        }
 
     }
+
+    private void CretureGenerator()
+    {
+        CreateCreture(0);
+        CreateCreture(1);
+        CreateCreture(2);
+    }
+
 
 
     /// <summary>
@@ -73,27 +112,30 @@ public class UnitManager : Singleton<UnitManager>
     /// <param name="type"></param>는 유닛의 부모이다
     private void Unitcomport(TileItem.eCampType type)
     {
-        var tiles = GridManager.Instance.GetHexagonTiles(type);
+        var tiles = GridManager.Instance.GetTilesByType(type);
+        var typeHolder =  new GameObject();
+        typeHolder.name = $"{type}Holder";
+        typeHolder.transform.SetParent(this.unitHolder);
 
-        
-        foreach(Tile tile in tiles)
+
+        foreach (Tile tile in tiles)
         {
             switch (tile.GeteType())
             {
                 case TileItem.eCampType.Mountain:
-                    UnitCreator<Creature>(tile, savagesUnitSO , true);
+                    CreateCamp<Creature>(typeHolder.transform,tile, savagesUnitSO , true);
                     break;
                 case TileItem.eCampType.Volcano:
-                    UnitCreator<Creature>(tile, bossUnitSO, true);
+                    Debug.Log("x");
+                    CreateCamp<Creature>(typeHolder.transform, tile, bossUnitSO, true);
                     break;
                 case TileItem.eCampType.Forest:
                 case TileItem.eCampType.PlainsCastle:
-                    UnitCreator<Creature>(tile, hidingUnitSO, false);
+                    CreateCamp<Creature>(typeHolder.transform, tile, hidingUnitSO, false);
                     break;
                 case TileItem.eCampType.Plains:
-                    UnitCreator<Tower>(tile, towerUnitSO , true);
+                    CreateCamp<Tower>(typeHolder.transform, tile, towerUnitSO , true);
                     break;
-
             }
         }
         
@@ -103,16 +145,27 @@ public class UnitManager : Singleton<UnitManager>
     /// 유닛의 좌표는 parent가 된다
     /// </summary>
 
-    private void UnitCreator<T>(Tile parent , UnititemSO so ,bool isFront) where T : Unit
+    private void CreateCamp<T>(Transform parent, Tile _tile , UnititemSO so ,bool isFront) where T : Unit
     {
         var go = Instantiate(unitPrefab);
         go.AddComponent<T>();
-        Unit unit = go.GetComponent<Unit>();
-
+        Unit NewUnit = go.GetComponent<Unit>();
         int rnd = Random.Range(0, so.items.Length);
-        unit.SetData(so.items[rnd], isFront, parent);
-        
+        NewUnit.SetData(so.items[rnd], isFront, _tile);
+        NewUnit.transform.SetParent(parent);
+
+        units.Add(NewUnit);
     }
+
+    private void CreateCreture(int index)
+    {
+        var go = Instantiate(unitPrefab);
+        go.AddComponent<Creature>();
+        Unit NewUnit = go.GetComponent<Unit>();
+        NewUnit.SetData(savagesUnitSO.items[0], true, CretrueSpawnList[index]);
+    }
+
+
 
     public void ActiveUnit(Unit unit)
     {
@@ -135,6 +188,27 @@ public class UnitManager : Singleton<UnitManager>
         targetUnit.End();
         targetUnit = null;
 
+    }
+
+    public void EndPlayerMove()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void StartPlayerTurn()
+    {
+
+    }
+
+    public void CreateRandomMonster()
+    {
+
+    }
+
+
+    void ITurnSystem.TurnAwake()
+    {
+        //연public void 
     }
 }
 

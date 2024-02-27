@@ -16,7 +16,6 @@ using TMPro;
         public void TileSetup(TileItem item)
         {
             this.item = item;
-
             render.sprite = this.item.sprite;
         }
 
@@ -32,8 +31,17 @@ using TMPro;
 
         private void OnMouseDown()
         {
+
+            Debug.Log($"{matrixX} {matrixY}");
+            Debug.Log($"node Down");
+        }
+
+        private void OnMouseDrag()
+        {
             
         }
+
+
 
         public TileItem.eCampType GeteType()
         {
