@@ -25,6 +25,7 @@ public class Fade : MonoBehaviour
 
     public void FadeOut(Action endaction)
     {
+        img_popup.color = fadecolor;
         img_popup.DOColor(startcolor, fadedelay).OnComplete(()=> { endaction.Invoke(); });
     }
 
@@ -46,5 +47,10 @@ public class Fade : MonoBehaviour
     {
         img_popup.DOColor(fadecolor, fadedelay).OnComplete(() => { endaction.Invoke(); });
 
+    }
+
+    public void SetPopupColor(Color color)
+    {
+        img_popup.color = color;
     }
 }

@@ -20,8 +20,8 @@ public class PathFindingManager : Singleton<PathFindingManager>
     private readonly float MOVING_DURATION = 0.3f;
 
     private Node[,] matrixNodes;
-    private int widthSize => matrixNodes.GetLength(0);
-    private int heightSize => matrixNodes.GetLength(1);
+    public int widthSize => matrixNodes.GetLength(0);
+    public int heightSize => matrixNodes.GetLength(1);
 
     //인스펙터에서 디버깅하기위해 직렬화
     [Header("PathFind System")]

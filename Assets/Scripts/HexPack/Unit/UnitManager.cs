@@ -41,9 +41,19 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
     {
         units = new List<Unit>();
         CretrueSpawnList = new List<Node>();
-        GameManager.Instance.PlayerMoveEnd += CretureGenerator;
+        //GameManager.Instance.PlayerMoveEnd += CretureGenerator;
         CampGenerator();
         UnitManager.Instance.CreatePlayer(unitHolder);
+
+        foreach(var unit in units)
+        {
+            if(unit?.GetComponent<Tower>())
+            {
+                Tower tower = (Tower)unit;
+                tower.SetNeighbors();
+            }
+        }
+      
 
     }
 
@@ -97,15 +107,6 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
 
     }
 
-    private void CretureGenerator()
-    {
-        CreateCreture(0);
-        CreateCreture(1);
-        CreateCreture(2);
-    }
-
-
-
     /// <summary>
     /// 가져온 타일의 타입에 맞게 처신하여 유닛새성을 돕는다
     /// </summary>
@@ -123,18 +124,18 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
             switch (tile.GeteType())
             {
                 case TileItem.eCampType.Mountain:
-                    CreateCamp<Creature>(typeHolder.transform,tile, savagesUnitSO , true);
+                    CreateCamp(typeHolder.transform,tile, towerUnitSO, true);
                     break;
                 case TileItem.eCampType.Volcano:
                     Debug.Log("x");
-                    CreateCamp<Creature>(typeHolder.transform, tile, bossUnitSO, true);
+                    CreateCamp(typeHolder.transform, tile, towerUnitSO, true);
                     break;
                 case TileItem.eCampType.Forest:
                 case TileItem.eCampType.PlainsCastle:
-                    CreateCamp<Creature>(typeHolder.transform, tile, hidingUnitSO, false);
+                    CreateCamp(typeHolder.transform, tile, towerUnitSO, false);
                     break;
                 case TileItem.eCampType.Plains:
-                    CreateCamp<Tower>(typeHolder.transform, tile, towerUnitSO , true);
+                    CreateCamp(typeHolder.transform, tile, towerUnitSO , true);
                     break;
             }
         }
@@ -145,24 +146,25 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
     /// 유닛의 좌표는 parent가 된다
     /// </summary>
 
-    private void CreateCamp<T>(Transform parent, Tile _tile , UnititemSO so ,bool isFront) where T : Unit
+    private void CreateCamp(Transform parent, Tile _tile , UnititemSO so ,bool isFront)
     {
         var go = Instantiate(unitPrefab);
-        go.AddComponent<T>();
+        Tower tower = go.AddComponent<Tower>();
+        tower.location = _tile;
         Unit NewUnit = go.GetComponent<Unit>();
         int rnd = Random.Range(0, so.items.Length);
         NewUnit.SetData(so.items[rnd], isFront, _tile);
         NewUnit.transform.SetParent(parent);
-
         units.Add(NewUnit);
+       
     }
 
-    private void CreateCreture(int index)
+    public void CreateCreture(Node neighbor)
     {
         var go = Instantiate(unitPrefab);
         go.AddComponent<Creature>();
         Unit NewUnit = go.GetComponent<Unit>();
-        NewUnit.SetData(savagesUnitSO.items[0], true, CretrueSpawnList[index]);
+        NewUnit.SetData(savagesUnitSO.items[0], true, neighbor);
     }
 
 

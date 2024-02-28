@@ -7,6 +7,9 @@ using System;
 
     public class GameManager : Singleton<GameManager>
     {
+        [SerializeField]
+        private Fade fade;
+
         public event Action turnStart;
         public event Action turnAwake;
         public event Action PlayerMoveEnd;
@@ -16,10 +19,12 @@ using System;
         // Start is called before the first frame update
         void Start()
         {
+            fade.SetPopupColor(Color.black);
             status = eTurnType.AWake;
             GridManager.Instance.Setup();
-            UnitManager.Instance.Setup();
             PathFindingManager.Instance.CreateNodeList();
+            UnitManager.Instance.Setup();
+            
             StartGame();
         }
 
@@ -70,7 +75,7 @@ using System;
 
         public void StartGame()
         {
-            SetStatus(eTurnType.PlayerTurn);
+            fade.FadeIn(() => { SetStatus(eTurnType.PlayerTurn); }); 
         }
 
         public void CheatGetMoveScore()
