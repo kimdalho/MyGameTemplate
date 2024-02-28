@@ -13,33 +13,38 @@ MonoBehaviour:
   m_Name: 4.TowerUnitSO
   m_EditorClassIdentifier: 
   items:
-  - name: "\uB9C9\uC0AC"
+  - status: 1
+    name: "\uB9C9\uC0AC"
     render: {fileID: 21300000, guid: 769871e02ca960f409ef4161220ce850, type: 3}
-    hp: 5
+    grad: 0
+    hp: 20
     atk: 2
-    questType: 1
     id: 0
-  - name: "\uBC84\uC12F\uB9C8\uC744"
+  - status: 1
+    name: "\uBC84\uC12F\uB9C8\uC744"
     render: {fileID: 21300000, guid: 30a6bd94c7c09794ebd0681f497d5bf4, type: 3}
+    grad: 0
     hp: 2
     atk: 4
-    questType: 2
     id: 0
-  - name: "\uB9C8\uC744"
+  - status: 1
+    name: "\uB9C8\uC744"
     render: {fileID: 21300000, guid: 1ab7b1cdc722d3845820ff2f2c35d06b, type: 3}
+    grad: 0
     hp: 0
     atk: 0
-    questType: 3
     id: 0
-  - name: "\uC2DC\uACC4\uD0D1"
+  - status: 1
+    name: "\uC2DC\uACC4\uD0D1"
     render: {fileID: 21300000, guid: 44e863f1967156441b7049d53d7344c9, type: 3}
+    grad: 0
     hp: 0
     atk: 0
-    questType: 4
     id: 0
-  - name: "\uC678\uB534\uC12C"
+  - status: 1
+    name: "\uC678\uB534\uC12C"
     render: {fileID: 21300000, guid: 8bb18c7a72bcb5e479adf780f4ca6502, type: 3}
+    grad: 0
     hp: 0
     atk: 0
-    questType: 5
     id: 0

@@ -127,7 +127,6 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
                     CreateCamp(typeHolder.transform,tile, towerUnitSO, true);
                     break;
                 case TileItem.eCampType.Volcano:
-                    Debug.Log("x");
                     CreateCamp(typeHolder.transform, tile, towerUnitSO, true);
                     break;
                 case TileItem.eCampType.Forest:
@@ -172,10 +171,14 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
     public void ActiveUnit(Unit unit)
     {
         targetUnit = unit;
-        Debug.Log($"Action {unit}");
-
-        //퀘스트 매니저 필요없을수도 있
-        //QuestManager.Instance.CreateQuest(targetUnit.item.questType);
+        switch(targetUnit.item.status)
+        {
+            case eUnitType.Creture:
+                var targetDead = GameManager.Instance.Attack(targetUnit);
+                break;
+            case eUnitType.Tower:
+                break;
+        }
     }
 
     public void TargetUnitRelese()

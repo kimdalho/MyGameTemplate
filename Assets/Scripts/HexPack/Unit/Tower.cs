@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Hex_Package;
 using DG.Tweening;
-public class Tower : Unit,ITurnSystem
+public class Tower :Unit,ITurnSystem
 {
     public List<Node> myNeighbors;
     public Node location;
@@ -11,14 +11,14 @@ public class Tower : Unit,ITurnSystem
     private int matrixX => location.matrixX;
     private readonly int OFFSET_LEFT = -1;
     private readonly int OFFSET_RIGHT = 1;
-    private TowerHud tower;
+    private UnitHud tower;
 
     private void Awake()
     {
         myNeighbors = new List<Node>();
         GameManager.Instance.PlayerMoveEnd += EndPlayerMove;
-        tower = GetComponent<TowerHud>();  
-         tower.gage.spawn += () => {
+        tower = GetComponent<UnitHud>();  
+        tower.gauge.spawn += () => {
 
             foreach (var data in myNeighbors)
             {
@@ -77,15 +77,18 @@ public class Tower : Unit,ITurnSystem
 
     
     public void EndPlayerMove()
-    {
-        StartCoroutine(CoTest()); 
+    {   
+        StartCoroutine(CoUpdateSpawnData());
     }
 
-    private IEnumerator CoTest()
+    private IEnumerator CoUpdateSpawnData()
     {
-        var data = GetComponent<TowerHud>().gage;
+        var data = GetComponent<UnitHud>().gauge;
         data.gameObject.SetActive(true);
+        data.fild_Fade.gameObject.SetActive(true);
+        data.fild_Fade.FadeOut(() => { });
         data.fade.FadeOut(() => { });
+
 
             
         yield return new WaitForSeconds(1f);
@@ -100,6 +103,7 @@ public class Tower : Unit,ITurnSystem
         }
         yield return new WaitForSeconds(1f);
         data.fade.FadeIn();
+        data.fild_Fade.FadeIn();
     }
 
 

@@ -5,20 +5,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngineInternal;
 using System;
-public class MiniSlider : MonoBehaviour
+public class MiniSlider : MonoBehaviour ,ITurnSystem
 {
-
     public Fade fade;
 
-    public Image fill;
+    public Fade fild_Fade;
 
-    public float maxGage = 3;
+    public Image fill;
+    public float maxGage = 1;
     public float curGage = 0;
     public event Action spawn;
     private float _value;
-
-
-
 
     private void Update()
     {
@@ -38,13 +35,37 @@ public class MiniSlider : MonoBehaviour
         
         if(maxGage <= curGage)
         {
+            maxGage += 3;
             curGage = 0;
             spawn?.Invoke();
 
         }
-
-
     }
 
+    private void Awake()
+    {
+        TurnAwake();
+    }
 
+    public void TurnAwake()
+    {
+        GameManager.Instance.miniSliders.Add(this);
+    }
+
+    public void StartPlayerTurn()
+    {
+       
+    }
+
+    public void EndPlayerMove()
+    {
+        
+    }
+
+    private void OnDestroy()
+    {
+        if(GameManager.Instance != null)
+            GameManager.Instance.miniSliders.Remove(this);
+
+    }
 }

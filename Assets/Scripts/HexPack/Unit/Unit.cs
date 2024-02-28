@@ -12,10 +12,9 @@ using TMPro;
 
 public class Unit : UiBase
 {
-   
+    public UnitHud hud;
     //이는 정체가 밝혀진 상태이다 유닛의 정보를 보여준다.
     public Sprite unitSprtie;
-
     /// <summary>
     /// ParentNode는 유닛의 현제 좌표다
     /// </summary>
@@ -25,8 +24,12 @@ public class Unit : UiBase
     /// Get만하여 사용
     /// </summary>
     public UnitItem item;
+    public int maxHp;
+    public int curHp;
 
     public bool onLive;
+    
+
 
     enum eSprites
     {
@@ -54,8 +57,9 @@ public class Unit : UiBase
     {
         Setup();
         onLive = true;
-        //깊은 커플링
         this.item = item;
+        this.maxHp = item.hp;
+        this.curHp = item.hp;
         this.parent = parent;
         this.parent.unit = this;
         unitSprtie = this.item.render;
@@ -64,6 +68,13 @@ public class Unit : UiBase
         Get<SpriteRenderer>(0).sprite = isFront ? unitSprtie : UnitManager.Instance.hideSprite;
         this.parent.isWall = true;
         Get<SpriteRenderer>(5).gameObject.SetActive(false);
+        hud = GetComponent<UnitHud>();
+        hud.tmp_atk.text = item.atk.ToString();
+        hud.tmp_hp.text = curHp.ToString();
+
+
+
+
     }
 
     public void End()
@@ -71,9 +82,14 @@ public class Unit : UiBase
         Get<SpriteRenderer>((int)eSprites.CircleLine).enabled = false;
         Get<SpriteRenderer>((int)eSprites.CircleAtk).gameObject.SetActive(false);
         Get<SpriteRenderer>((int)eSprites.CircleHealth).gameObject.SetActive(false);
-
         Get<SpriteRenderer>((int)eSprites.MarkRender).gameObject.SetActive(true);
     }
 
+
+    public void Dead()
+    {
+        parent.isWall = false;
+        Destroy(this.gameObject);
+    }
 
 }

@@ -25,6 +25,9 @@ public class Agent : MonoBehaviour
     {
        if (status != eTurnType.PlayerTurn)
             return;
+
+       Debug.Log("OnMouseDrag");
+
        onDrag = true;
        AgentDrag();
     }
@@ -38,7 +41,11 @@ public class Agent : MonoBehaviour
         {
             Node node = hit.collider?.GetComponent<Node>();
             if (node == null)
+            {
+                Debug.Log("NotFound!");
                 continue;
+
+            }
 
             pickHandle.transform.localPosition = node.transform.localPosition;
             pickHandle.transform.localPosition += Vector3.up * PICK_OFFSET;

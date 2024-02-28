@@ -13,31 +13,52 @@ MonoBehaviour:
   m_Name: 2.SavagesSO
   m_EditorClassIdentifier: 
   items:
-  - name: "\uD3EC\uC545\uD55C \uB3C4\uC801"
+  - status: 0
+    name: "\uD3EC\uC545\uD55C \uB3C4\uC801"
     render: {fileID: 21300000, guid: 545dadb239a0902408d34f0496efb779, type: 3}
-    hp: 0
-    atk: 0
-  - name: "\uACE8\uB818"
+    grad: 1
+    hp: 2
+    atk: 1
+    id: 0
+  - status: 0
+    name: "\uACE8\uB818"
     render: {fileID: 21300000, guid: 884f05ce70c4da347bf1889bdc09b24a, type: 3}
-    hp: 0
-    atk: 0
-  - name: "\uC124\uC778"
+    grad: 1
+    hp: 3
+    atk: 1
+    id: 0
+  - status: 0
+    name: "\uC124\uC778"
     render: {fileID: 21300000, guid: 61670d3f7fe01c44283e6f7168b892bd, type: 3}
-    hp: 0
-    atk: 0
-  - name: "\uB9AC\uC790\uB4DC"
+    grad: 2
+    hp: 2
+    atk: 4
+    id: 0
+  - status: 0
+    name: "\uB9AC\uC790\uB4DC"
     render: {fileID: 21300000, guid: fd888cea824a47c48b3cf3d4ff5f578c, type: 3}
+    grad: 0
     hp: 0
     atk: 0
-  - name: "\uC784\uD504"
+    id: 0
+  - status: 0
+    name: "\uC784\uD504"
     render: {fileID: 21300000, guid: fdf0dcd53ff5f164e98e9e5ba88a17b8, type: 3}
+    grad: 0
     hp: 0
     atk: 0
-  - name: "\uB3C5\uC784\uD504"
+    id: 0
+  - status: 0
+    name: "\uB3C5\uC784\uD504"
     render: {fileID: 21300000, guid: cfcb8e2c4f37afb42bbbae418efe5c45, type: 3}
+    grad: 0
     hp: 0
     atk: 0
-  - name: "\uCEE4\uC988"
+    id: 0
+  - status: 0
+    name: "\uCEE4\uC988"
     render: {fileID: 21300000, guid: 8f16650a47f1b6d4ebb2008b8c13ee52, type: 3}
+    grad: 0
     hp: 0
     atk: 0
+    id: 0

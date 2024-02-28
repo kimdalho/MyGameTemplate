@@ -9,13 +9,23 @@ public enum eTurnType
     PlayerMoveEnd = 2,
     GameOver = 3
 }
-public interface ITurnSystem
+public interface ITurnSystem 
 {
+
     void TurnAwake();
 
     void StartPlayerTurn();
 
     void EndPlayerMove();
+}
 
+public interface IUiObserver
+{
+    public void Notification()
+    {
+        Writ();
+    }
+
+    void Writ();
 }
 
