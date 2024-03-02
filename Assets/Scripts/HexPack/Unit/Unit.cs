@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Hex_Package;
 using TMPro;
+using System;
+using System.Threading.Tasks;
 /// <summary>
 /// 필드에 존재하는 모든 객체이다
 /// </summary>
@@ -85,11 +87,37 @@ public class Unit : UiBase
         Get<SpriteRenderer>((int)eSprites.MarkRender).gameObject.SetActive(true);
     }
 
-
-    public void Dead()
+    public Node GetTileOffSetPos()
     {
+        return parent;
+    }
+
+    public virtual void Dead()
+    {
+        onLive = false;
         parent.isWall = false;
         Destroy(this.gameObject);
+    }
+
+    public async void A()
+    {
+        await Task.Delay(1000);
+    }
+
+    public virtual int Hit(Unit AttackUnit)
+    {
+        curHp = Math.Clamp(curHp - AttackUnit.GetAttack(), 0, maxHp);
+        return curHp;
+    }
+
+    public virtual int GetAttack()
+    {
+        return item.atk;
+    }
+
+    public virtual int GetCurrentHp()
+    {
+        return curHp;
     }
 
 }

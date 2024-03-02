@@ -198,7 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
+  m_Color: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -686,7 +686,7 @@ GameObject:
   - component: {fileID: 4345812461260227433}
   - component: {fileID: 3118553082364087542}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Stat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -953,7 +953,7 @@ GameObject:
   - component: {fileID: 2224033286473508695}
   - component: {fileID: 379142786315844183}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: portrait
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1350,7 +1350,7 @@ GameObject:
   - component: {fileID: 5737200718244368043}
   - component: {fileID: 2598866909448802568}
   m_Layer: 5
-  m_Name: PlayerStats (1)
+  m_Name: PlayerHud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1901,7 +1901,7 @@ GameObject:
   - component: {fileID: 3407533035669019130}
   - component: {fileID: 9216820656715499377}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Sliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

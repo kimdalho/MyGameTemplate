@@ -17,8 +17,8 @@ MonoBehaviour:
     name: "\uD3EC\uC545\uD55C \uB3C4\uC801"
     render: {fileID: 21300000, guid: 545dadb239a0902408d34f0496efb779, type: 3}
     grad: 1
-    hp: 2
-    atk: 1
+    hp: 5
+    atk: 4
     id: 0
   - status: 0
     name: "\uACE8\uB818"

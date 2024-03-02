@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 //기능 개발 이유
 //유닛이 육각타일에서의 규칙 이동을 구현하기위해 Unity Navigation을 사용하지않고 직접 A*를 구현했습니다.
@@ -18,6 +19,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
     private readonly int OFFSET_LEFT = -1;
     private readonly int OFFSET_RIGHT = 1;
     private readonly float MOVING_DURATION = 0.3f;
+    private readonly float MOVING_SLOW_DURATION = 0.6f;
 
     private Node[,] matrixNodes;
     public int widthSize => matrixNodes.GetLength(0);
@@ -90,9 +92,9 @@ public class PathFindingManager : Singleton<PathFindingManager>
 
     
 
-    public void Move(bool Path)
+    public void Move(bool there_is_move)
     {
-        if (Path == false)
+        if (there_is_move == false)
         {
             if (targetNode.unit != null && targetNode.unit.onLive)
             {
@@ -118,12 +120,28 @@ public class PathFindingManager : Singleton<PathFindingManager>
             .SetEase(Ease.OutCubic)
             .OnComplete(() =>
             {
+                agent.nowNode.isWall = false;
                 agent.nowNode = FinalList[0];
+                agent.nowNode.isWall = true;
                 FinalList.RemoveAt(0);
                 bool recive = FinalList.Count > 0 ? true : false;
                 Move(recive);
             });
     }
+
+    public void BattleEndMove(Node lastNode)
+    {
+            agent.transform.DOMove(lastNode.offsetPos, MOVING_SLOW_DURATION, true)
+            .SetEase(Ease.OutCubic)
+            .OnComplete(() =>
+        {
+            agent.nowNode.isWall = false;
+            agent.nowNode = lastNode;
+            agent.nowNode.isWall = true;
+            GameManager.Instance.SetStatus(eTurnType.PlayerMoveEnd);
+        });
+    }
+
 
     public void CreateNodeList()
     {

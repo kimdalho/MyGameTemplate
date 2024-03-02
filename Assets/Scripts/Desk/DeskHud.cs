@@ -22,7 +22,7 @@ public class DeskHud : MonoBehaviour, IUiObserver
 
     public void Writ()
     {
-        var playerStat = GameManager.Instance.playerStat;
+        var playerStat = GameManager.Instance.player.playerStat;
         tmp_atk.text =  playerStat.atk.ToString();
         tmp_gold.text = playerStat.move.ToString();
         tmp_move.text = playerStat.move.ToString();

@@ -73,6 +73,7 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
         agent.Setup(pick);
         agent.nowNode = baseNode;
         PathFindingManager.Instance.agent = agent;
+        GameManager.Instance.player = go.GetComponent<Player>();
     }
 
     /// <summary>
@@ -166,20 +167,25 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
         NewUnit.SetData(savagesUnitSO.items[0], true, neighbor);
     }
 
-
-
     public void ActiveUnit(Unit unit)
     {
+        StartCoroutine(CoActiveUnit(unit));
+    }
+
+    private IEnumerator CoActiveUnit(Unit unit)
+    {
         targetUnit = unit;
-        switch(targetUnit.item.status)
+        switch (targetUnit.item.status)
         {
             case eUnitType.Creture:
-                var targetDead = GameManager.Instance.Attack(targetUnit);
+               yield return StartCoroutine(GameManager.Instance.CoBattle(targetUnit));
+               //GameManager.Instance.SetStatus(eTurnType.PlayerMoveEnd);
                 break;
             case eUnitType.Tower:
                 break;
         }
     }
+
 
     public void TargetUnitRelese()
     {

@@ -14,7 +14,9 @@ using DG.Tweening;
         public event Action turnAwake;
         public event Action PlayerMoveEnd;
         public eTurnType status;
-        public PlayerState playerStat;
+        public Player player;
+        public CameraMovement camMove;
+        
 
         public List<IUiObserver> uiObservers = new List<IUiObserver>();
         public List<ITurnSystem> miniSliders = new List<ITurnSystem>();
@@ -27,9 +29,9 @@ using DG.Tweening;
             GridManager.Instance.Setup();
             PathFindingManager.Instance.CreateNodeList();
             UnitManager.Instance.Setup();
-            playerStat.Setup();
             Subject();
             StartGame();
+            player.iplayerhit.Add(camMove.GetSubject());
         }
 
         public void SetStatus(eTurnType next)
@@ -98,7 +100,6 @@ using DG.Tweening;
                 {
                     if ((miniSliders[i] as MonoBehaviour).isActiveAndEnabled)
                     {
-                        Debug.Log("한번 호출이면 내실수 ");
                         yield return null;
                     }
                 }
@@ -108,40 +109,40 @@ using DG.Tweening;
             SetStatus(eTurnType.PlayerTurn);
         }
 
-        private IEnumerator CoAnimAttack(Unit hitUnit)
+        private IEnumerator CoAnimBattle(Unit AttackUnit,Unit hitUnit)
         {
-            var player = PathFindingManager.Instance.agent;
-            var old = hitUnit.transform.position;
-            hitUnit.transform.DOLocalMove(player.transform.position,0.3f).SetEase(Ease.InOutBack);
-            yield return new WaitForSeconds(1f);
-            hitUnit.transform.DOLocalMove(old, 1).SetEase(Ease.InOutBack);
-            playerStat.curHp = Math.Clamp(playerStat.curHp - hitUnit.item.atk, 0, playerStat.maxHp);
-            hitUnit.curHp = Math.Clamp(hitUnit.curHp - playerStat.atk, 0, hitUnit.maxHp);
+        if (AttackUnit.GetCurrentHp() > 0)
+        {
+            var old = AttackUnit.transform.position;
+            var tween = AttackUnit.transform.DOLocalMove(hitUnit.transform.position, 0.3f).SetEase(Ease.InFlash);
+            yield return tween.WaitForCompletion();
+            hitUnit.Hit(AttackUnit);
             Subject();
+            var backTween = AttackUnit.transform.DOLocalMove(old, 1).SetEase(Ease.InOutBack);
+            yield return backTween.WaitForCompletion();
         }
 
-        public bool Attack(Unit hitUnit)
+        }
+        public IEnumerator CoBattle(Unit hitUnit)
         {
-            StartCoroutine(CoAnimAttack(hitUnit));
+            yield return StartCoroutine(CoAnimBattle(player,hitUnit));
+            yield return StartCoroutine(CoAnimBattle(hitUnit, player));
 
-            
-            if (playerStat.curHp == 0)
+            if(player.GetCurrentHp() > 0 && hitUnit.GetCurrentHp() >0)
             {
-                Subject();
-            
-                return false;
+                yield return StartCoroutine(CoBattle(hitUnit));
             }
-        //몬스터가 죽었으며 플레이어가 살아있을때만 True;
-        if (hitUnit.curHp <= 0)
-        {
-            Subject();
-            Debug.Log($"Attacked {playerStat.curHp}");
-            hitUnit.Dead();
-            return true;
-        }
-
-        Subject();
-            return false;
+            else if(player.GetCurrentHp() == 0)
+            {
+                player.Dead();
+            }
+            else if(hitUnit.GetCurrentHp() == 0)
+            {
+               var deadUnitNode =  hitUnit.GetTileOffSetPos();
+               hitUnit.Dead();
+               yield return new WaitForSeconds(0.3f);
+               PathFindingManager.Instance.BattleEndMove(deadUnitNode);
+            }
         }
 
         public void Subject()
@@ -151,5 +152,12 @@ using DG.Tweening;
                 ui.Notification();
             }
         }
+
+    private void OnDestroy()
+    {
+     turnStart = null ;
+     turnAwake = null;
+     PlayerMoveEnd = null;
+    }
 }
 

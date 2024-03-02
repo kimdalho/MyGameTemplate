@@ -13,29 +13,34 @@ public class Agent : MonoBehaviour
     public PRS originPRS;
     public Node nowNode;
     public static bool onDrag;
-    public eTurnType status => GameManager.Instance.status;
     [Header("Resource")]
     [SerializeField] private GameObject pickHandle;
     public void Setup(GameObject _pick)
     {
         pickHandle = _pick;
     }
+    private void OnMouseDown()
+    {
+        Debug.Log("OnMouseDown");
+    }
+
 
     private void OnMouseDrag()
     {
-       if (status != eTurnType.PlayerTurn)
-            return;
+        Debug.Log("OnMouseDrag1");
 
-       Debug.Log("OnMouseDrag");
-
-       onDrag = true;
+        //if (GameManager.Instance.status != eTurnType.PlayerTurn)
+        //{
+        //    Debug.Log($"{GameManager.Instance.gameObject.name}");
+        //    return;
+        //}
+        Debug.Log("OnMouseDrag2");
+        onDrag = true;
        AgentDrag();
     }
 
     private void AgentDrag()
     {
-        if (GameManager.Instance.status != eTurnType.PlayerTurn)
-            return;
 
         foreach (var hit in Physics2D.RaycastAll(Util.MousePos, Vector3.forward))
         {
@@ -55,8 +60,6 @@ public class Agent : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (status != eTurnType.PlayerTurn)
-            return;
         if (onDrag == true)
         {
             bool onFindPath =  PathFindingManager.Instance.PathFinding();

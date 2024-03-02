@@ -134,6 +134,7 @@ public class HexagonGrid : BaseGrid
                         break;
                     case TileItem.eCampType.Mountain:
                         targetIndex = 1;
+
                         break;
                     case TileItem.eCampType.Plains:
                         targetIndex = 2;
