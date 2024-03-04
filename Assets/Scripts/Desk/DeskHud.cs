@@ -12,8 +12,12 @@ public class DeskHud : MonoBehaviour, IUiObserver
     [SerializeField] private TextMeshProUGUI tmp_gold;
     [SerializeField] private TextMeshProUGUI tmp_move;
 
+    [Header("HP")]
     [SerializeField] private Slider slider_hp;
+    [SerializeField] private TextMeshProUGUI tmp_hp;
+    [Header("hungger")]
     [SerializeField] private Slider slider_hungger;
+    [SerializeField] private TextMeshProUGUI tmp_hungger;
 
     private void Awake()
     {
@@ -28,6 +32,8 @@ public class DeskHud : MonoBehaviour, IUiObserver
         tmp_move.text = playerStat.move.ToString();
 
         slider_hp.value = (float)((float)playerStat.curHp / (float)playerStat.maxHp);
+        tmp_hp.text = string.Format("{0}/{1}", playerStat.curHp, playerStat.maxHp);
         slider_hungger.value = (playerStat.hunger / playerStat.maxHunger);
+        tmp_hungger.text = string.Format("{0}/{1}", playerStat.hunger, playerStat.maxHunger);
     }
 }

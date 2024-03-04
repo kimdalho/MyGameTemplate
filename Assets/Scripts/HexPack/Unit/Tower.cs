@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Hex_Package;
-using DG.Tweening;
 public class Tower :Unit,ITurnSystem
 {
     public List<Node> myNeighbors;
@@ -13,6 +11,11 @@ public class Tower :Unit,ITurnSystem
     private readonly int OFFSET_RIGHT = 1;
     private UnitHud tower;
 
+    [SerializeField]
+    private List<UnitItem> spawnList = new List<UnitItem>();
+    [SerializeField]
+    private UnitItem targetModel;
+    public bool isspawn;
     private void Awake()
     {
         myNeighbors = new List<Node>();
@@ -20,19 +23,36 @@ public class Tower :Unit,ITurnSystem
         tower = GetComponent<UnitHud>();  
         tower.gauge.spawn += () => {
 
-            foreach (var data in myNeighbors)
+            if(spawnList.Count > 0)
             {
-                if (data.isWall == true)
-                    continue;
+                foreach (var position in myNeighbors)
+                {
+                    if (position.isWall == true)
+                        continue;
 
-                UnitManager.Instance.CreateCreture(data);
-                break;
+                    UnitManager.Instance.CreateCreture(position, targetModel);
+                    isspawn = false;
+                    break;
+                }
             }
-
 
         };
 
     }
+    public override void SetData(UnitItem item, bool isFront, Node parent)
+    {
+        base.SetData(item, isFront, parent);
+        isspawn = false;
+        foreach (int MonsterId in cretureList)
+        {
+           var data = UnitManager.Instance.GetCreture(MonsterId);
+           spawnList.Add(data);
+        }
+
+    }
+
+
+
     public void SetNeighbors()
     {
         if (matrixY % 2 == 0)
@@ -77,17 +97,32 @@ public class Tower :Unit,ITurnSystem
 
     
     public void EndPlayerMove()
-    {   
+    {
+        if(isspawn == false)
+        {
+            isspawn = true;
+
+            if (spawnList.Count <= 0)
+                return;
+
+            int rnd = Random.Range(0, spawnList.Count);
+            targetModel = UnitManager.Instance.GetCreture(spawnList[rnd].id);
+            if(targetModel.spawn <= 0)
+            {
+                Debug.LogError("몬스터 생성 스코어가 잘못되었다 => EndPlayerMove() => targetModel.spawn is zero");
+                return;
+            }
+            tower.gauge.SetMax(targetModel.spawn);
+            tower.gauge.SetDraw(true);
+        }
+
         StartCoroutine(CoUpdateSpawnData());
     }
 
     private IEnumerator CoUpdateSpawnData()
     {
-        var data = GetComponent<UnitHud>().gauge;
-        data.gameObject.SetActive(true);
-        data.fild_Fade.gameObject.SetActive(true);
-        data.fild_Fade.FadeOut(() => { });
-        data.fade.FadeOut(() => { });
+        var slider = tower.gauge;
+        slider.SliderFadeOut();
 
 
             
@@ -98,12 +133,11 @@ public class Tower :Unit,ITurnSystem
         while (deltime < 1)
         {
             deltime += Time.deltaTime;
-            data.curGage += Time.deltaTime;
+            slider.curGage += Time.deltaTime;
             yield return null;
         }
         yield return new WaitForSeconds(1f);
-        data.fade.FadeIn();
-        data.fild_Fade.FadeIn();
+        slider.SliderFadeIn();
     }
 
 

@@ -133,11 +133,11 @@ public class HexagonGrid : BaseGrid
                         targetIndex = tileBuffer.Count-1;
                         break;
                     case TileItem.eCampType.Mountain:
-                        targetIndex = 1;
+                        targetIndex = Random.Range(0,tileBuffer.Count - 1);
 
                         break;
                     case TileItem.eCampType.Plains:
-                        targetIndex = 2;
+                        targetIndex = Random.Range(0, tileBuffer.Count - 1);
                         break;
                     default:
                         Debug.Log($"DrawTile Not Found {pair.Key}");

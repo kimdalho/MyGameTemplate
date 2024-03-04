@@ -15,8 +15,6 @@ using System.Threading.Tasks;
 public class Unit : UiBase
 {
     public UnitHud hud;
-    //이는 정체가 밝혀진 상태이다 유닛의 정보를 보여준다.
-    public Sprite unitSprtie;
     /// <summary>
     /// ParentNode는 유닛의 현제 좌표다
     /// </summary>
@@ -25,66 +23,37 @@ public class Unit : UiBase
     /// <summary>
     /// Get만하여 사용
     /// </summary>
-    public UnitItem item;
-    public int maxHp;
-    public int curHp;
-
+    public UnitStat stat;
+    public eCretureType crtureType;
+    public eTowerType towerType;
     public bool onLive;
-    
-
-
-    enum eSprites
-    {
-        iconRender  = 0,
-        CircleMask = 1,
-        CircleLine = 2,
-        CircleAtk = 3,
-        CircleHealth = 4,
-        MarkRender= 5,
-    }
-
-    enum eTMPs
-    {
-        AtkTMP = 0,
-        HealthTMP = 0,
-    }
-
-    public override void Setup()
-    {
-        Bind<SpriteRenderer>(typeof(eSprites));
-        Bind<TMP_Text>(typeof(eTMPs));
-    }
-
-    public void SetData(UnitItem item, bool isFront, Node parent)
+    public eUnitType status;
+    protected List<int> cretureList;
+    public virtual void SetData(UnitItem item, bool isFront, Node parent)
     {
         Setup();
         onLive = true;
-        this.item = item;
-        this.maxHp = item.hp;
-        this.curHp = item.hp;
+        stat = new UnitStat();
+        var model = item.baseStat;
+        stat.curHp = model.curHp;
+        stat.maxHp = model.maxHp;
+        stat.atk = model.atk;
+        stat.move = model.move;
+        stat.fullness = model.fullness;
+        stat.maxHp = model.maxHp;
+        status = item.status;
         this.parent = parent;
         this.parent.unit = this;
-        unitSprtie = this.item.render;
+
+        this.crtureType = item.cretureType;
+        this.towerType = item.towerType;
+
         transform.position = parent.transform.position;
         transform.position += Vector3.up * UnitManager.Offset;
-        Get<SpriteRenderer>(0).sprite = isFront ? unitSprtie : UnitManager.Instance.hideSprite;
         this.parent.isWall = true;
-        Get<SpriteRenderer>(5).gameObject.SetActive(false);
+        this.cretureList = item.cretureUnits;
         hud = GetComponent<UnitHud>();
-        hud.tmp_atk.text = item.atk.ToString();
-        hud.tmp_hp.text = curHp.ToString();
-
-
-
-
-    }
-
-    public void End()
-    {
-        Get<SpriteRenderer>((int)eSprites.CircleLine).enabled = false;
-        Get<SpriteRenderer>((int)eSprites.CircleAtk).gameObject.SetActive(false);
-        Get<SpriteRenderer>((int)eSprites.CircleHealth).gameObject.SetActive(false);
-        Get<SpriteRenderer>((int)eSprites.MarkRender).gameObject.SetActive(true);
+        hud.Draw(item,stat); 
     }
 
     public Node GetTileOffSetPos()
@@ -106,18 +75,18 @@ public class Unit : UiBase
 
     public virtual int Hit(Unit AttackUnit)
     {
-        curHp = Math.Clamp(curHp - AttackUnit.GetAttack(), 0, maxHp);
-        return curHp;
+        stat.curHp = Math.Clamp(stat.curHp - AttackUnit.GetAttack(), 0, stat.maxHp);
+        return stat.curHp;
     }
 
     public virtual int GetAttack()
     {
-        return item.atk;
+        return stat.curHp;
     }
 
     public virtual int GetCurrentHp()
     {
-        return curHp;
+        return stat.curHp;
     }
 
 }

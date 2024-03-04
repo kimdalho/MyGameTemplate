@@ -15,7 +15,6 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                 obj = GameObject.Find(typeof(T).Name);
 
                 if (obj == null)
-
                 {
 
                     obj = new GameObject(typeof(T).Name);
@@ -23,9 +22,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                     instance = obj.AddComponent<T>();
 
                 }
-
                 else
-
                 {
 
                     instance = obj.GetComponent<T>();

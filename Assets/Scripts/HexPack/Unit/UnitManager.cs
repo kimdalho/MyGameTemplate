@@ -31,7 +31,6 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
     [SerializeField] private GameObject pick;
 
     public Unit targetUnit;
-    public Sprite hideSprite;
     public const float Offset =  8.5f;
     public const float playerPosZ = -30f;
 
@@ -41,7 +40,6 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
     {
         units = new List<Unit>();
         CretrueSpawnList = new List<Node>();
-        //GameManager.Instance.PlayerMoveEnd += CretureGenerator;
         CampGenerator();
         UnitManager.Instance.CreatePlayer(unitHolder);
 
@@ -53,8 +51,6 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
                 tower.SetNeighbors();
             }
         }
-      
-
     }
 
 
@@ -122,10 +118,13 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
 
         foreach (Tile tile in tiles)
         {
+            int i = 0;
+            Debug.Log($"index {i} , {tile.GeteType()}");
+            i++;
             switch (tile.GeteType())
             {
                 case TileItem.eCampType.Mountain:
-                    CreateCamp(typeHolder.transform,tile, towerUnitSO, true);
+                    CreateCamp(typeHolder.transform, tile, towerUnitSO, true);
                     break;
                 case TileItem.eCampType.Volcano:
                     CreateCamp(typeHolder.transform, tile, towerUnitSO, true);
@@ -135,7 +134,7 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
                     CreateCamp(typeHolder.transform, tile, towerUnitSO, false);
                     break;
                 case TileItem.eCampType.Plains:
-                    CreateCamp(typeHolder.transform, tile, towerUnitSO , true);
+                    CreateCamp(typeHolder.transform, tile, towerUnitSO, true);
                     break;
             }
         }
@@ -159,12 +158,18 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
        
     }
 
-    public void CreateCreture(Node neighbor)
+    public void CreateCreture(Node neighbor,UnitItem model)
     {
+        if (model == null)
+        {
+            Debug.LogError($"생성 몬스터 모델 데이터가 잘못되었다");
+            return;
+        }
+
         var go = Instantiate(unitPrefab);
         go.AddComponent<Creature>();
         Unit NewUnit = go.GetComponent<Unit>();
-        NewUnit.SetData(savagesUnitSO.items[0], true, neighbor);
+        NewUnit.SetData(model, true, neighbor);
     }
 
     public void ActiveUnit(Unit unit)
@@ -175,7 +180,7 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
     private IEnumerator CoActiveUnit(Unit unit)
     {
         targetUnit = unit;
-        switch (targetUnit.item.status)
+        switch (targetUnit.status)
         {
             case eUnitType.Creture:
                yield return StartCoroutine(GameManager.Instance.CoBattle(targetUnit));
@@ -196,7 +201,7 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
         }
 
         targetUnit.parent.isWall = false;
-        targetUnit.End();
+        //targetUnit.End();
         targetUnit = null;
 
     }
@@ -220,6 +225,19 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
     void ITurnSystem.TurnAwake()
     {
         //연public void 
+    }
+
+    public UnitItem GetCreture(int id)
+    {
+        foreach (var monster in savagesUnitSO.items)
+        {
+            if (id == monster.id)
+                return monster;
+        }
+
+        Debug.LogError("NotFound  -> GetCreture Monster id{id}");
+        return null;
+      
     }
 }
 

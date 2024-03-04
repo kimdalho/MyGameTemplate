@@ -36,13 +36,6 @@ using TMPro;
             Debug.Log($"node Down");
         }
 
-        private void OnMouseDrag()
-        {
-            
-        }
-
-
-
         public TileItem.eCampType GeteType()
         {
             return item.type;

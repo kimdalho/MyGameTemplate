@@ -27,7 +27,7 @@ using DG.Tweening;
             fade.SetPopupColor(Color.black);
             status = eTurnType.AWake;
             GridManager.Instance.Setup();
-            PathFindingManager.Instance.CreateNodeList();
+            PathFindingManager.Instance.Setup();
             UnitManager.Instance.Setup();
             Subject();
             StartGame();
@@ -109,16 +109,20 @@ using DG.Tweening;
             SetStatus(eTurnType.PlayerTurn);
         }
 
-        private IEnumerator CoAnimBattle(Unit AttackUnit,Unit hitUnit)
+        private IEnumerator CoAnimBattle(Unit attackUnit,Unit hitUnit)
         {
-        if (AttackUnit.GetCurrentHp() > 0)
+        if (attackUnit.GetCurrentHp() > 0)
         {
-            var old = AttackUnit.transform.position;
-            var tween = AttackUnit.transform.DOLocalMove(hitUnit.transform.position, 0.3f).SetEase(Ease.InFlash);
+            var old = attackUnit.transform.position;
+            var distance = (hitUnit.transform.position - attackUnit.transform.position) / 3;
+
+            var tween = attackUnit.transform.DOLocalMove(distance + attackUnit.transform.position, 0.3f).SetEase(Ease.InFlash);
             yield return tween.WaitForCompletion();
-            hitUnit.Hit(AttackUnit);
+            hitUnit.Hit(attackUnit);
+            var hit_tween = hitUnit.transform.DOShakePosition(0.3f, 1, 20, 30, false);
+            yield return hit_tween.WaitForCompletion();
             Subject();
-            var backTween = AttackUnit.transform.DOLocalMove(old, 1).SetEase(Ease.InOutBack);
+            var backTween = attackUnit.transform.DOLocalMove(old, 1).SetEase(Ease.InOutBack);
             yield return backTween.WaitForCompletion();
         }
 
@@ -145,7 +149,7 @@ using DG.Tweening;
             }
         }
 
-        public void Subject()
+    public void Subject()
         {
             foreach(var ui in uiObservers)
             {

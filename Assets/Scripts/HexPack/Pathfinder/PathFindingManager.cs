@@ -143,7 +143,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
     }
 
 
-    public void CreateNodeList()
+    public void Setup()
     {
         matrixNodes = GridManager.Instance.GetHexagonArray();
         for (int y = 0; y < heightSize; y++)

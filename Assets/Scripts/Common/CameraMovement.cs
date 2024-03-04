@@ -49,11 +49,6 @@ public class CameraMovement : MonoBehaviour ,IPlayerHit
         Camera.main.transform.Translate(this.posX, posY, 0);
         this.posX *= 0.98f;
         this.posY *= 0.98f;
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            StartCoroutine(Shack());
-        }
     }
 
     private void LateUpdate()

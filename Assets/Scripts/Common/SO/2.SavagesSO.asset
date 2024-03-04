@@ -13,52 +13,126 @@ MonoBehaviour:
   m_Name: 2.SavagesSO
   m_EditorClassIdentifier: 
   items:
-  - status: 0
+  - towerType: 0
+    cretureType: 3
+    status: 0
+    spawn: 3
     name: "\uD3EC\uC545\uD55C \uB3C4\uC801"
+    description: "\uBC88\uC2DD\uB825\uC774 \uAC15\uD558\uC9C0\uB9CC \uB9E4\uC6B0
+      \uC57D\uD55C \uBCF4\uBCD1\uC774\uB2E4."
     render: {fileID: 21300000, guid: 545dadb239a0902408d34f0496efb779, type: 3}
-    grad: 1
-    hp: 5
-    atk: 4
+    grad: 0
+    baseStat:
+      maxHp: 4
+      curHp: 4
+      atk: 2
+      move: 1
+      fullness: 2
     id: 0
-  - status: 0
+    cretureUnits: 
+  - towerType: 0
+    cretureType: 2
+    status: 0
+    spawn: 5
     name: "\uACE8\uB818"
+    description: "\uB2E8\uB2E8\uD558\uC9C0\uB9CC \uC27D\uAC8C \uB4F1\uC7A5\uD558\uC9C0\uC54A\uB294\uB2E4
+      \uC774\uB3D9\uC774 \uB9E4\uC6B0 \uB290\uB9AC\uB2E4"
     render: {fileID: 21300000, guid: 884f05ce70c4da347bf1889bdc09b24a, type: 3}
     grad: 1
-    hp: 3
-    atk: 1
-    id: 0
-  - status: 0
+    baseStat:
+      maxHp: 6
+      curHp: 6
+      atk: 2
+      move: 1
+      fullness: 0
+    id: 1
+    cretureUnits: 
+  - towerType: 0
+    cretureType: 3
+    status: 0
+    spawn: 0
     name: "\uC124\uC778"
+    description: "\uB9E4\uC6B0\uC0AC\uB0A9\uC9C0\uB9CC \uCD94\uC6B4 \uD658\uACBD\uC5D0\uC11C\uB9CC
+      \uC874\uC7AC\uD55C\uB2E4"
     render: {fileID: 21300000, guid: 61670d3f7fe01c44283e6f7168b892bd, type: 3}
     grad: 2
-    hp: 2
-    atk: 4
-    id: 0
-  - status: 0
+    baseStat:
+      maxHp: 10
+      curHp: 10
+      atk: 3
+      move: 1
+      fullness: 2
+    id: 2
+    cretureUnits: 
+  - towerType: 0
+    cretureType: 3
+    status: 0
+    spawn: 0
     name: "\uB9AC\uC790\uB4DC"
+    description: "\uBE60\uB978\uAE30\uB3D9\uB825\uC744 \uAC00\uC9C0\uACE0 \uACF5\uACA9\uD55C\uB2E4
+      \uD68C\uD53C\uC728\uC774 \uB192\uC73C\uBA70 \uC77C\uC815 \uD53C\uD574 \uC218\uCE58\uC758
+      \uD53C\uD574\uB97C \uC785\uC73C\uBA74 \uCD9C\uD608 \uC0C1\uD0DC\uD6A8\uACFC\uB97C
+      \uBD80\uC5EC\uBC1B\uB294\uB2E4."
     render: {fileID: 21300000, guid: fd888cea824a47c48b3cf3d4ff5f578c, type: 3}
-    grad: 0
-    hp: 0
-    atk: 0
+    grad: 1
+    baseStat:
+      maxHp: 4
+      curHp: 4
+      atk: 2
+      move: 2
+      fullness: 0
     id: 0
-  - status: 0
+    cretureUnits: 
+  - towerType: 0
+    cretureType: 1
+    status: 0
+    spawn: 4
     name: "\uC784\uD504"
+    description: "\uAC04\uC0AC\uD558\uBA70 \uC704\uD611\uC801\uC778 \uC874\uC7AC\uC774\uB2E4
+      \uB2E8\uC228\uC5D0 \uC8FD\uC5EC\uC57C\uD55C\uB2E4"
     render: {fileID: 21300000, guid: fdf0dcd53ff5f164e98e9e5ba88a17b8, type: 3}
     grad: 0
-    hp: 0
-    atk: 0
-    id: 0
-  - status: 0
-    name: "\uB3C5\uC784\uD504"
+    baseStat:
+      maxHp: 5
+      curHp: 5
+      atk: 2
+      move: 2
+      fullness: 1
+    id: 3
+    cretureUnits: 
+  - towerType: 0
+    cretureType: 1
+    status: 0
+    spawn: 5
+    name: "\uD3EC\uC774\uC98C\uC784\uD504"
+    description: "\uC784\uD504\uC758 \uC0C1\uC704\uC885\uC774\uB2E4 \uC77C\uC815
+      \uD53C\uD574\uB7C9\uC744 \uC785\uC73C\uBA74 \uC0C1\uD0DC\uD6A8\uACFC \"\uC911\uB3C5\"
+      \uB514\uBC84\uD504\uB97C \uBC1B\uB294\uB2E4."
     render: {fileID: 21300000, guid: cfcb8e2c4f37afb42bbbae418efe5c45, type: 3}
-    grad: 0
-    hp: 0
-    atk: 0
-    id: 0
-  - status: 0
+    grad: 2
+    baseStat:
+      maxHp: 10
+      curHp: 10
+      atk: 2
+      move: 2
+      fullness: 0
+    id: 4
+    cretureUnits: 
+  - towerType: 0
+    cretureType: 0
+    status: 0
+    spawn: 7
     name: "\uCEE4\uC988"
+    description: "\uC131\uC744 \uBA78\uB9DD\uC2DC\uD0A4\uAE30\uC704\uD574 \uB9CC\uB4E4\uC5B4\uC9C4
+      \uC874\uC7AC\uC774\uB2E4 \uC804\uD22C \uD134\uC218\uAC00 4\uD68C\uAC00 \uB118\uC5B4\uAC00\uBA74
+      \uC800\uC8FC\uD6A8\uACFC\uB97C \uBD80\uC5EC\uBC1B\uB294\uB2E4"
     render: {fileID: 21300000, guid: 8f16650a47f1b6d4ebb2008b8c13ee52, type: 3}
-    grad: 0
-    hp: 0
-    atk: 0
-    id: 0
+    grad: 3
+    baseStat:
+      maxHp: 15
+      curHp: 15
+      atk: 3
+      move: 1
+      fullness: 0
+    id: 5
+    cretureUnits: 

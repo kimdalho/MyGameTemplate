@@ -20,7 +20,6 @@ using UnityEngine;
         [Header("Popup")]
         public InvenPopup invenPopup;
         public QuestPopup questPopup;
-        public RewardPopup rewardPopup;
 
         public void OnClickInvenButton()
         {
@@ -35,7 +34,6 @@ using UnityEngine;
             goldScore.Setup();
             fameScore.Setup();
             questPopup.Setup();
-            rewardPopup.Setup();
             invenButton.Setup();
             invenPopup.Setup();
         }
@@ -46,8 +44,6 @@ using UnityEngine;
 
         public void ShowRewardPopup()
         {
-            rewardPopup.gameObject.SetActive(true);
-            rewardPopup.SetPopupData();
         }
         public void HideQuestPopup()
         {
@@ -58,9 +54,6 @@ using UnityEngine;
         {
             
             UnitManager.Instance.TargetUnitRelese();
-
-            rewardPopup.EventRemove();
-            rewardPopup.gameObject.SetActive(false);
         }
 
         public void OnClickBackButton()
@@ -82,8 +75,6 @@ using UnityEngine;
 
         public void ShowQuestPopup(Quest newQuest)
         {
-            var item = UnitManager.Instance.targetUnit.item;
-            questPopup.GetRenderImage().sprite = item.render;
             questPopup.GetTMP1().text = newQuest.select1.title;
             questPopup.GetTMP2().text = newQuest.select2.title;
             questPopup.GetButton(0).onClick.AddListener(newQuest.select1.OnClickedButton);
