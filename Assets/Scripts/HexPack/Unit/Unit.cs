@@ -75,7 +75,19 @@ public class Unit : UiBase
 
     public virtual int Hit(Unit AttackUnit)
     {
+        var oldhp = stat.curHp;
         stat.curHp = Math.Clamp(stat.curHp - AttackUnit.GetAttack(), 0, stat.maxHp);
+
+        if(stat.curHp == 0)
+        {
+            SkillManager.Instance.WhenPlayerAttack(oldhp);
+        }
+        else
+        {
+            SkillManager.Instance.WhenPlayerAttack(AttackUnit.GetAttack());
+        }
+
+       
         return stat.curHp;
     }
 

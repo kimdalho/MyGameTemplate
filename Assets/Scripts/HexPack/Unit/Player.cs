@@ -34,6 +34,11 @@ public class Player :Unit
         return playerStat.curHp;
     }
 
+    public int ChangeCurrentHp(int hill)
+    {
+        return Math.Clamp(GetCurrentHp()+ hill, 0, playerStat.maxHp);
+    }
+
     public override void Dead()
     {
         PathFindingManager.Instance.agent.nowNode.isWall = false;

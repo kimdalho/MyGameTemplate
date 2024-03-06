@@ -13,9 +13,45 @@ public abstract class BaseGrid
     public int width;
     public int hegiht;
 
+    /// <summary>
+    /// 값은 현제 요소값 key타입 타일의 캡프를 생성할 갯수를 의미합니.
+    /// </summary>
+    protected Dictionary<eCampType, int> request = new Dictionary<eCampType, int>();
+    [Header("생성 타일 갯수")]
+    [SerializeField]
+    private int Plains;
+    [SerializeField]
+    private int Mountain;
+    [SerializeField]
+    private int Desert;
+    [SerializeField]
+    private int Jungle;
+    [SerializeField]
+    private int Ocean;
+    [SerializeField]
+    private int ForestSnow;
+    
+
+
+
     public void CreateGird()
     {
+
         array = new Tile[width, hegiht];
+        foreach (eCampType campType in Enum.GetValues(typeof(eCampType)))
+        {
+            request.Add(campType, 0);
+        }
+        request[eCampType.PlainsCastle] = 1;
+        request[eCampType.Volcano] = 1;
+        request[eCampType.Plains] = Plains;
+        request[eCampType.Mountain] = Mountain;
+        request[eCampType.Jungle] = Jungle;
+        request[eCampType.Ocean] = Ocean;
+        request[eCampType.ForestSnow] = ForestSnow;
+        request[eCampType.Desert] = Desert;
+
+
 
         for (int y = 0; y < array.GetLength(1); y++)
         {
@@ -65,6 +101,7 @@ public class HexagonGrid : BaseGrid
 
         cell.transform.SetParent(parent, false);
         cell.transform.localPosition = position;
+        cell.SetMatixData(x, y);
         cell.name = string.Format("{0} , {1} ", x, y);
         cell.tmp.text = cell.name;
         return cell;
@@ -78,16 +115,7 @@ public class HexagonGrid : BaseGrid
         {
             for (int x = 0; x < array.GetLength(0); x++)
             {
-                if (x == (array.GetLength(0) / 2) && y == (array.GetLength(1) / 2))
-                {
-                    array[x, y].playerCamp = true;
-                    int PlainsCastleItem = (int)TileItem.eCampType.PlainsCastle;
-                    array[x, y].TileSetup(GridManager.Instance.GetTileItemSO().items[PlainsCastleItem]);
-                    continue;
-                }
-
                 tilebuffer.Add(array[x, y]);
-
             }
         }
 
@@ -99,52 +127,68 @@ public class HexagonGrid : BaseGrid
         }
         tilebuffer.Reverse();
 
-        var campbuffer =  CreateCampCount();
+        var taskBuffer =  GetBuildTaskBuffer();
 
-        DrawTile(tilebuffer, campbuffer);
+        Queue<KeyValuePair<KeyValuePair<int, int>, Tile>> data = new Queue<KeyValuePair<KeyValuePair<int, int>, Tile>>();
+        //완
 
+       
+        DrawTile(tilebuffer,taskBuffer);
     }
 
-    private Queue<KeyValuePair<TileItem.eCampType, int>> CreateCampCount()
+    private Queue<KeyValuePair<eCampType, int>> GetBuildTaskBuffer()
     {
-        Queue<KeyValuePair<TileItem.eCampType, int>> campTypeBuffer = new Queue<KeyValuePair<TileItem.eCampType, int>>();
-        campTypeBuffer.Enqueue(new KeyValuePair<TileItem.eCampType, int>(TileItem.eCampType.Volcano, 1));
-        campTypeBuffer.Enqueue(new KeyValuePair<TileItem.eCampType, int>(TileItem.eCampType.Mountain, 3));
-        campTypeBuffer.Enqueue(new KeyValuePair<TileItem.eCampType, int>(TileItem.eCampType.Plains, 10));
-        return campTypeBuffer;
-    }
 
-    private void DrawTile(List<Tile> tileBuffer, Queue<KeyValuePair<TileItem.eCampType, int>> cameTypeBuffer)
+        Queue<KeyValuePair<eCampType, int>> campTypeBuffer = new Queue<KeyValuePair<eCampType, int>>();
+
+        foreach (KeyValuePair<eCampType, int> data in request)
+        {
+            campTypeBuffer.Enqueue(new KeyValuePair<eCampType, int>(data.Key,data.Value));
+        }
+
+        return campTypeBuffer;
+    } 
+
+    private void DrawTile(List<Tile> tileBuffer, Queue<KeyValuePair<eCampType, int>> cameTypeBuffer)
     {
         var gridMgr = GridManager.Instance.GetTileItemSO();
 
         while (cameTypeBuffer.Count > 0)
         {
+            
             int targetIndex = 0;
             var pair =  cameTypeBuffer.Dequeue();
-            int item = (int)pair.Key;
-
             
             for(int i= 0; i < pair.Value; i ++)
             {
+                Debug.Log(pair.Key);
+
                 switch (pair.Key)
                 {
-                    case TileItem.eCampType.Volcano:
+                    case eCampType.PlainsCastle:
+
+                        var hexagonGrid = GridManager.Instance.hexagonGrid;
+                        int x = hexagonGrid.width / 2;
+                        int y = hexagonGrid.hegiht / 2;
+                        targetIndex = tileBuffer.FindIndex(data => data.matrixX == x && data.matrixY == y);
+                        Debug.Log($"targetIndex {targetIndex}");
+                        break;
+                    case eCampType.Volcano:
                         targetIndex = tileBuffer.Count-1;
                         break;
-                    case TileItem.eCampType.Mountain:
-                        targetIndex = Random.Range(0,tileBuffer.Count - 1);
-
-                        break;
-                    case TileItem.eCampType.Plains:
+                    case eCampType.Desert:
+                    case eCampType.Jungle:
+                    case eCampType.Plains:
+                    case eCampType.Mountain:
+                    case eCampType.ForestSnow:
+                    case eCampType.Ocean:
                         targetIndex = Random.Range(0, tileBuffer.Count - 1);
                         break;
                     default:
-                        Debug.Log($"DrawTile Not Found {pair.Key}");
                         break;
                 }
 
-                tileBuffer[targetIndex].TileSetup(gridMgr.items[item]);
+                tileBuffer[targetIndex].TileSetup(gridMgr.camps[pair.Key]);
                 tileBuffer.RemoveAt(targetIndex);
 
             }
@@ -152,8 +196,7 @@ public class HexagonGrid : BaseGrid
 
         while (tileBuffer.Count > 0)
         {
-            int forestItem = (int)TileItem.eCampType.Forest;
-            tileBuffer[0].TileSetup(GridManager.Instance.GetTileItemSO().items[forestItem]);
+            tileBuffer[0].TileSetup(GridManager.Instance.GetTileItemSO().camps[eCampType.Forest]);
             tileBuffer.RemoveAt(0);
         }
 

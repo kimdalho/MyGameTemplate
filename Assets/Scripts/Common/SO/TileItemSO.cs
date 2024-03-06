@@ -1,22 +1,28 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+public enum eCampType
+{
+    PlainsCastle = 0,
+    Volcano = 1,
+    Plains = 2,
+    Mountain = 3, 
+    Forest = 5,
+    Desert = 6,
+    Jungle = 7,
+    Ocean = 8,
+    ForestSnow = 9,
+    None = 10,
+
+
+}
 
 //타일
 [System.Serializable]
 public class TileItem
 {
-    public enum eCampType
-    {
-        None = 0,
-        Volcano = 1,
-        Plains = 2,
-        Mountain = 3,
-        PlainsCastle = 4,
-        Forest = 5,
-
-    }
-
     public string name;
     public eCampType type;
     public Sprite sprite;
@@ -26,7 +32,28 @@ public class TileItem
 [CreateAssetMenu(fileName = "HexItemSO", menuName = "Scriptable Object/Hex/TileItemSO")]
 public class TileItemSO : ScriptableObject
 {
-    public TileItem[] items;
+    [SerializeField]
+    private TileItem[] items;
+
+    public Dictionary<eCampType, TileItem> camps;
+
+    public void Setup()
+    {
+        camps = new Dictionary<eCampType, TileItem>();
+        foreach (var item in items)
+        {
+            
+            try
+            {
+                camps.Add(item.type, item);
+            }
+            catch(Exception e)
+            {
+                Debug.LogError("catch already exist key more set try");
+            }
+           
+        }
+    }
 }
 
 

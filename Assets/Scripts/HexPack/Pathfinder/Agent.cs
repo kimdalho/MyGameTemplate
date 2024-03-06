@@ -62,9 +62,15 @@ public class Agent : MonoBehaviour
     {
         if (onDrag == true)
         {
-            bool onFindPath =  PathFindingManager.Instance.PathFinding();
+            bool FindedMovePath =  PathFindingManager.Instance.PathFinding();
+
+            if(FindedMovePath == false)
+            {
+                Debug.LogWarning("there is nothing to Path");
+                return;
+            }
             
-            PathFindingManager.Instance.Move(onFindPath);
+            PathFindingManager.Instance.Move(FindedMovePath);
         }
     }
 

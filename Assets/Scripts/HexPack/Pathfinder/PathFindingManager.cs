@@ -92,29 +92,35 @@ public class PathFindingManager : Singleton<PathFindingManager>
 
     
 
-    public void Move(bool there_is_move)
+    public void Move(bool ExistPathYet)
     {
-        if (there_is_move == false)
+        if (ExistPathYet == false || FinalList.Count <= 0)
         {
-            if (targetNode.unit != null && targetNode.unit.onLive)
+            if(targetNode.unit == null)
             {
-                UnitManager.Instance.ActiveUnit(targetNode.unit);
+                GameManager.Instance.SetStatus(eTurnType.PlayerMoveEnd);
             }
             else
             {
-                //Finish Move
-                GameManager.Instance.SetStatus(eTurnType.PlayerMoveEnd);
+                if (targetNode.unit.status == eUnitType.Creture)
+                {
+                    UnitManager.Instance.TryAttack(targetNode.unit);
+                }
+                else if(targetNode.unit.status ==  eUnitType.Tower)
+                {
+                    Debug.Log("Try interactive to Tower");
+                    //TODO:
+                    //아직 개발 진행중
+                    GameManager.Instance.SetStatus(eTurnType.PlayerMoveEnd);
+                }
+                else
+                {
+                    GameManager.Instance.SetStatus(eTurnType.PlayerMoveEnd);
+                }
             }
             return;
 
         }
-
-        if (FinalList.Count == 0)
-        {
-            UnitManager.Instance.ActiveUnit(targetNode.unit);
-            return;
-        }
-
 
         agent.transform.DOMove(FinalList[0].offsetPos, MOVING_DURATION, true)
             .SetEase(Ease.OutCubic)
@@ -125,6 +131,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
                 agent.nowNode.isWall = true;
                 FinalList.RemoveAt(0);
                 bool recive = FinalList.Count > 0 ? true : false;
+                Debug.Log($"{recive}");
                 Move(recive);
             });
     }
@@ -146,13 +153,13 @@ public class PathFindingManager : Singleton<PathFindingManager>
     public void Setup()
     {
         matrixNodes = GridManager.Instance.GetHexagonArray();
-        for (int y = 0; y < heightSize; y++)
-        {
-            for (int x = 0; x < widthSize; x++)
-            {
-                matrixNodes[x, y].SetMatixData(x, y);
-            }
-        }
+        //for (int y = 0; y < heightSize; y++)
+        //{
+        //    for (int x = 0; x < widthSize; x++)
+        //    {
+        //        matrixNodes[x, y].SetMatixData(x, y);
+        //    }
+        //}
         ClosedList = new List<Node>();
         FinalList = new List<Node>();
         OpenList = new List<Node>();

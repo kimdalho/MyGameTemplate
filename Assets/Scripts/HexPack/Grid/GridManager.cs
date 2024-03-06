@@ -21,15 +21,13 @@ using Random = UnityEngine.Random;
         [Header("TilePrefab")]
         [SerializeField] TileItemSO itemso;
 
+
         [Header("Girds")]
         public HexagonGrid hexagonGrid;
-        public BattleGrid battleGrid;
         
-
-
         public void Setup()
         {
-            Debug.Log("call");
+            itemso.Setup();
             hexagonGrid.CreateGird();
             hexagonGrid.SetTileAttribute();
         }
@@ -45,7 +43,7 @@ using Random = UnityEngine.Random;
 
 
         //###############Gettter##############################
-        public List<Tile> GetTilesByType(TileItem.eCampType type)
+        public List<Tile> GetTilesByType(eCampType type)
         {
             List<Tile> result = new List<Tile>();
 

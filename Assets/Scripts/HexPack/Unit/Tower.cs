@@ -116,6 +116,7 @@ public class Tower :Unit,ITurnSystem
             tower.gauge.SetDraw(true);
         }
 
+        
         StartCoroutine(CoUpdateSpawnData());
     }
 

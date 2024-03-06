@@ -41,7 +41,6 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
         units = new List<Unit>();
         CretrueSpawnList = new List<Node>();
         CampGenerator();
-        UnitManager.Instance.CreatePlayer(unitHolder);
 
         foreach(var unit in units)
         {
@@ -54,7 +53,7 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
     }
 
 
-    public void CreatePlayer(Transform parent)
+    public Player CreatePlayer()
     {
         var hexagonGrid = GridManager.Instance.hexagonGrid;
         int playerPosX = hexagonGrid.width  /2;
@@ -65,11 +64,12 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
         Vector3 vec = new Vector3(pos.x, pos.y + Offset, playerPosZ);
         var go = Instantiate(playerPrefab, vec, Util.QI);
         Agent agent = go.GetComponent<Agent>();
-        go.transform.SetParent(parent);
+        go.transform.SetParent(unitHolder);
         agent.Setup(pick);
         agent.nowNode = baseNode;
         PathFindingManager.Instance.agent = agent;
-        GameManager.Instance.player = go.GetComponent<Player>();
+        Debug.Log("Create Player success");
+        return go.GetComponent<Player>();
     }
 
     /// <summary>
@@ -81,16 +81,9 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
     /// </summary>
     private void CampGenerator()
     {
-        foreach (TileItem.eCampType enumItem in  Enum.GetValues(typeof(TileItem.eCampType)))
+        foreach (eCampType enumItem in  Enum.GetValues(typeof(eCampType)))
         {
-            switch(enumItem)
-            {
-                case TileItem.eCampType.Mountain:
-                case TileItem.eCampType.Volcano:
-                case TileItem.eCampType.Plains:
-                    Unitcomport(enumItem);
-                    break;
-            }
+            CreateTowerByCampeType(enumItem);
         }
 
         foreach(var unit in units)
@@ -108,10 +101,10 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
     /// 가져온 타일의 타입에 맞게 처신하여 유닛새성을 돕는다
     /// </summary>
     /// <param name="type"></param>는 유닛의 부모이다
-    private void Unitcomport(TileItem.eCampType type)
+    private void CreateTowerByCampeType(eCampType type)
     {
         var tiles = GridManager.Instance.GetTilesByType(type);
-        var typeHolder =  new GameObject();
+        var typeHolder = new GameObject();
         typeHolder.name = $"{type}Holder";
         typeHolder.transform.SetParent(this.unitHolder);
 
@@ -123,18 +116,14 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
             i++;
             switch (tile.GeteType())
             {
-                case TileItem.eCampType.Mountain:
+                case eCampType.Mountain:
+                case eCampType.Volcano:
+                case eCampType.Jungle:
                     CreateCamp(typeHolder.transform, tile, towerUnitSO, true);
                     break;
-                case TileItem.eCampType.Volcano:
-                    CreateCamp(typeHolder.transform, tile, towerUnitSO, true);
-                    break;
-                case TileItem.eCampType.Forest:
-                case TileItem.eCampType.PlainsCastle:
-                    CreateCamp(typeHolder.transform, tile, towerUnitSO, false);
-                    break;
-                case TileItem.eCampType.Plains:
-                    CreateCamp(typeHolder.transform, tile, towerUnitSO, true);
+                case eCampType.Forest:
+                case eCampType.PlainsCastle:
+                default:
                     break;
             }
         }
@@ -172,23 +161,21 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
         NewUnit.SetData(model, true, neighbor);
     }
 
-    public void ActiveUnit(Unit unit)
+    public void TryAttack(Unit unit)
     {
+        if(null == unit)
+        {
+            Debug.LogError("there is not unit at tile");
+            return;
+        }
+
         StartCoroutine(CoActiveUnit(unit));
     }
 
     private IEnumerator CoActiveUnit(Unit unit)
     {
         targetUnit = unit;
-        switch (targetUnit.status)
-        {
-            case eUnitType.Creture:
-               yield return StartCoroutine(GameManager.Instance.CoBattle(targetUnit));
-               //GameManager.Instance.SetStatus(eTurnType.PlayerMoveEnd);
-                break;
-            case eUnitType.Tower:
-                break;
-        }
+        yield return StartCoroutine(GameManager.Instance.CoBattle(targetUnit));
     }
 
 

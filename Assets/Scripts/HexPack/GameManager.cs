@@ -29,8 +29,15 @@ using DG.Tweening;
             GridManager.Instance.Setup();
             PathFindingManager.Instance.Setup();
             UnitManager.Instance.Setup();
+            player =  UnitManager.Instance.CreatePlayer();
             Subject();
             StartGame();
+            
+            if (player == null)
+            {
+                Debug.LogError("player not create yet at UnitMnanger");
+                return;
+            }
             player.iplayerhit.Add(camMove.GetSubject());
         }
 

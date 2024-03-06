@@ -16,6 +16,16 @@ using TMPro;
         public void TileSetup(TileItem item)
         {
             this.item = item;
+
+            switch(item.type)
+            {
+                case eCampType.Ocean:
+                    isWall = true;
+                    break;
+                default:
+                    break;
+            }
+            
             render.sprite = this.item.sprite;
         }
 
@@ -36,7 +46,7 @@ using TMPro;
             Debug.Log($"node Down");
         }
 
-        public TileItem.eCampType GeteType()
+        public eCampType GeteType()
         {
             return item.type;
         }
