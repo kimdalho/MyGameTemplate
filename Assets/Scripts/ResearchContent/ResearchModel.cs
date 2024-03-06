@@ -2,8 +2,6 @@
 using UnityEngine;
 
 [System.Serializable]
-
-
 public class ResearchModel
 {
     public int id;

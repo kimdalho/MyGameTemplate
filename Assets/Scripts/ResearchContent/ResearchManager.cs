@@ -2,17 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResearchManager : MonoBehaviour
+public class ResearchManager : Singleton<ResearchManager>
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private ResearchSO so;
+
+    [SerializeField]
+    public List<ResearchModel> models;
+
+    private void Awake()
     {
-        
+        models = new List<ResearchModel>();
+        foreach(var model in so.models)
+        {
+            this.models.Add(model);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+
 }
