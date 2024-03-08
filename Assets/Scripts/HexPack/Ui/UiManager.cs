@@ -21,6 +21,10 @@ using UnityEngine;
         public InvenPopup invenPopup;
         public QuestPopup questPopup;
 
+        [Header("Desk")]
+        public UnitView unitView;
+        
+
         public void OnClickInvenButton()
         {
             invenPopup.gameObject.SetActive(true);

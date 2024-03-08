@@ -39,8 +39,12 @@ public class UnititemSO : ScriptableObject
 [System.Serializable]
 public class UnitItem
 {
+    //구조 설계 오류 
+    [Header("타워일 경우에만 사용")]
     public eTowerType towerType;
+    [Header("몬스터일 경우에만 사용")]
     public eCretureType cretureType;
+    [Header("Common")]
     public eUnitType status;
     public int spawn;
     public string name;
@@ -50,6 +54,8 @@ public class UnitItem
     public UnitStat baseStat;
     public int id;
     public List<int> cretureUnits;
+    [Header("생성 아이템")]
+    public int[] dropitemIds;
 }
 
 

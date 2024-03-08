@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4df59a4e6d374360990a396bfc0899f, type: 3}
+  m_Name: GameMaterialSO
+  m_EditorClassIdentifier: 
+  models:
+  - id: 0
+    materialName: "\uBAA9\uC7AC"
+    count: 5
+    grade: 0
+    icon: {fileID: 21300000, guid: 63af52b5b92b10c4594f1085a1a0ab94, type: 3}
+  - id: 1
+    materialName: "\uBC84\uC12F"
+    count: 4
+    grade: 0
+    icon: {fileID: 21300000, guid: 6270d46c6c1104b448fb5bac5bede74d, type: 3}
+  - id: 2
+    materialName: "\uB8E8\uBE44"
+    count: 4
+    grade: 0
+    icon: {fileID: 21300000, guid: 1200fd4c89ff9654483fdc0805358f5e, type: 3}
+  - id: 3
+    materialName: "\uBF08"
+    count: 5
+    grade: 0
+    icon: {fileID: 21300000, guid: b45939f11371c524684402713923fe54, type: 3}
+  - id: 4
+    materialName: "\uACE8\uB4DC"
+    count: 100
+    grade: 0
+    icon: {fileID: 21300000, guid: 93b5b28db06f8d2439c780ec3aeb28d2, type: 3}
+  - id: 5
+    materialName: "\uACE8\uB4DC"
+    count: 50
+    grade: 0
+    icon: {fileID: 21300000, guid: 93b5b28db06f8d2439c780ec3aeb28d2, type: 3}
+  - id: 6
+    materialName: "\uC11D\uC7AC"
+    count: 10
+    grade: 0
+    icon: {fileID: 21300000, guid: 583675a75bcb2a941ac555b9ccd513a9, type: 3}
+  - id: 7
+    materialName: "\uC11D\uC7AC"
+    count: 30
+    grade: 0
+    icon: {fileID: 21300000, guid: 583675a75bcb2a941ac555b9ccd513a9, type: 3}
+  - id: 8
+    materialName: "\uC2DD\uB7C9"
+    count: 10
+    grade: 0
+    icon: {fileID: 21300000, guid: b416145d20baa364598d07e1740ae2fb, type: 3}
+  - id: 9
+    materialName: "\uB098\uBB34"
+    count: 20
+    grade: 0
+    icon: {fileID: 21300000, guid: 63af52b5b92b10c4594f1085a1a0ab94, type: 3}

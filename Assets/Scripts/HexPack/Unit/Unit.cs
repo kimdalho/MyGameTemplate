@@ -29,6 +29,14 @@ public class Unit : UiBase
     public bool onLive;
     public eUnitType status;
     protected List<int> cretureList;
+    public string unitName;
+    public Sprite image;
+    public int grad;
+    public int modelId;
+
+    [Header("소재 아이템")]
+    public List<GameMaterial> materials;
+
     public virtual void SetData(UnitItem item, bool isFront, Node parent)
     {
         Setup();
@@ -53,8 +61,29 @@ public class Unit : UiBase
         this.parent.isWall = true;
         this.cretureList = item.cretureUnits;
         hud = GetComponent<UnitHud>();
-        hud.Draw(item,stat); 
+        hud.Draw(item,stat);
+        image = item.render;
+        unitName = item.name;
+        grad = item.grad;
+        modelId = item.id;
+
+        materials = new List<GameMaterial>();
+        for(int i = 0; i < item.dropitemIds.Length; i++)
+        {
+           int itemId =  item.dropitemIds[i];
+           GameMaterial itemModel = UnitManager.Instance.GetGameMaterial(itemId);
+           materials.Add(itemModel);
+        }
+         
+
+
     }
+
+    private void OnMouseDown()
+    {
+        UiManager.Instance.unitView.SetData(this);
+    }
+
 
     public Node GetTileOffSetPos()
     {
@@ -94,6 +123,11 @@ public class Unit : UiBase
     public virtual int GetAttack()
     {
         return stat.curHp;
+    }
+
+    public virtual int GetMaxHp()
+    {
+        return stat.maxHp;
     }
 
     public virtual int GetCurrentHp()

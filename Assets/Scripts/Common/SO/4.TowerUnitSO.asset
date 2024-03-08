@@ -29,6 +29,7 @@ MonoBehaviour:
       fullness: 0
     id: 0
     cretureUnits: 0000000004000000
+    dropitemIds: 
   - towerType: 0
     cretureType: 0
     status: 1
@@ -43,8 +44,9 @@ MonoBehaviour:
       atk: 0
       move: 0
       fullness: 0
-    id: 0
+    id: 1
     cretureUnits: 01000000
+    dropitemIds: 
   - towerType: 0
     cretureType: 0
     status: 1
@@ -61,6 +63,7 @@ MonoBehaviour:
       fullness: 0
     id: 0
     cretureUnits: 0400000005000000
+    dropitemIds: 
   - towerType: 0
     cretureType: 0
     status: 1
@@ -77,6 +80,7 @@ MonoBehaviour:
       fullness: 0
     id: 0
     cretureUnits: 
+    dropitemIds: 
   - towerType: 0
     cretureType: 0
     status: 1
@@ -93,3 +97,4 @@ MonoBehaviour:
       fullness: 0
     id: 0
     cretureUnits: 
+    dropitemIds: 

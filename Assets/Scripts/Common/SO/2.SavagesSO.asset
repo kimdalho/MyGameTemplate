@@ -30,6 +30,7 @@ MonoBehaviour:
       fullness: 2
     id: 0
     cretureUnits: 
+    dropitemIds: 0800000003000000
   - towerType: 0
     cretureType: 2
     status: 0
@@ -47,6 +48,7 @@ MonoBehaviour:
       fullness: 0
     id: 1
     cretureUnits: 
+    dropitemIds: 0800000003000000
   - towerType: 0
     cretureType: 3
     status: 0
@@ -64,6 +66,7 @@ MonoBehaviour:
       fullness: 2
     id: 2
     cretureUnits: 
+    dropitemIds: 0800000003000000
   - towerType: 0
     cretureType: 3
     status: 0
@@ -83,6 +86,7 @@ MonoBehaviour:
       fullness: 0
     id: 0
     cretureUnits: 
+    dropitemIds: 0800000003000000
   - towerType: 0
     cretureType: 1
     status: 0
@@ -100,6 +104,7 @@ MonoBehaviour:
       fullness: 1
     id: 3
     cretureUnits: 
+    dropitemIds: 0800000003000000
   - towerType: 0
     cretureType: 1
     status: 0
@@ -118,6 +123,7 @@ MonoBehaviour:
       fullness: 0
     id: 4
     cretureUnits: 
+    dropitemIds: 0800000003000000
   - towerType: 0
     cretureType: 0
     status: 0
@@ -136,3 +142,4 @@ MonoBehaviour:
       fullness: 0
     id: 5
     cretureUnits: 
+    dropitemIds: 0800000003000000

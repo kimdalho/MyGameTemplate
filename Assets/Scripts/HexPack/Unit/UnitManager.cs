@@ -26,6 +26,7 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
     [SerializeField] UnititemSO hidingUnitSO;
     [SerializeField] UnititemSO towerUnitSO;
     [SerializeField] Transform unitHolder;
+    [SerializeField] GameMaterialSO gameMaterialSO;
 
     [Header("Resource")]
     [SerializeField] private GameObject pick;
@@ -177,6 +178,12 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
         targetUnit = unit;
         yield return StartCoroutine(GameManager.Instance.CoBattle(targetUnit));
     }
+
+    public GameMaterial GetGameMaterial(int materialId)
+    {
+        return gameMaterialSO.models[materialId];
+    }
+
 
 
     public void TargetUnitRelese()
