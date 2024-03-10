@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-public class UnitHud : MonoBehaviour
+public class EntryHud : MonoBehaviour
 {
-    public MiniSlider gauge;
-    public TextMeshPro tmp_atk;
-    public TextMeshPro tmp_hp;
+    public MiniSlider slider;
+    public TextMeshProUGUI tmp_atk;
+    public TextMeshProUGUI tmp_hp;
     [SerializeField]
     private UnitViewer viewer;
 

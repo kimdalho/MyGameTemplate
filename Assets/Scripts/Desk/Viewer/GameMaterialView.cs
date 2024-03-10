@@ -10,12 +10,9 @@ public class GameMaterialView : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI tmpCount;
 
-    public void SetData(List<GameMaterial> models)
+    public void SetData(GameMaterial model)
     {
-        models.ForEach(model =>
-        {
-            imgIcon.sprite = model.icon;
-            tmpCount.text = model.count.ToString();
-        });
+        imgIcon.sprite = model.icon;
+        tmpCount.text = model.count.ToString();
     }
 }

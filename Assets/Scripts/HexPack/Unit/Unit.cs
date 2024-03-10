@@ -12,127 +12,71 @@ using System.Threading.Tasks;
 /// 2. 외부에서는 단지 PRS 또는 생성에대한 접근을한다
 /// 3. 유닛이 실행해야하는 기능은 UnitManager에서 호출한다
 
-public class Unit : UiBase
+public abstract class Unit : UiBase
 {
-    public UnitHud hud;
+    public EntryHud hud;
     /// <summary>
     /// ParentNode는 유닛의 현제 좌표다
     /// </summary>
-    public Node parent;
-
-    /// <summary>
-    /// Get만하여 사용
-    /// </summary>
-    public UnitStat stat;
-    public eCretureType crtureType;
-    public eTowerType towerType;
     public bool onLive;
     public eUnitType status;
-    protected List<int> cretureList;
     public string unitName;
     public Sprite image;
-    public int grad;
-    public int modelId;
-
-    [Header("소재 아이템")]
-    public List<GameMaterial> materials;
+   
 
     public virtual void SetData(UnitItem item, bool isFront, Node parent)
     {
         Setup();
         onLive = true;
-        stat = new UnitStat();
-        var model = item.baseStat;
-        stat.curHp = model.curHp;
-        stat.maxHp = model.maxHp;
-        stat.atk = model.atk;
-        stat.move = model.move;
-        stat.fullness = model.fullness;
-        stat.maxHp = model.maxHp;
         status = item.status;
-        this.parent = parent;
-        this.parent.unit = this;
-
-        this.crtureType = item.cretureType;
-        this.towerType = item.towerType;
-
         transform.position = parent.transform.position;
         transform.position += Vector3.up * UnitManager.Offset;
-        this.parent.isWall = true;
-        this.cretureList = item.cretureUnits;
-        hud = GetComponent<UnitHud>();
-        hud.Draw(item,stat);
         image = item.render;
         unitName = item.name;
-        grad = item.grad;
-        modelId = item.id;
-
-        materials = new List<GameMaterial>();
-        for(int i = 0; i < item.dropitemIds.Length; i++)
-        {
-           int itemId =  item.dropitemIds[i];
-           GameMaterial itemModel = UnitManager.Instance.GetGameMaterial(itemId);
-           materials.Add(itemModel);
-        }
-         
-
-
     }
 
     private void OnMouseDown()
     {
-        UiManager.Instance.unitView.SetData(this);
+        UiManager.Instance.deskHud.OnClickedUnit(this);
     }
 
 
-    public Node GetTileOffSetPos()
+    public virtual Node GetTileOffSetPos()
     {
-        return parent;
+        Debug.LogError("Not Exist Pos");
+        return null;
     }
 
     public virtual void Dead()
     {
         onLive = false;
-        parent.isWall = false;
         Destroy(this.gameObject);
     }
 
     public async void A()
     {
+        
         await Task.Delay(1000);
     }
 
     public virtual int Hit(Unit AttackUnit)
     {
-        var oldhp = stat.curHp;
-        stat.curHp = Math.Clamp(stat.curHp - AttackUnit.GetAttack(), 0, stat.maxHp);
-
-        if(stat.curHp == 0)
-        {
-            SkillManager.Instance.WhenPlayerAttack(oldhp);
-        }
-        else
-        {
-            SkillManager.Instance.WhenPlayerAttack(AttackUnit.GetAttack());
-        }
-
-       
-        return stat.curHp;
+        return 0;
     }
 
     public virtual int GetAttack()
     {
-        return stat.curHp;
+        return 0;
     }
 
     public virtual int GetMaxHp()
     {
-        return stat.maxHp;
+        return 0;
     }
 
     public virtual int GetCurrentHp()
     {
-        return stat.curHp;
+        return 0;
     }
 
 }

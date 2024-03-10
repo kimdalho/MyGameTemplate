@@ -70,7 +70,7 @@ public class MiniSlider : MonoBehaviour ,ITurnSystem
 
     public void TurnAwake()
     {
-        GameManager.Instance.miniSliders.Add(this);
+  
     }
 
     public void StartPlayerTurn()
@@ -82,21 +82,19 @@ public class MiniSlider : MonoBehaviour ,ITurnSystem
     {
         
     }
-
-    private void OnDestroy()
-    {
-        if(GameManager.Instance != null)
-            GameManager.Instance.miniSliders.Remove(this);
-
-    }
-
+    /// <summary>
+    /// 연출 끝나면 오브젝트 비활성화
+    /// </summary>
     public void SliderFadeIn()
     {
         for(int i = 0; i < fades.Count; i++)
         {
            if(i == fades.Count -1)
            {
-                fades[i].FadeIn(() => { this.gameObject.SetActive(false); });
+                fades[i].FadeIn(() => { 
+                this.gameObject.SetActive(false);
+                    GameManager.Instance.buffer.Remove(this);
+                });
            }
            else
             {
@@ -116,5 +114,6 @@ public class MiniSlider : MonoBehaviour ,ITurnSystem
             fade.FadeOut(() => { });
         }
     }
+
 
 }

@@ -3,37 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class DeskHud : MonoBehaviour, IUiObserver
+using static UnityEngine.UI.CanvasScaler;
+
+public class DeskHud : MonoBehaviour
 {
-    [SerializeField] private Image player;
-    [SerializeField] private TextMeshProUGUI nameString;
+    [Header("Only Player")]
+    [SerializeField] private PlayerHud playerHud;
 
-    [SerializeField] private TextMeshProUGUI tmp_atk;
-    [SerializeField] private TextMeshProUGUI tmp_gold;
-    [SerializeField] private TextMeshProUGUI tmp_move;
-
-    [Header("HP")]
-    [SerializeField] private Slider slider_hp;
-    [SerializeField] private TextMeshProUGUI tmp_hp;
-    [Header("hungger")]
-    [SerializeField] private Slider slider_hungger;
-    [SerializeField] private TextMeshProUGUI tmp_hungger;
-
-    private void Awake()
-    {
-        GameManager.Instance.uiObservers.Add(this);
-    }
+    [Header("Tower Or Creture")]
+    [SerializeField] private EnemyUnitHud enemyHud; 
 
     public void Writ()
     {
-        var playerStat = GameManager.Instance.player.playerStat;
-        tmp_atk.text =  playerStat.atk.ToString();
-        tmp_gold.text = playerStat.move.ToString();
-        tmp_move.text = playerStat.move.ToString();
+        playerHud.SetData(GameManager.Instance.player);
+    }
 
-        slider_hp.value = (float)((float)playerStat.curHp / (float)playerStat.maxHp);
-        tmp_hp.text = string.Format("{0}/{1}", playerStat.curHp, playerStat.maxHp);
-        slider_hungger.value = (playerStat.hunger / playerStat.maxHunger);
-        tmp_hungger.text = string.Format("{0}/{1}", playerStat.hunger, playerStat.maxHunger);
+    public void OnClickedUnit(Unit unit)
+    {
+        if (unit == null)
+        {
+            Debug.LogError("잘못된 접근");
+            return;
+        }
+
+        if (unit.status == eUnitType.Player)
+        {
+            enemyHud.gameObject.SetActive(false);
+            enemyHud.bottom.gameObject.SetActive(false);
+            playerHud.gameObject.SetActive(true);
+            playerHud.SetData(unit);
+            
+        }
+        else
+        {
+            enemyHud.gameObject.SetActive(true);
+            playerHud.bottom.gameObject.SetActive(false);
+            playerHud.gameObject.SetActive(false); 
+            enemyHud.SetData(unit);
+        }
+
     }
 }

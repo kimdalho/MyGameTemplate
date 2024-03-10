@@ -1940,7 +1940,7 @@ GameObject:
   - component: {fileID: 902617106358781527}
   - component: {fileID: 5334713751062209371}
   m_Layer: 5
-  m_Name: UnitView
+  m_Name: EnemyHud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2019,18 +2019,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a1d848b723d74062889b6776b088a5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHud: {fileID: 6517098238294738198}
-  imgIcon: {fileID: 3151350688132069151}
-  tmpUnitName: {fileID: 857167972410221890}
-  tmpAttack: {fileID: 3001289108156900431}
-  tmpMaxHp: {fileID: 4833352521881856110}
+  thumbnail: {fileID: 3151350688132069151}
+  nameString: {fileID: 857167972410221890}
+  slider_hp: {fileID: 191613691621298628}
+  tmp_hp: {fileID: 4833352521881856110}
+  tmp_atk: {fileID: 3001289108156900431}
+  bottom: {fileID: 6865385124171180784}
   icons:
   - {fileID: 756859837423763989}
   - {fileID: 3000252280989467650}
   - {fileID: 1890146075390052540}
   - {fileID: 6431364439003895496}
   - {fileID: 5244600901458695794}
-  bottom: {fileID: 6865385124171180784}
   materialViews:
   - {fileID: 1079380295765385055}
   - {fileID: 855798554233576113}
@@ -3736,7 +3736,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e6411bdc3221b43ddb1a9fa885ef30cc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9fbdd0376ab914cc6a1b8835495610c8, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4012,6 +4012,7 @@ GameObject:
   - component: {fileID: 4415447556773713822}
   - component: {fileID: 5737200718244368043}
   - component: {fileID: 2598866909448802568}
+  - component: {fileID: 6197094289295787285}
   m_Layer: 5
   m_Name: PlayerHud
   m_TagString: Untagged
@@ -4079,6 +4080,27 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6197094289295787285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6517098238294738198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28357c5367c6d7649a0945c55772dc17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thumbnail: {fileID: 379142786315844183}
+  nameString: {fileID: 6959276814267421056}
+  slider_hp: {fileID: 1832812294348765204}
+  tmp_hp: {fileID: 6747571837626719985}
+  tmp_atk: {fileID: 4027584153941730432}
+  bottom: {fileID: 2796959316841687189}
+  slider_hungger: {fileID: 3283599005576353817}
+  tmp_hungger: {fileID: 7144827096779929581}
+  tmp_move: {fileID: 1595729529657855030}
 --- !u!1 &6681147777142662976
 GameObject:
   m_ObjectHideFlags: 0
@@ -4805,15 +4827,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b480123abae74bb5839dd0c38e8a353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 2468388900522947255}
-  nameString: {fileID: 6959276814267421056}
-  tmp_atk: {fileID: 4027584153941730432}
-  tmp_gold: {fileID: 4261113662400705758}
-  tmp_move: {fileID: 1595729529657855030}
-  slider_hp: {fileID: 1832812294348765204}
-  tmp_hp: {fileID: 6747571837626719985}
-  slider_hungger: {fileID: 3283599005576353817}
-  tmp_hungger: {fileID: 7144827096779929581}
+  playerHud: {fileID: 6197094289295787285}
+  enemyHud: {fileID: 5334713751062209371}
 --- !u!1 &7385454623769345186
 GameObject:
   m_ObjectHideFlags: 0

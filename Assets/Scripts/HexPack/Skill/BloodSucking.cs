@@ -15,7 +15,7 @@ public class BloodSucking : Skill , IAttackEventObserver
         // value-1 / value-2
         int sucking = Mathf.RoundToInt((float)value_1 / (float)value_2);
         GameManager.Instance.player.ChangeCurrentHp(sucking);
-        GameManager.Instance.Subject();
+        GameManager.Instance.UiRefresh();
     }
 
     public override void Show()

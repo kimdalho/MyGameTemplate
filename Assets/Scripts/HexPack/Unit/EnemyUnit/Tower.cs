@@ -1,15 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Tower :Unit,ITurnSystem
+public class Tower : EnemyUnit, ITurnSystem
 {
+    public eTowerType towerType;
     public List<Node> myNeighbors;
     public Node location;
+    protected List<int> cretureList;
     private int matrixY => location.matrixY;
     private int matrixX => location.matrixX;
     private readonly int OFFSET_LEFT = -1;
     private readonly int OFFSET_RIGHT = 1;
-    private UnitHud tower;
+    private EntryHud tower;
 
     [SerializeField]
     private List<UnitItem> spawnList = new List<UnitItem>();
@@ -20,8 +22,8 @@ public class Tower :Unit,ITurnSystem
     {
         myNeighbors = new List<Node>();
         GameManager.Instance.PlayerMoveEnd += EndPlayerMove;
-        tower = GetComponent<UnitHud>();  
-        tower.gauge.spawn += () => {
+        tower = GetComponent<EntryHud>();  
+        tower.slider.spawn += () => {
 
             if(spawnList.Count > 0)
             {
@@ -42,6 +44,8 @@ public class Tower :Unit,ITurnSystem
     public override void SetData(UnitItem item, bool isFront, Node parent)
     {
         base.SetData(item, isFront, parent);
+        towerType = item.towerType;
+        this.cretureList = item.cretureUnits;
         isspawn = false;
         foreach (int MonsterId in cretureList)
         {
@@ -112,8 +116,8 @@ public class Tower :Unit,ITurnSystem
                 Debug.LogError("몬스터 생성 스코어가 잘못되었다 => EndPlayerMove() => targetModel.spawn is zero");
                 return;
             }
-            tower.gauge.SetMax(targetModel.spawn);
-            tower.gauge.SetDraw(true);
+            tower.slider.SetMax(targetModel.spawn);
+            tower.slider.SetDraw(true);
         }
 
         
@@ -122,13 +126,9 @@ public class Tower :Unit,ITurnSystem
 
     private IEnumerator CoUpdateSpawnData()
     {
-        var slider = tower.gauge;
-        slider.SliderFadeOut();
-
-
-            
+        var slider = tower.slider;
+        slider.SliderFadeOut(); 
         yield return new WaitForSeconds(1f);
-
        
         float deltime = 0;
         while (deltime < 1)

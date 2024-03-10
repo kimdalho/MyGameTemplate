@@ -5,13 +5,15 @@ using UnityEngine;
 
 public class Player :Unit
 {
-    public PlayerState playerStat;
-
+    public PlayerStat playerStat;
+    public Agent agent;
     public List<IPlayerHit> iplayerhit = new List<IPlayerHit>();
 
     private void Awake()
     {
+        playerStat = new PlayerStat();
         playerStat.Setup();
+        status = eUnitType.Player;
     }
 
     public override int Hit(Unit AttackUnit)
@@ -41,8 +43,12 @@ public class Player :Unit
 
     public override void Dead()
     {
-        PathFindingManager.Instance.agent.nowNode.isWall = false;
         Debug.Log("GameOver");
+    }
+
+    public Node GetNowNode()
+    {
+        return agent.nowNode;
     }
 
 }

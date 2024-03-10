@@ -2,6 +2,7 @@
 using UnityEngine;
 using DG.Tweening;
 using System;
+using TreeEditor;
 
 //기능 개발 이유
 //유닛이 육각타일에서의 규칙 이동을 구현하기위해 Unity Navigation을 사용하지않고 직접 A*를 구현했습니다.
@@ -32,7 +33,10 @@ public class PathFindingManager : Singleton<PathFindingManager>
     [SerializeField] private List<Node> FinalList;
 
 
-    public Agent agent { get; set; }
+    private Agent playerAgent;
+    private Agent enemyAgent;
+
+
     public Node targetNode { get; set; }
     public Node curNode { get; private set; }
     
@@ -98,6 +102,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
         {
             if(targetNode.unit == null)
             {
+                Debug.Log("여기문제인듯");
                 GameManager.Instance.SetStatus(eTurnType.PlayerMoveEnd);
             }
             else
@@ -122,13 +127,13 @@ public class PathFindingManager : Singleton<PathFindingManager>
 
         }
 
-        agent.transform.DOMove(FinalList[0].offsetPos, MOVING_DURATION, true)
+        playerAgent.transform.DOMove(FinalList[0].offsetPos, MOVING_DURATION, true)
             .SetEase(Ease.OutCubic)
             .OnComplete(() =>
             {
-                agent.nowNode.isWall = false;
-                agent.nowNode = FinalList[0];
-                agent.nowNode.isWall = true;
+                playerAgent.nowNode.isWall = false;
+                playerAgent.nowNode = FinalList[0];
+                playerAgent.nowNode.isWall = true;
                 FinalList.RemoveAt(0);
                 bool recive = FinalList.Count > 0 ? true : false;
                 Debug.Log($"{recive}");
@@ -138,13 +143,13 @@ public class PathFindingManager : Singleton<PathFindingManager>
 
     public void BattleEndMove(Node lastNode)
     {
-            agent.transform.DOMove(lastNode.offsetPos, MOVING_SLOW_DURATION, true)
+            playerAgent.transform.DOMove(lastNode.offsetPos, MOVING_SLOW_DURATION, true)
             .SetEase(Ease.OutCubic)
             .OnComplete(() =>
         {
-            agent.nowNode.isWall = false;
-            agent.nowNode = lastNode;
-            agent.nowNode.isWall = true;
+            playerAgent.nowNode.isWall = false;
+            playerAgent.nowNode = lastNode;
+            playerAgent.nowNode.isWall = true;
             GameManager.Instance.SetStatus(eTurnType.PlayerMoveEnd);
         });
     }
@@ -165,9 +170,9 @@ public class PathFindingManager : Singleton<PathFindingManager>
         OpenList = new List<Node>();
     }
 
-    public bool PathFinding()
+    public bool PlayerPathFinding()
     {
-        if (targetNode == agent.nowNode)
+        if (targetNode == playerAgent.nowNode)
             return false;
 
         for (int y = 0; y < heightSize; y++)
@@ -182,7 +187,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
         OpenList.Clear();
         ClosedList.Clear();
         FinalList.Clear();
-        OpenList.Add(agent.nowNode);
+        OpenList.Add(playerAgent.nowNode);
         while (OpenList.Count > 0)
         {
             curNode = OpenList[0];
@@ -204,8 +209,17 @@ public class PathFindingManager : Singleton<PathFindingManager>
                 if (targetNode.isWall == false)
                     FinalList.Add(curNode);
 
-                while (curNode != agent.nowNode)
+                while (curNode != playerAgent.nowNode)
                 {
+                    if (FinalList.Count > GameManager.Instance.player.playerStat.move &&
+                        GameManager.Instance.status == eTurnType.PlayerTurn)
+                    {
+                        UiManager.Instance.ShowCantMove();
+                        Debug.Log("거리가 너무 멀어요");
+                        return false;
+                    }
+                        
+
                     curNode = curNode.parent;
 
                     if (FinalList.Contains(curNode) == true)
@@ -218,11 +232,6 @@ public class PathFindingManager : Singleton<PathFindingManager>
                 FinalList.Reverse();
                 FinalList.RemoveAt(0);
                 OpenList.Clear();
-
-                for (int i = 0; i < FinalList.Count; i++)
-                {
-                    Util.Log(string.Format("FinalList {0}", FinalList[0]));
-                }
                 Agent.onDrag = false;
                 return true;
             }
@@ -237,9 +246,97 @@ public class PathFindingManager : Singleton<PathFindingManager>
         return false;
     }
 
+    public Tuple<bool , List<Node>> EnemyPathFinding(int move)
+    {
+        if (targetNode == enemyAgent.nowNode)
+            return new Tuple<bool ,List<Node>>(false ,FinalList);
+
+        for (int y = 0; y < heightSize; y++)
+        {
+            for (int x = 0; x < widthSize; x++)
+            {
+                matrixNodes[x, y].ScorieClear();
+            }
+        }
+
+        curNode = null;
+        OpenList.Clear();
+        ClosedList.Clear();
+        FinalList.Clear();
+        OpenList.Add(enemyAgent.nowNode);
+        while (OpenList.Count > 0)
+        {
+            curNode = OpenList[0];
+
+            for (int i = 1; i < OpenList.Count; i++)
+            {
+                if (OpenList[i].F < curNode.F)
+                    curNode = OpenList[i];
+                else if (OpenList[i].F == curNode.F)
+                    curNode = OpenList[i].H < curNode.H ? OpenList[i] : curNode;
+            }
+
+
+            OpenList.Remove(curNode);
+            ClosedList.Add(curNode);
+
+            if (curNode == targetNode)
+            {
+                if (targetNode.isWall == false)
+                    FinalList.Add(curNode);
+
+                while (curNode != enemyAgent.nowNode)
+                {
+                    curNode = curNode.parent;
+
+                    if (FinalList.Contains(curNode) == true)
+                    {
+                        Util.LogError("Final리스트에 이미 존재하는 요소를 추가하려는 시도가 확인되었습니다 로직을 종료합니다");
+                    }
+                    FinalList.Add(curNode);
+
+                }
+                if (FinalList.Count <= 0)
+                    return null;
+               
+                FinalList.Reverse();
+                FinalList.RemoveAt(0);
+                OpenList.Clear();
+                Agent.onDrag = false;
+                return new Tuple<bool, List<Node>>(true, FinalList);
+            }
+
+
+            //AddOpenList로 통합한다
+            //1. SetMyNeightobrs
+            //2. PathScoring
+            //3. CheckBestNeighbor
+            AddOpenList(curNode.matrixX, curNode.matrixY);
+        }
+        return new Tuple<bool, List<Node>>(false, FinalList); ;
+    }
+
+
     public Node GetMatrixNode(int x, int y)
     {
         return matrixNodes[x, y];
     }
+
+    public void SetPlayerAgent(string name, Agent agent ,Node nowNode)
+    {
+        Debug.Log($"{name} is agent");
+        this.playerAgent = agent;
+        playerAgent.nowNode = nowNode;
+    }
+
+    public void SetEnemyAgent(string name, Agent agent, Node nowNode)
+    {
+        Debug.Log($"{name} is agent");
+        this.enemyAgent = agent;
+        enemyAgent.nowNode = nowNode;
+    }
+
+
+    public Agent GetAgent() { return playerAgent; }
    
 }

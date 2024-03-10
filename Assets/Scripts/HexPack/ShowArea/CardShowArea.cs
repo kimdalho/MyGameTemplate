@@ -10,16 +10,6 @@ public class CardShowArea : BaseShowArea
     int showValue = 0;
     int hideValue = -26;
 
-
-    private void Start()
-    {
-        SkillCardManager.OnEndLoading += Hide;
-    }
-
-    private void OnDestroy()
-    {
-        SkillCardManager.OnEndLoading -= Hide;
-    }
     protected override void DetectShowArea()
     {
         RaycastHit2D[] hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.forward);

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using DG.Tweening;
+using static UnityEngine.EventSystems.EventTrigger;
+using System.Linq;
 
-
-    public class GameManager : Singleton<GameManager>
+public class GameManager : Singleton<GameManager>
     {
         [SerializeField]
         private Fade fade;
@@ -16,13 +17,13 @@ using DG.Tweening;
         public eTurnType status;
         public Player player;
         public CameraMovement camMove;
-        
 
-        public List<IUiObserver> uiObservers = new List<IUiObserver>();
-        public List<ITurnSystem> miniSliders = new List<ITurnSystem>();
+        public List<MiniSlider> buffer = new List<MiniSlider>();
+        public List<Creature> creatures = new List<Creature>();
 
-        // Start is called before the first frame update
-        void Start()
+
+    // Start is called before the first frame update
+    void Start()
         {
             fade.SetPopupColor(Color.black);
             status = eTurnType.AWake;
@@ -30,7 +31,7 @@ using DG.Tweening;
             PathFindingManager.Instance.Setup();
             UnitManager.Instance.Setup();
             player =  UnitManager.Instance.CreatePlayer();
-            Subject();
+            UiRefresh();
             StartGame();
             
             if (player == null)
@@ -43,6 +44,8 @@ using DG.Tweening;
 
         public void SetStatus(eTurnType next)
         {
+            var old = status;
+            Debug.Log($"change {old} -> {next}");
             status = next;
             EventTurnSystemUpdate();
         }
@@ -61,7 +64,7 @@ using DG.Tweening;
                     break;
                 case eTurnType.PlayerMoveEnd:
                     PlayerMoveEnd.Invoke();
-                    StartCoroutine(CoCheckAllFade());
+                    StartCoroutine(CoStartAnimDetection());
                     //플레이어는 허기 상태가 감소합니다.
                     //크리처는 이동을 시작합니다.
                     //타워는 생상을 시작합니다.
@@ -94,30 +97,45 @@ using DG.Tweening;
 
         public void CheatGetMoveScore()
         {
-            UserData.Instance.move += 2;
-            UiManager.Instance.RefreshTopUi();
+            
         }
 
-        private IEnumerator CoCheckAllFade()
+        private IEnumerator CoStartAnimDetection()
         {
-            bool allDisable = false;
-            while (!allDisable)
+            
+            buffer = UnitManager.Instance.GetMiniSliders().ToList();
+            while(buffer.Count > 0)
+                yield return null;
+
+            Queue<Creature> creaturebuff = UnitManager.Instance.GetCreatures();
+            
+            while(creaturebuff.Count > 0)
             {
-                for (int i = 0; i < miniSliders.Count; i++)
-                {
-                    if ((miniSliders[i] as MonoBehaviour).isActiveAndEnabled)
-                    {
-                        yield return null;
-                    }
-                }
-                allDisable = true;
+            Creature enemy = creaturebuff.Dequeue();
+
+            enemy.Move();
+
+            yield return null;
             }
-            Debug.Log("Good");
-            SetStatus(eTurnType.PlayerTurn);
+            creaturebuff = UnitManager.Instance.GetCreatures();
+            while (creaturebuff.Count > 0)
+            {
+            
+                Creature enemy = creaturebuff.Dequeue();
+                enemy.AnimPlay();
+                yield return null;
+            }
+
+
+
+
+        SetStatus(eTurnType.PlayerTurn);
         }
 
         private IEnumerator CoAnimBattle(Unit attackUnit,Unit hitUnit)
         {
+
+
         if (attackUnit.GetCurrentHp() > 0)
         {
             var old = attackUnit.transform.position;
@@ -128,7 +146,7 @@ using DG.Tweening;
             hitUnit.Hit(attackUnit);
             var hit_tween = hitUnit.transform.DOShakePosition(0.3f, 1, 20, 30, false);
             yield return hit_tween.WaitForCompletion();
-            Subject();
+            UiRefresh();
             var backTween = attackUnit.transform.DOLocalMove(old, 1).SetEase(Ease.InOutBack);
             yield return backTween.WaitForCompletion();
         }
@@ -147,7 +165,7 @@ using DG.Tweening;
             {
                 player.Dead();
             }
-            else if(hitUnit.GetCurrentHp() == 0)
+            else if(hitUnit.GetCurrentHp() == 0 && hitUnit.status == eUnitType.Creture)
             {
                var deadUnitNode =  hitUnit.GetTileOffSetPos();
                hitUnit.Dead();
@@ -156,12 +174,9 @@ using DG.Tweening;
             }
         }
 
-    public void Subject()
+        public void UiRefresh()
         {
-            foreach(var ui in uiObservers)
-            {
-                ui.Notification();
-            }
+            UiManager.Instance.RefreshDesk();
         }
 
     private void OnDestroy()

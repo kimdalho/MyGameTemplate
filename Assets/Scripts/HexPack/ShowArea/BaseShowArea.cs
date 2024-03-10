@@ -19,8 +19,6 @@ public abstract class BaseShowArea : MonoBehaviour
 
     private void Update()
     {
-        if (TileTurnManager.Instance.isLoading == true)
-            return;
 
         DetectShowArea();
 

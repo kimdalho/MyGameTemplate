@@ -36,5 +36,10 @@ public class UnitStat
     public int curHp;
     public int atk;
     public int move;
+    
+}
+
+public class EnemyStat
+{
     public int fullness;
 }

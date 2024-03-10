@@ -17,7 +17,7 @@ using Random = UnityEngine.Random;
 
 public class UnitManager : Singleton<UnitManager>, ITurnSystem
 {
-    public List<Node> CretrueSpawnList;
+    public List<Node> CretureDropPoslist;
 
     [SerializeField] GameObject playerPrefab;
     [SerializeField] GameObject unitPrefab;
@@ -40,7 +40,7 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
     public void Setup()
     {
         units = new List<Unit>();
-        CretrueSpawnList = new List<Node>();
+        CretureDropPoslist = new List<Node>();
         CampGenerator();
 
         foreach(var unit in units)
@@ -53,6 +53,35 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
         }
     }
 
+    public List<MiniSlider> GetMiniSliders()
+    {
+        List<MiniSlider> result = new List<MiniSlider>();
+        foreach (var unit in units)
+        {
+            if (unit?.GetComponent<Tower>())
+            {
+                Tower tower = (Tower)unit;
+                result.Add(tower.hud.slider);
+            }
+        }
+        return result;
+    }
+
+    public Queue<Creature> GetCreatures()
+    {
+        Queue<Creature> result = new Queue<Creature>();
+        foreach (var unit in units)
+        {
+            if (unit.status == eUnitType.Creture)
+            {
+                Creature creature = (Creature)unit;
+                result.Enqueue(creature);
+            }
+        }
+        return result;
+    }
+
+
 
     public Player CreatePlayer()
     {
@@ -60,15 +89,16 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
         int playerPosX = hexagonGrid.width  /2;
         int playerPosY = hexagonGrid.hegiht /2;
 
-        var baseNode = GridManager.Instance.GetHaxgonTile(playerPosX,playerPosY);
-        Vector2 pos = baseNode.transform.position;
+        var castleNode = GridManager.Instance.GetHaxgonTile(playerPosX,playerPosY);
+        Vector2 pos = castleNode.transform.position;
         Vector3 vec = new Vector3(pos.x, pos.y + Offset, playerPosZ);
         var go = Instantiate(playerPrefab, vec, Util.QI);
         Agent agent = go.GetComponent<Agent>();
+        PathFindingManager.Instance.SetPlayerAgent("Player", agent, castleNode);
         go.transform.SetParent(unitHolder);
-        agent.Setup(pick);
-        agent.nowNode = baseNode;
-        PathFindingManager.Instance.agent = agent;
+        MouseController mouseController= go.GetComponent<MouseController>();
+        mouseController.SetData(agent,pick);
+        
         Debug.Log("Create Player success");
         return go.GetComponent<Player>();
     }
@@ -87,14 +117,14 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
             CreateTowerByCampeType(enumItem);
         }
 
-        foreach(var unit in units)
-        {
-            if(true == unit.GetComponent<Tower>())
-            {
-                CretrueSpawnList.Add(unit.parent);
-            }
+        //foreach(var unit in units)
+        //{
+        //    if(true == unit.GetComponent<Tower>())
+        //    {
+        //        CretureDropPoslist.Add(unit.parent);
+        //    }
 
-        }
+        //}
 
     }
 
@@ -184,21 +214,6 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
         return gameMaterialSO.models[materialId];
     }
 
-
-
-    public void TargetUnitRelese()
-    {
-        if(targetUnit == null)
-        {
-            Util.Log("잘못된 접근 시도");
-            return;
-        }
-
-        targetUnit.parent.isWall = false;
-        //targetUnit.End();
-        targetUnit = null;
-
-    }
 
     public void EndPlayerMove()
     {

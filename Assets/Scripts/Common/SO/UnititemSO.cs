@@ -7,6 +7,7 @@ public enum eUnitType
 {
     Creture = 0,
     Tower = 1,
+    Player = 2,
 }
 //소분류
 public enum eCretureType
