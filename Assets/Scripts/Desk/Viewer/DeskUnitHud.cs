@@ -23,8 +23,7 @@ public abstract class DeskUnitHud : MonoBehaviour
 
     public virtual void SetData(Unit model)
     {
-        bottom.SetActive(true);
-
+        
     }
 
 }

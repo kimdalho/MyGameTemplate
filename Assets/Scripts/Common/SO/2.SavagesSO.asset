@@ -16,7 +16,7 @@ MonoBehaviour:
   - towerType: 0
     cretureType: 3
     status: 0
-    spawn: 3
+    spawn: 2
     name: "\uD3EC\uC545\uD55C \uB3C4\uC801"
     description: "\uBC88\uC2DD\uB825\uC774 \uAC15\uD558\uC9C0\uB9CC \uB9E4\uC6B0
       \uC57D\uD55C \uBCF4\uBCD1\uC774\uB2E4."
@@ -27,14 +27,13 @@ MonoBehaviour:
       curHp: 4
       atk: 2
       move: 1
-      fullness: 2
     id: 0
     cretureUnits: 
     dropitemIds: 0800000003000000
   - towerType: 0
     cretureType: 2
     status: 0
-    spawn: 5
+    spawn: 4
     name: "\uACE8\uB818"
     description: "\uB2E8\uB2E8\uD558\uC9C0\uB9CC \uC27D\uAC8C \uB4F1\uC7A5\uD558\uC9C0\uC54A\uB294\uB2E4
       \uC774\uB3D9\uC774 \uB9E4\uC6B0 \uB290\uB9AC\uB2E4"
@@ -45,7 +44,6 @@ MonoBehaviour:
       curHp: 6
       atk: 2
       move: 1
-      fullness: 0
     id: 1
     cretureUnits: 
     dropitemIds: 0800000003000000
@@ -63,7 +61,6 @@ MonoBehaviour:
       curHp: 10
       atk: 3
       move: 1
-      fullness: 2
     id: 2
     cretureUnits: 
     dropitemIds: 0800000003000000
@@ -83,7 +80,6 @@ MonoBehaviour:
       curHp: 4
       atk: 2
       move: 2
-      fullness: 0
     id: 0
     cretureUnits: 
     dropitemIds: 0800000003000000
@@ -101,7 +97,6 @@ MonoBehaviour:
       curHp: 5
       atk: 2
       move: 2
-      fullness: 1
     id: 3
     cretureUnits: 
     dropitemIds: 0800000003000000
@@ -120,7 +115,6 @@ MonoBehaviour:
       curHp: 10
       atk: 2
       move: 2
-      fullness: 0
     id: 4
     cretureUnits: 
     dropitemIds: 0800000003000000
@@ -139,7 +133,6 @@ MonoBehaviour:
       curHp: 15
       atk: 3
       move: 1
-      fullness: 0
     id: 5
     cretureUnits: 
     dropitemIds: 0800000003000000

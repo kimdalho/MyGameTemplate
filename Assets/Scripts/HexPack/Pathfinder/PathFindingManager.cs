@@ -232,7 +232,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
                 FinalList.Reverse();
                 FinalList.RemoveAt(0);
                 OpenList.Clear();
-                Agent.onDrag = false;
+                MouseController.onDrag = false;
                 return true;
             }
 
@@ -302,7 +302,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
                 FinalList.Reverse();
                 FinalList.RemoveAt(0);
                 OpenList.Clear();
-                Agent.onDrag = false;
+                MouseController.onDrag = false;
                 return new Tuple<bool, List<Node>>(true, FinalList);
             }
 

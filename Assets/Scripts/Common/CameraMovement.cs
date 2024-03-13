@@ -28,7 +28,7 @@ public class CameraMovement : MonoBehaviour ,IPlayerHit
 
     void Update()
     {
-        if (Agent.onDrag == true)
+        if (MouseController.onDrag)
             return;
 
         if (Input.GetMouseButtonDown(0))

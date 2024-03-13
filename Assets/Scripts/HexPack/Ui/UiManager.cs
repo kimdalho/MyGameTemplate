@@ -9,6 +9,9 @@ using UnityEngine;
         [Header("Desk")]
         public DeskHud deskHud;
 
+        [Header("GoodsViewerGroup")]
+        public GoodsViewerGroup goodsGroup;
+
         public GameObject warring;
         
         

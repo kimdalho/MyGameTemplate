@@ -12,8 +12,9 @@ public class Creature : EnemyUnit
     public eCretureType crtureType;
     public Agent agent;
     private PathFindingManager pathMgr;
+    private int oldMove;
     [SerializeField] private List<Node> FinalList = new List<Node>();
-    public int moveScore = 3;
+    
     private readonly float MOVING_DURATION = 0.3f;
     public override void SetData(UnitItem item, bool isFront, Node parent)
     {
@@ -24,16 +25,16 @@ public class Creature : EnemyUnit
         UnitManager.Instance.units.Add(this);
         agent.nowNode = parent;
         pathMgr = PathFindingManager.Instance;
-
+        oldMove = stat.move;
 
     }
 
     public void AnimPlay()
     {
-        if (moveScore <= 0 || FinalList.Count <= 0)
+        if (stat.move <= 0 || FinalList.Count <= 0)
             return;
 
-     moveScore--;
+     stat.move--;
      agent.transform.DOMove(FinalList[0].offsetPos, MOVING_DURATION, true)
     .SetEase(Ease.OutCubic)
     .OnComplete(() =>
@@ -51,10 +52,10 @@ public class Creature : EnemyUnit
 
     public void Move()
     {
-        moveScore = 3;
+        stat.move = oldMove;
         pathMgr.SetEnemyAgent(unitName, agent, agent.nowNode);
         pathMgr.targetNode = GameManager.Instance.player.GetNowNode();
-        Tuple<bool , List<Node>> isGood = pathMgr.EnemyPathFinding(moveScore);
+        Tuple<bool , List<Node>> isGood = pathMgr.EnemyPathFinding(stat.move);
 
         if (isGood == null)
             return;
@@ -68,9 +69,9 @@ public class Creature : EnemyUnit
             if (FinalList.Count <= 0)
                 return;
 
-            if (FinalList.Count > moveScore)
+            if (FinalList.Count > stat.move)
             {
-                FinalList.RemoveRange(moveScore, FinalList.Count - moveScore);
+                FinalList.RemoveRange(stat.move, FinalList.Count - stat.move);
             }
 
             
@@ -100,6 +101,8 @@ public class Creature : EnemyUnit
         base.Dead();
         UnitManager.Instance.units.Remove(this);
         GameManager.Instance.buffer.Remove(hud.slider);
+        materials.ForEach(goods => goods.Drop());
+        UiManager.Instance.goodsGroup.SetData();
         parent.isWall = false;
     }
 }

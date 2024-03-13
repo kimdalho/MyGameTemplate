@@ -20,16 +20,15 @@ MonoBehaviour:
     name: "\uB9C9\uC0AC"
     description: 
     render: {fileID: 21300000, guid: 769871e02ca960f409ef4161220ce850, type: 3}
-    grad: 0
+    grad: 2
     baseStat:
-      maxHp: 0
-      curHp: 0
-      atk: 0
+      maxHp: 20
+      curHp: 20
+      atk: 5
       move: 0
-      fullness: 0
     id: 0
     cretureUnits: 0000000004000000
-    dropitemIds: 
+    dropitemIds: 000000000100000002000000
   - towerType: 0
     cretureType: 0
     status: 1
@@ -37,16 +36,15 @@ MonoBehaviour:
     name: "\uBC84\uC12F\uB9C8\uC744"
     description: 
     render: {fileID: 21300000, guid: 30a6bd94c7c09794ebd0681f497d5bf4, type: 3}
-    grad: 0
+    grad: 2
     baseStat:
-      maxHp: 0
-      curHp: 0
-      atk: 0
+      maxHp: 20
+      curHp: 20
+      atk: 4
       move: 0
-      fullness: 0
     id: 1
     cretureUnits: 01000000
-    dropitemIds: 
+    dropitemIds: 0000000001000000
   - towerType: 0
     cretureType: 0
     status: 1
@@ -54,16 +52,15 @@ MonoBehaviour:
     name: "\uB9C8\uC744"
     description: 
     render: {fileID: 21300000, guid: 1ab7b1cdc722d3845820ff2f2c35d06b, type: 3}
-    grad: 0
+    grad: 1
     baseStat:
-      maxHp: 0
-      curHp: 0
-      atk: 0
+      maxHp: 20
+      curHp: 20
+      atk: 3
       move: 0
-      fullness: 0
     id: 0
     cretureUnits: 0400000005000000
-    dropitemIds: 
+    dropitemIds: 0500000002000000
   - towerType: 0
     cretureType: 0
     status: 1
@@ -71,30 +68,28 @@ MonoBehaviour:
     name: "\uC2DC\uACC4\uD0D1"
     description: 
     render: {fileID: 21300000, guid: 44e863f1967156441b7049d53d7344c9, type: 3}
-    grad: 0
+    grad: 1
     baseStat:
-      maxHp: 0
-      curHp: 0
-      atk: 0
+      maxHp: 50
+      curHp: 50
+      atk: 12
       move: 0
-      fullness: 0
     id: 0
     cretureUnits: 
-    dropitemIds: 
+    dropitemIds: 010000000300000004000000
   - towerType: 0
     cretureType: 0
     status: 1
     spawn: 0
     name: "\uC678\uB534\uC12C"
-    description: 
+    description: 1
     render: {fileID: 21300000, guid: 8bb18c7a72bcb5e479adf780f4ca6502, type: 3}
-    grad: 0
+    grad: 4
     baseStat:
-      maxHp: 0
-      curHp: 0
-      atk: 0
+      maxHp: 50
+      curHp: 50
+      atk: 10
       move: 0
-      fullness: 0
-    id: 0
+    id: 3
     cretureUnits: 
-    dropitemIds: 
+    dropitemIds: 0400000004000000

@@ -32,13 +32,15 @@ public class DeskHud : MonoBehaviour
             enemyHud.bottom.gameObject.SetActive(false);
             playerHud.gameObject.SetActive(true);
             playerHud.SetData(unit);
+            playerHud.bottom.gameObject.SetActive(false); // 작업중
             
         }
         else
         {
             enemyHud.gameObject.SetActive(true);
             playerHud.bottom.gameObject.SetActive(false);
-            playerHud.gameObject.SetActive(false); 
+            playerHud.gameObject.SetActive(false);
+            enemyHud.bottom.gameObject.SetActive(true); // 작업중
             enemyHud.SetData(unit);
         }
 

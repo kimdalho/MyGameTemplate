@@ -4,6 +4,7 @@ using UnityEngine;
 using Hex_Package;
 using System;
 using Random = UnityEngine.Random;
+using System.Linq;
 
 /// <summary>
 /// 유닛을 관리하는 클래스이다.
@@ -213,6 +214,7 @@ public class UnitManager : Singleton<UnitManager>, ITurnSystem
     {
         return gameMaterialSO.models[materialId];
     }
+
 
 
     public void EndPlayerMove()

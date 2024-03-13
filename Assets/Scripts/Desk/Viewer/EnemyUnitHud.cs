@@ -21,7 +21,7 @@ public class EnemyUnitHud : DeskUnitHud
 
         thumbnail.sprite = model.image;
         nameString.text = model.unitName;
-        tmp_atk.text = model.GetAttack().ToString();
+        tmp_atk.text = model.GetAttack().ToString("D3");
         tmp_hp.text = string.Format("{0}/{1}", model.GetCurrentHp().ToString(), model.GetMaxHp().ToString());
         slider_hp.value = (float)((float)model.GetCurrentHp() / (float)model.GetMaxHp());
         
