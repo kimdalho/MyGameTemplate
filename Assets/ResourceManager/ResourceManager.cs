@@ -18,7 +18,7 @@ public class ResourceManager : MonoBehaviour
     [SerializeField]
     public List<AnimatorClipInfo> list = new List<AnimatorClipInfo>();  
 
-    public ItemFactory roomFactory;
+    public ItemFactory ItemFactory;    
 
 
     public static ResourceManager Instance
@@ -65,6 +65,8 @@ public class ResourceManager : MonoBehaviour
 
     }
 
-
-
+    public ItemObject GetRandomItem(Transform parent)
+    {
+       return ItemFactory.CreateRandomItem(parent);
+    }
 }

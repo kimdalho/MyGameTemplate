@@ -6,7 +6,7 @@ namespace UnityFactory
 {
     public class BaseObject : MonoBehaviour, IObject
     {
-        public virtual void SetData(IObjectInfo data)
+        public virtual void SetData(IObjectConfigSO data)
         {
 
         }

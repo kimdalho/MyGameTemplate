@@ -5,7 +5,7 @@ using UnityEngine;
 /// 
 namespace UnityFactory
 {
-    public class BaseObejctInfo : ScriptableObject, IObjectInfo
+    public class BaseObejctInfo : ScriptableObject, IObjectConfigSO
     {
         public GameObject prefab => _prefab;
         private GameObject _prefab;
